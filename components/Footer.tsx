@@ -50,10 +50,22 @@ const Footer: React.FC = () => {
           <div>
             <h4 className="text-lg font-bold mb-6 border-b border-slate-700 pb-2 inline-block">Suivez-nous</h4>
             <div className="flex space-x-4">
-              <a href="#" className="bg-slate-700 p-3 rounded-full hover:bg-accent transition-colors">
+              <a 
+                href="https://www.facebook.com/yamehomecameroon" 
+                target="_blank" 
+                rel="noopener noreferrer" 
+                className="bg-slate-700 p-3 rounded-full hover:bg-accent transition-colors"
+                aria-label="Facebook"
+              >
                 <Facebook size={20} />
               </a>
-              <a href="#" className="bg-slate-700 p-3 rounded-full hover:bg-accent transition-colors">
+              <a 
+                href="https://www.instagram.com/yamehome/" 
+                target="_blank" 
+                rel="noopener noreferrer" 
+                className="bg-slate-700 p-3 rounded-full hover:bg-accent transition-colors"
+                aria-label="Instagram"
+              >
                 <Instagram size={20} />
               </a>
             </div>
