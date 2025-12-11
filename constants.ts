@@ -194,7 +194,13 @@ export const PROPERTIES: Property[] = [
   },
 ];
 
-export const CONTACT_PHONE_YAOUNDE = "+237 656 75 13 10";
-export const CONTACT_PHONE_BANGANGTE = "+237 670 87 11 39";
+// Numéros affichés dans le PIED DE PAGE (Footer) pour appels directs
+export const CONTACT_PHONE_YAOUNDE = "+237 656 75 13 10"; // Numéro Edwige
+export const CONTACT_PHONE_BANGANGTE = "+237 670 87 11 39"; // Nouveau numéro demandé
+
+// Numéros pour les boutons "Réserver sur WhatsApp" des cartes (Agents dédiés)
+export const WHATSAPP_AGENT_YAOUNDE = "+237 691 47 24 82"; // Paola
+export const WHATSAPP_AGENT_BANGANGTE = "+237 681 94 86 87"; // Celsus
+
 export const CONTACT_EMAIL = "christian@yamehome.com";
 export const HEADQUARTERS_ADDRESS = "Odza borne 10, entrée Ministre, Yaoundé";

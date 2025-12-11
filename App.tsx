@@ -3,6 +3,7 @@ import Navbar from './components/Navbar';
 import Hero from './components/Hero';
 import PropertyCard from './components/PropertyCard';
 import Footer from './components/Footer';
+import WhatsAppWidget from './components/WhatsAppWidget'; // Import du widget
 import { PROPERTIES } from './constants';
 import { Location } from './types';
 
@@ -67,6 +68,9 @@ const App: React.FC = () => {
       </section>
 
       <Footer />
+      
+      {/* Ajout du Widget ici pour qu'il soit par-dessus tout le reste */}
+      <WhatsAppWidget />
     </div>
   );
 };

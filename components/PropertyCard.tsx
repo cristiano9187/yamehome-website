@@ -1,12 +1,30 @@
 import React from 'react';
-import { Property } from '../types';
-import { Users, Wifi, MapPin, Check, Building, Image as ImageIcon } from 'lucide-react';
+import { Property, Location } from '../types';
+import { Users, Wifi, MapPin, Check, Building, Image as ImageIcon, MessageCircle } from 'lucide-react';
+import { WHATSAPP_AGENT_YAOUNDE, WHATSAPP_AGENT_BANGANGTE } from '../constants';
 
 interface PropertyCardProps {
   property: Property;
 }
 
 const PropertyCard: React.FC<PropertyCardProps> = ({ property }) => {
+  // Définition du numéro WhatsApp selon la localisation du logement
+  // Yaoundé -> Paola (WHATSAPP_AGENT_YAOUNDE)
+  // Bangangté -> Celsus (WHATSAPP_AGENT_BANGANGTE)
+  
+  const getWhatsAppNumber = (location: Location) => {
+    // Fonction utilitaire pour nettoyer le numéro (enlever +, espaces)
+    const cleanNumber = (num: string) => num.replace(/[^0-9]/g, '');
+
+    if (location === Location.BANGANGTE) {
+      return cleanNumber(WHATSAPP_AGENT_BANGANGTE); // Celsus
+    }
+    return cleanNumber(WHATSAPP_AGENT_YAOUNDE); // Paola
+  };
+
+  const whatsappNumber = getWhatsAppNumber(property.location);
+  const message = encodeURIComponent(`Bonjour, je suis intéressé par : ${property.title} (${property.siteName || property.location}). Est-il disponible ?`);
+
   return (
     <div className="bg-white rounded-xl shadow-lg overflow-hidden group hover:shadow-2xl transition-all duration-300 flex flex-col h-full border border-slate-100">
       <div className="relative h-64 overflow-hidden">
@@ -92,15 +110,23 @@ const PropertyCard: React.FC<PropertyCardProps> = ({ property }) => {
         </div>
 
         <div className="flex gap-3 mt-auto">
-            <button className="flex-1 py-2.5 bg-slate-800 text-white rounded-lg font-medium text-sm hover:bg-slate-700 transition-colors shadow-sm hover:shadow-md">
-            Réserver
-            </button>
+            {/* Bouton WhatsApp direct intelligent (Paola ou Celsus) */}
+            <a 
+              href={`https://wa.me/${whatsappNumber}?text=${message}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex-1 flex items-center justify-center py-2.5 bg-[#25D366] text-white rounded-lg font-medium text-sm hover:bg-[#20bd5a] transition-colors shadow-sm hover:shadow-md"
+            >
+              <MessageCircle size={18} className="mr-2" />
+              Réserver
+            </a>
+            
             {property.driveFolderUrl && (
             <a 
                 href={property.driveFolderUrl} 
                 target="_blank" 
                 rel="noopener noreferrer"
-                className="flex items-center justify-center px-4 py-2.5 border border-accent text-accent rounded-lg font-medium text-sm hover:bg-accent hover:text-white transition-colors"
+                className="flex items-center justify-center px-4 py-2.5 border border-slate-200 text-slate-600 rounded-lg font-medium text-sm hover:bg-slate-50 transition-colors"
                 title="Voir toutes les photos"
             >
                 <ImageIcon size={18} />
