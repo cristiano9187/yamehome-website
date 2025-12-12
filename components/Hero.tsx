@@ -8,7 +8,8 @@ const Hero: React.FC = () => {
       <div 
         className="absolute inset-0 z-0 bg-cover bg-center bg-no-repeat"
         style={{ 
-          backgroundImage: 'url("https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?ixlib=rb-4.0.3&auto=format&fit=crop&w=2340&q=80")',
+          // On utilise l'image locale optimisée
+          backgroundImage: 'url("/yamehome-website/images/hero-bg.avif")',
         }}
       >
         <div className="absolute inset-0 bg-black/40"></div>
