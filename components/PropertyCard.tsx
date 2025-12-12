@@ -44,7 +44,8 @@ const PropertyCard: React.FC<PropertyCardProps> = ({ property }) => {
       <div className="relative h-64 overflow-hidden">
         <img 
           src={property.images[currentImageIndex]} 
-          alt={property.title} 
+          alt={property.title}
+          loading="lazy"
           className="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-500"
         />
         

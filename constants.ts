@@ -31,9 +31,9 @@ export const PROPERTIES: Property[] = [
     pricePerNight: 32000,
     studioPrice: 25000,
     images: [
-      '/yamehome-website/images/terracotta/chambre_fenetre.jpeg',
-      '/yamehome-website/images/terracotta/salle_a_manger.jpeg', // Image supplémentaire pour le carrousel
-      '/yamehome-website/images/terracotta/salon_tv.jpeg'
+      '/yamehome-website/images/terracotta/chambre_fenetre.jpg',
+      '/yamehome-website/images/terracotta/salle_a_manger.jpg', // Image supplémentaire pour le carrousel
+      '/yamehome-website/images/terracotta/salon_tv.jpg'
     ],
     amenities: ['Wifi', 'Climatisation', 'Parking', 'Cuisine équipée', 'Tarifs dégressifs 7j+'],
     capacity: 4
@@ -49,9 +49,9 @@ export const PROPERTIES: Property[] = [
     pricePerNight: 32000,
     studioPrice: 25000,
     images: [
-      '/yamehome-website/images/emeraude/aceuil.jpeg',
-      '/yamehome-website/images/emeraude/d_cuisine.jpeg',
-      '/yamehome-website/images/emeraude/f_chambre.jpeg'
+      '/yamehome-website/images/emeraude/aceuil.jpg',
+      '/yamehome-website/images/emeraude/d_cuisine.jpg',
+      '/yamehome-website/images/emeraude/f_chambre.jpg'
     ],
     amenities: ['Wifi', 'Smart TV', 'Sécurité 24/7', 'Machine à laver'],
     capacity: 4
@@ -145,8 +145,8 @@ export const PROPERTIES: Property[] = [
     type: PropertyType.CHAMBRE,
     pricePerNight: 15000,
     images: [
-      '/yamehome-website/images/chambrea/vue_lit.jpeg',
-      '/yamehome-website/images/chambrea/vue_tv.jpeg'
+      '/yamehome-website/images/chambrea/vue_lit.jpg',
+      '/yamehome-website/images/chambrea/vue_tv.jpg'
     ],
     amenities: ['Lit double', 'Ventilateur', 'Douche privée'],
     capacity: 2
@@ -161,8 +161,8 @@ export const PROPERTIES: Property[] = [
     type: PropertyType.CHAMBRE,
     pricePerNight: 15000,
     images: [
-      '/yamehome-website/images/chambreb/lit_frigo.jpeg',
-      '/yamehome-website/images/chambreb/placard.jpeg'
+      '/yamehome-website/images/chambreb/lit_frigo.jpg',
+      '/yamehome-website/images/chambreb/placard.jpg'
     ],
     amenities: ['Lit double', 'Ventilateur', 'Douche privée'],
     capacity: 2
