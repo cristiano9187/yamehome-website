@@ -3,7 +3,7 @@ import { Property, Location, PropertyType } from './types';
 // --- UTILITAIRE GOOGLE DRIVE ---
 // Cette fonction permet de transformer un lien de partage Google Drive classique
 // en une image affichable directement sur le site.
-// Usage: Mettez simplement le lien de partage de la photo dans 'imageUrl'.
+// Usage: Mettez simplement le lien de partage de la photo dans le tableau 'images'.
 const getDriveImage = (urlOrId: string): string => {
   // Si c'est une image Picsum (test) ou une URL externe non-Drive, on la retourne telle quelle
   if (!urlOrId.includes('drive.google.com') && urlOrId.startsWith('http')) {
@@ -30,7 +30,11 @@ export const PROPERTIES: Property[] = [
     type: PropertyType.APPARTEMENT,
     pricePerNight: 32000,
     studioPrice: 25000,
-    imageUrl: 'https://picsum.photos/800/600?random=1', // À REMPLACER : Collez le lien de partage de la photo ici
+    images: [
+      '/yamehome-website/images/terracotta/chambre_fenetre.jpeg',
+      '/yamehome-website/images/terracotta/salle_a_manger.jpeg', // Image supplémentaire pour le carrousel
+      '/yamehome-website/images/terracotta/salon_tv.jpeg'
+    ],
     amenities: ['Wifi', 'Climatisation', 'Parking', 'Cuisine équipée', 'Tarifs dégressifs 7j+'],
     capacity: 4
   },
@@ -44,7 +48,11 @@ export const PROPERTIES: Property[] = [
     type: PropertyType.APPARTEMENT,
     pricePerNight: 32000,
     studioPrice: 25000,
-    imageUrl: 'https://picsum.photos/800/600?random=2', // À REMPLACER
+    images: [
+      '/yamehome-website/images/emeraude/aceuil.jpeg',
+      '/yamehome-website/images/emeraude/d_cuisine.jpeg',
+      '/yamehome-website/images/emeraude/f_chambre.jpeg'
+    ],
     amenities: ['Wifi', 'Smart TV', 'Sécurité 24/7', 'Machine à laver'],
     capacity: 4
   },
@@ -60,7 +68,11 @@ export const PROPERTIES: Property[] = [
     type: PropertyType.APPARTEMENT,
     pricePerNight: 35000,
     studioPrice: 27000,
-    imageUrl: 'https://picsum.photos/800/600?random=3', // À REMPLACER
+    images: [
+      '/yamehome-website/images/brigade/salon_brigade.jpg',
+      '/yamehome-website/images/brigade/cuisine_brigade.jpg',
+      '/yamehome-website/images/brigade/chrambre_p_brigade.jpg'
+    ],
     amenities: ['Wifi Haut Débit', 'Climatisation intégrale', 'Balcon', 'Groupe électrogène'],
     capacity: 4
   },
@@ -76,9 +88,12 @@ export const PROPERTIES: Property[] = [
     type: PropertyType.APPARTEMENT,
     pricePerNight: 40000,
     studioPrice: 30000,
-    // EXEMPLE : Si vous avez le lien de la photo, remplacez picsum ci-dessous par : 
-    // imageUrl: getDriveImage('LIEN_PARTAGE_GOOGLE_DRIVE_DE_LA_PHOTO'),
-    imageUrl: 'https://picsum.photos/800/600?random=4', 
+    images: [
+      '/yamehome-website/images/deluxe/salon_deluxe.jpg',
+      '/yamehome-website/images/deluxe/salle_manger.jpg',
+      '/yamehome-website/images/deluxe/chambre_p.jpg'
+      // Si vous avez le lien Drive, ajoutez-le ici : getDriveImage('LIEN')
+    ],
     driveFolderUrl: 'https://drive.google.com/drive/u/0/folders/1GNItWwoF5sOvZjnvlSZVeOIJ6OA2Ol3A',
     amenities: ['TV Canal+', 'Cuisine Américaine', 'Baignoire', 'Parking privé'],
     capacity: 5
@@ -92,8 +107,12 @@ export const PROPERTIES: Property[] = [
     location: Location.YAOUNDE,
     type: PropertyType.STUDIO,
     pricePerNight: 25000,
-    // Mise à jour avec le lien réel fourni
-    imageUrl: getDriveImage('https://drive.google.com/file/d/1NJNqJQANT0Qcw30kCDF5AbGmk1ZBu7OY/view?usp=drive_link'), 
+    images: [
+      // Ajout photo random en attendant les vraies photos
+      '/yamehome-website/images/americain/salon_studio.jpg',
+      '/yamehome-website/images/americain/cuisine_studio.jpg',
+      '/yamehome-website/images/americain/chambre_studio.jpg'
+    ], 
     driveFolderUrl: 'https://drive.google.com/drive/u/0/folders/1zAp1a4o7Ac2MNoZ6wzsDoBJ9ClzmkS93',
     amenities: ['Wifi', 'Kitchenette', 'Bureau', 'Douche italienne'],
     capacity: 2
@@ -107,7 +126,11 @@ export const PROPERTIES: Property[] = [
     location: Location.YAOUNDE,
     type: PropertyType.STUDIO,
     pricePerNight: 25000,
-    imageUrl: 'https://picsum.photos/800/600?random=13', // À REMPLACER
+    images: [
+      '/yamehome-website/images/superior/sejour.jpg',
+      '/yamehome-website/images/superior/cuisine.jpg',
+      '/yamehome-website/images/superior/chambre_sup.jpg'
+    ],
     driveFolderUrl: 'https://drive.google.com/drive/u/0/folders/1zAp1a4o7Ac2MNoZ6wzsDoBJ9ClzmkS93',
     amenities: ['Wifi', 'Kitchenette', 'Bureau', 'Douche italienne'],
     capacity: 2
@@ -121,7 +144,10 @@ export const PROPERTIES: Property[] = [
     location: Location.YAOUNDE,
     type: PropertyType.CHAMBRE,
     pricePerNight: 15000,
-    imageUrl: 'https://picsum.photos/800/600?random=6', // À REMPLACER
+    images: [
+      '/yamehome-website/images/chambrea/vue_lit.jpeg',
+      '/yamehome-website/images/chambrea/vue_tv.jpeg'
+    ],
     amenities: ['Lit double', 'Ventilateur', 'Douche privée'],
     capacity: 2
   },
@@ -134,7 +160,10 @@ export const PROPERTIES: Property[] = [
     location: Location.YAOUNDE,
     type: PropertyType.CHAMBRE,
     pricePerNight: 15000,
-    imageUrl: 'https://picsum.photos/800/600?random=14', // À REMPLACER
+    images: [
+      '/yamehome-website/images/chambreb/lit_frigo.jpeg',
+      '/yamehome-website/images/chambreb/placard.jpeg'
+    ],
     amenities: ['Lit double', 'Ventilateur', 'Douche privée'],
     capacity: 2
   },
@@ -149,7 +178,12 @@ export const PROPERTIES: Property[] = [
     location: Location.BANGANGTE,
     type: PropertyType.CHAMBRE,
     pricePerNight: 15000,
-    imageUrl: 'https://picsum.photos/800/600?random=20', // À REMPLACER
+    images: [
+      '/yamehome-website/images/bgte/barriere.jpg',
+      '/yamehome-website/images/bgte/chambre_p_fenetre.jpg',
+      '/yamehome-website/images/bgte/chambre_p1.jpg',
+      '/yamehome-website/images/bgte/chambre_p2.jpg'
+    ],
     amenities: ['Cuisine interne', 'Eau chaude', 'Parking', 'TV'],
     capacity: 2
   },
@@ -162,7 +196,9 @@ export const PROPERTIES: Property[] = [
     location: Location.BANGANGTE,
     type: PropertyType.CHAMBRE,
     pricePerNight: 12000,
-    imageUrl: 'https://picsum.photos/800/600?random=21', // À REMPLACER
+    images: [
+      '/yamehome-website/images/bgte/chambre_b.jpg'
+    ],
     amenities: ['Douche privée', 'Ventilateur', 'Parking', 'TV'],
     capacity: 2
   },
@@ -175,7 +211,9 @@ export const PROPERTIES: Property[] = [
     location: Location.BANGANGTE,
     type: PropertyType.CHAMBRE,
     pricePerNight: 12000,
-    imageUrl: 'https://picsum.photos/800/600?random=22', // À REMPLACER
+    images: [
+      '/yamehome-website/images/bgte/chambre_c.jpg'
+    ],
     amenities: ['Douche privée', 'Ventilateur', 'Parking', 'TV'],
     capacity: 2
   },
@@ -188,7 +226,9 @@ export const PROPERTIES: Property[] = [
     location: Location.BANGANGTE,
     type: PropertyType.CHAMBRE,
     pricePerNight: 12000,
-    imageUrl: 'https://picsum.photos/800/600?random=23', // À REMPLACER
+    images: [
+      '/yamehome-website/images/bgte/chambre_d.jpg'
+    ],
     amenities: ['Douche privée', 'Ventilateur', 'Parking', 'TV'],
     capacity: 2
   },

@@ -1,6 +1,6 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Property, Location } from '../types';
-import { Users, Wifi, MapPin, Check, Building, Image as ImageIcon, MessageCircle } from 'lucide-react';
+import { Users, Wifi, MapPin, Check, Building, Image as ImageIcon, MessageCircle, ChevronLeft, ChevronRight } from 'lucide-react';
 import { WHATSAPP_AGENT_YAOUNDE, WHATSAPP_AGENT_BANGANGTE } from '../constants';
 
 interface PropertyCardProps {
@@ -8,14 +8,11 @@ interface PropertyCardProps {
 }
 
 const PropertyCard: React.FC<PropertyCardProps> = ({ property }) => {
-  // Définition du numéro WhatsApp selon la localisation du logement
-  // Yaoundé -> Paola (WHATSAPP_AGENT_YAOUNDE)
-  // Bangangté -> Celsus (WHATSAPP_AGENT_BANGANGTE)
-  
-  const getWhatsAppNumber = (location: Location) => {
-    // Fonction utilitaire pour nettoyer le numéro (enlever +, espaces)
-    const cleanNumber = (num: string) => num.replace(/[^0-9]/g, '');
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
 
+  // Définition du numéro WhatsApp selon la localisation du logement
+  const getWhatsAppNumber = (location: Location) => {
+    const cleanNumber = (num: string) => num.replace(/[^0-9]/g, '');
     if (location === Location.BANGANGTE) {
       return cleanNumber(WHATSAPP_AGENT_BANGANGTE); // Celsus
     }
@@ -25,30 +22,77 @@ const PropertyCard: React.FC<PropertyCardProps> = ({ property }) => {
   const whatsappNumber = getWhatsAppNumber(property.location);
   const message = encodeURIComponent(`Bonjour, je suis intéressé par : ${property.title} (${property.siteName || property.location}). Est-il disponible ?`);
 
+  // Navigation du carrousel
+  const nextImage = (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setCurrentImageIndex((prev) => (prev + 1) % property.images.length);
+  };
+
+  const prevImage = (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setCurrentImageIndex((prev) => (prev - 1 + property.images.length) % property.images.length);
+  };
+
+  const hasMultipleImages = property.images.length > 1;
+
   return (
     <div className="bg-white rounded-xl shadow-lg overflow-hidden group hover:shadow-2xl transition-all duration-300 flex flex-col h-full border border-slate-100">
+      
+      {/* Zone Image avec Carrousel */}
       <div className="relative h-64 overflow-hidden">
         <img 
-          src={property.imageUrl} 
+          src={property.images[currentImageIndex]} 
           alt={property.title} 
           className="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-500"
         />
         
+        {/* Contrôles du Carrousel (visibles au survol uniquement si plusieurs images) */}
+        {hasMultipleImages && (
+          <>
+            <button 
+              onClick={prevImage}
+              className="absolute left-2 top-1/2 -translate-y-1/2 bg-black/30 hover:bg-black/50 text-white p-1 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300 backdrop-blur-sm z-10"
+              aria-label="Image précédente"
+            >
+              <ChevronLeft size={24} />
+            </button>
+            <button 
+              onClick={nextImage}
+              className="absolute right-2 top-1/2 -translate-y-1/2 bg-black/30 hover:bg-black/50 text-white p-1 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300 backdrop-blur-sm z-10"
+              aria-label="Image suivante"
+            >
+              <ChevronRight size={24} />
+            </button>
+            
+            {/* Indicateur de position (points) */}
+            <div className="absolute bottom-2 left-1/2 -translate-x-1/2 flex gap-1.5 z-10">
+              {property.images.map((_, idx) => (
+                <div 
+                  key={idx} 
+                  className={`w-1.5 h-1.5 rounded-full transition-colors shadow-sm ${idx === currentImageIndex ? 'bg-white' : 'bg-white/40'}`}
+                />
+              ))}
+            </div>
+          </>
+        )}
+
         {/* Badge Type */}
-        <div className="absolute top-4 left-4 bg-white/90 backdrop-blur text-primary text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wide shadow-sm">
+        <div className="absolute top-4 left-4 bg-white/90 backdrop-blur text-primary text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wide shadow-sm pointer-events-none">
           {property.type}
         </div>
 
-        {/* Badge Site Name (if exists) */}
+        {/* Badge Site Name */}
         {property.siteName && (
-          <div className="absolute top-4 right-4 bg-accent/90 backdrop-blur text-white text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wide shadow-sm">
+          <div className="absolute top-4 right-4 bg-accent/90 backdrop-blur text-white text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wide shadow-sm pointer-events-none">
             {property.siteName}
           </div>
         )}
 
-        <div className="absolute bottom-0 left-0 w-full h-1/2 bg-gradient-to-t from-black/70 to-transparent"></div>
+        <div className="absolute bottom-0 left-0 w-full h-1/2 bg-gradient-to-t from-black/70 to-transparent pointer-events-none"></div>
         
-        <div className="absolute bottom-4 right-4 text-right">
+        <div className="absolute bottom-4 right-4 text-right pointer-events-none">
           <div className="text-white font-bold text-xl">
             {property.pricePerNight.toLocaleString('fr-FR')} FCFA
           </div>
@@ -110,7 +154,7 @@ const PropertyCard: React.FC<PropertyCardProps> = ({ property }) => {
         </div>
 
         <div className="flex gap-3 mt-auto">
-            {/* Bouton WhatsApp direct intelligent (Paola ou Celsus) */}
+            {/* Bouton WhatsApp direct */}
             <a 
               href={`https://wa.me/${whatsappNumber}?text=${message}`}
               target="_blank"

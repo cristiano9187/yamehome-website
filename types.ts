@@ -19,7 +19,7 @@ export interface Property {
   type: PropertyType;
   pricePerNight: number; // Prix de base (1-6 jours) pour la configuration standard
   studioPrice?: number; // Prix si loué en mode studio
-  imageUrl: string;
+  images: string[]; // Tableau d'URLs d'images
   driveFolderUrl?: string; // Lien vers le dossier Google Drive (Album)
   amenities: string[];
   capacity: number;
