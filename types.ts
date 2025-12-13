@@ -21,6 +21,7 @@ export interface Property {
   studioPrice?: number; // Prix si loué en mode studio
   images: string[]; // Tableau d'URLs d'images
   driveFolderUrl?: string; // Lien vers le dossier Google Drive (Album)
+  youtubeVideoUrl?: string; // Lien vers la vidéo YouTube
   amenities: string[];
   capacity: number;
 }

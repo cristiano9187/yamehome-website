@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Property, Location } from '../types';
-import { Users, Wifi, MapPin, Check, Building, Image as ImageIcon, MessageCircle, ChevronLeft, ChevronRight } from 'lucide-react';
+import { Users, Wifi, MapPin, Check, Building, Image as ImageIcon, MessageCircle, ChevronLeft, ChevronRight, Youtube } from 'lucide-react';
 import { WHATSAPP_AGENT_YAOUNDE, WHATSAPP_AGENT_BANGANGTE } from '../constants';
 
 interface PropertyCardProps {
@@ -44,8 +44,7 @@ const PropertyCard: React.FC<PropertyCardProps> = ({ property }) => {
       <div className="relative h-64 overflow-hidden">
         <img 
           src={property.images[currentImageIndex]} 
-          alt={property.title}
-          loading="lazy"
+          alt={property.title} 
           className="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-500"
         />
         
@@ -154,27 +153,41 @@ const PropertyCard: React.FC<PropertyCardProps> = ({ property }) => {
           </div>
         </div>
 
-        <div className="flex gap-3 mt-auto">
+        <div className="flex gap-2 mt-auto">
             {/* Bouton WhatsApp direct */}
             <a 
               href={`https://wa.me/${whatsappNumber}?text=${message}`}
               target="_blank"
               rel="noopener noreferrer"
-              className="flex-1 flex items-center justify-center py-2.5 bg-[#25D366] text-white rounded-lg font-medium text-sm hover:bg-[#20bd5a] transition-colors shadow-sm hover:shadow-md"
+              className="flex-grow flex items-center justify-center py-2.5 bg-[#25D366] text-white rounded-lg font-medium text-sm hover:bg-[#20bd5a] transition-colors shadow-sm hover:shadow-md"
             >
               <MessageCircle size={18} className="mr-2" />
               Réserver
             </a>
             
+            {/* Bouton Photos Drive */}
             {property.driveFolderUrl && (
             <a 
                 href={property.driveFolderUrl} 
                 target="_blank" 
                 rel="noopener noreferrer"
-                className="flex items-center justify-center px-4 py-2.5 border border-slate-200 text-slate-600 rounded-lg font-medium text-sm hover:bg-slate-50 transition-colors"
+                className="flex items-center justify-center px-3 py-2.5 border border-slate-200 text-slate-600 rounded-lg font-medium text-sm hover:bg-slate-50 transition-colors"
                 title="Voir toutes les photos"
             >
                 <ImageIcon size={18} />
+            </a>
+            )}
+
+            {/* Bouton Vidéo YouTube */}
+            {property.youtubeVideoUrl && (
+            <a 
+                href={property.youtubeVideoUrl} 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="flex items-center justify-center px-3 py-2.5 border border-red-200 text-red-600 bg-red-50 hover:bg-red-100 rounded-lg font-medium text-sm transition-colors"
+                title="Voir la vidéo"
+            >
+                <Youtube size={18} />
             </a>
             )}
         </div>
