@@ -25,8 +25,12 @@ const Navbar: React.FC = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
           <div className="flex-shrink-0 flex items-center">
-            <a href="#" className={`font-serif text-2xl font-bold tracking-wider ${scrolled ? 'text-primary' : 'text-white'}`}>
-              YAME<span className="text-accent">HOME</span>
+            <a href="#" className="flex items-center">
+              <img 
+                src="/yamehome-website/images/logo.png" 
+                alt="YameHome" 
+                className="h-12 w-auto object-contain" 
+              />
             </a>
           </div>
           
