@@ -148,7 +148,12 @@ const PropertyCard: React.FC<PropertyCardProps> = ({ property }) => {
               </span>
             ))}
             {property.amenities.length > 3 && (
-              <span className="text-xs text-slate-400 self-center">+{property.amenities.length - 3}</span>
+              <span 
+                className="text-xs text-slate-400 self-center cursor-help" 
+                title={property.amenities.slice(3).join(', ')}
+              >
+                +{property.amenities.length - 3}
+              </span>
             )}
           </div>
         </div>
