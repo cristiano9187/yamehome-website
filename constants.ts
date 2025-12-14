@@ -35,7 +35,7 @@ export const PROPERTIES: Property[] = [
       '/yamehome-website/images/terracotta/salle_a_manger.jpg', // Image supplémentaire pour le carrousel
       '/yamehome-website/images/terracotta/salon_tv.jpg'
     ],
-    driveFolderUrl: 'https://drive.google.com/drive/u/0/folders/1fveCMq0ZaYiAC-JZh1BuuZ-YZFfBxU0T',
+    driveFolderUrl: 'https://drive.google.com/drive/folders/1fveCMq0ZaYiAC-JZh1BuuZ-YZFfBxU0T',
     amenities: ['Wifi Haut débit', 'Climatisation', 'Parking', 'Cuisine équipée'],
     capacity: 4
   },
@@ -54,7 +54,7 @@ export const PROPERTIES: Property[] = [
       '/yamehome-website/images/emeraude/d_cuisine.jpg',
       '/yamehome-website/images/emeraude/f_chambre.jpg'
     ],
-    driveFolderUrl: 'https://drive.google.com/drive/u/0/folders/1ryIRS2lqDQRulF9hLDFjV7WKgfma7kfc',
+    driveFolderUrl: 'https://drive.google.com/drive/folders/1ryIRS2lqDQRulF9hLDFjV7WKgfma7kfc',
     amenities: ['Wifi Haut Débit', 'Climatisation', 'Eau Chaude', 'Smart TV', 'Sécurité 24/7'],
     capacity: 4
   },
@@ -75,7 +75,7 @@ export const PROPERTIES: Property[] = [
       '/yamehome-website/images/brigade/cuisine_brigade.jpg',
       '/yamehome-website/images/brigade/chrambre_p_brigade.jpg'
     ],
-    driveFolderUrl: 'https://drive.google.com/drive/u/0/folders/1Uft3tiWSMkLHoky44mpws4Wc5PbJAIKH',
+    driveFolderUrl: 'https://drive.google.com/drive/folders/1Uft3tiWSMkLHoky44mpws4Wc5PbJAIKH',
     youtubeVideoUrl: 'https://www.youtube.com/watch?v=J8irm0k3XEQ',
     amenities: ['Wifi', 'Climatisation intégrale', 'Balcon','securité 24/7'],
     capacity: 4
@@ -97,7 +97,7 @@ export const PROPERTIES: Property[] = [
       '/yamehome-website/images/deluxe/salle_manger.jpg',
       '/yamehome-website/images/deluxe/chambre_p.jpg'
     ],
-    driveFolderUrl: 'https://drive.google.com/drive/u/0/folders/1GNItWwoF5sOvZjnvlSZVeOIJ6OA2Ol3A',
+    driveFolderUrl: 'https://drive.google.com/drive/folders/1GNItWwoF5sOvZjnvlSZVeOIJ6OA2Ol3A',
     amenities: ['Wifi Haut Débit', 'Climatisation', 'Eau Chaude','TV Canal+', 'Cuisine Américaine', 'Parking privé','anti-delestage'],
     capacity: 5
   },
@@ -116,7 +116,7 @@ export const PROPERTIES: Property[] = [
       '/yamehome-website/images/americain/cuisine_studio.jpg',
       '/yamehome-website/images/americain/chambre_studio.jpg'
     ], 
-    driveFolderUrl: 'https://drive.google.com/drive/u/0/folders/1zAp1a4o7Ac2MNoZ6wzsDoBJ9ClzmkS93',
+    driveFolderUrl: 'https://drive.google.com/drive/folders/1zAp1a4o7Ac2MNoZ6wzsDoBJ9ClzmkS93',
     amenities: ['Wifi Haut Débit', 'Climatisation', 'Eau Chaude', 'Kitchenette','anti-delestage'],
     capacity: 2
   },
@@ -134,7 +134,7 @@ export const PROPERTIES: Property[] = [
       '/yamehome-website/images/superior/cuisine.jpg',
       '/yamehome-website/images/superior/chambre_sup.jpg'
     ],
-    driveFolderUrl: 'https://drive.google.com/drive/u/0/folders/1N3hgGTKvcn8xBOKpN6jTggZEY80Vse2f',
+    driveFolderUrl: 'https://drive.google.com/drive/folders/1N3hgGTKvcn8xBOKpN6jTggZEY80Vse2f',
     amenities: ['Wifi Haut Débit', 'Climatisation', 'Eau Chaude', 'Kitchenette','anti-delestage'],
     capacity: 2
   },
@@ -151,7 +151,7 @@ export const PROPERTIES: Property[] = [
       '/yamehome-website/images/chambrea/vue_lit.jpg',
       '/yamehome-website/images/chambrea/vue_tv.jpg'
     ],
-    driveFolderUrl: 'https://drive.google.com/drive/u/0/folders/1d0lqRu4KYHj6KfyrLOGnsdy_cRaJQ3e_',
+    driveFolderUrl: 'https://drive.google.com/drive/folders/1d0lqRu4KYHj6KfyrLOGnsdy_cRaJQ3e_',
     amenities: ['Wifi','Lit double', 'climatisation', 'Douche privée','tv','micro-ondes'],
     capacity: 2
   },
@@ -168,7 +168,7 @@ export const PROPERTIES: Property[] = [
       '/yamehome-website/images/chambreb/lit_frigo.jpg',
       '/yamehome-website/images/chambreb/placard.jpg'
     ],
-    driveFolderUrl: 'https://drive.google.com/drive/u/0/folders/1Q4OzXAivA9vAd_3IX5AE_ue2tBS2ZIbS',
+    driveFolderUrl: 'https://drive.google.com/drive/folders/1Q4OzXAivA9vAd_3IX5AE_ue2tBS2ZIbS',
     amenities: ['Wifi','Lit double', 'climatisation', 'Douche privée','tv','micro-ondes'],
     capacity: 2
   },
