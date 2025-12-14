@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
+import { Navigation } from 'lucide-react';
 
 interface LocationData {
   name: string;
   iframeUrl: string;
+  gpsUrl: string;
 }
 
 interface LocationSectionProps {
@@ -54,6 +56,19 @@ const LocationSection: React.FC<LocationSectionProps> = ({ title, locations }) =
           referrerPolicy="no-referrer-when-downgrade"
           title={`Carte ${activeLocation.name}`}
         ></iframe>
+      </div>
+
+      {/* Bouton GPS */}
+      <div className="flex justify-center mt-6">
+        <a 
+          href={activeLocation.gpsUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="flex items-center gap-2 px-6 py-3 bg-white text-accent border border-accent rounded-lg font-medium hover:bg-accent hover:text-white transition-all shadow-sm hover:shadow-md"
+        >
+          <Navigation size={18} />
+          Ouvrir l'itinéraire GPS
+        </a>
       </div>
     </div>
   );
