@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import { Property, Location } from '../types';
-import { Users, Wifi, MapPin, Check, Building, Image as ImageIcon, MessageCircle, ChevronLeft, ChevronRight, Youtube, X } from 'lucide-react';
+import { Users, Wifi, MapPin, Check, Building, Image as ImageIcon, MessageCircle, ChevronLeft, ChevronRight, Youtube, X, Calendar } from 'lucide-react';
 import { WHATSAPP_AGENT_YAOUNDE, WHATSAPP_AGENT_BANGANGTE } from '../constants';
+import AvailabilityCalendar from './AvailabilityCalendar';
 
 interface PropertyCardProps {
   property: Property;
@@ -10,6 +11,7 @@ interface PropertyCardProps {
 const PropertyCard: React.FC<PropertyCardProps> = ({ property }) => {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [showAmenitiesModal, setShowAmenitiesModal] = useState(false);
+  const [showCalendarModal, setShowCalendarModal] = useState(false);
 
   // Définition du numéro WhatsApp selon la localisation du logement
   const getWhatsAppNumber = (location: Location) => {
@@ -163,7 +165,8 @@ const PropertyCard: React.FC<PropertyCardProps> = ({ property }) => {
             </div>
           </div>
 
-          <div className="flex gap-2 mt-auto">
+          <div className="flex flex-col gap-2 mt-auto">
+            <div className="flex gap-2">
               {/* Bouton WhatsApp direct */}
               <a 
                 href={`https://wa.me/${whatsappNumber}?text=${message}`}
@@ -174,17 +177,29 @@ const PropertyCard: React.FC<PropertyCardProps> = ({ property }) => {
                 <MessageCircle size={18} className="mr-2" />
                 Réserver
               </a>
-              
-              {/* Bouton Photos Drive */}
+
+               {/* Bouton Calendrier */}
+              <button 
+                onClick={() => setShowCalendarModal(true)}
+                className="px-3 py-2.5 bg-slate-100 text-slate-700 border border-slate-200 rounded-lg font-medium text-sm hover:bg-slate-200 transition-colors shadow-sm flex items-center justify-center"
+                title="Voir les disponibilités"
+              >
+                <Calendar size={18} />
+              </button>
+            </div>
+
+            <div className="flex gap-2">
+               {/* Bouton Photos Drive */}
               {property.driveFolderUrl && (
               <a 
                   href={property.driveFolderUrl} 
                   target="_blank" 
                   rel="noopener noreferrer"
-                  className="flex items-center justify-center px-3 py-2.5 border border-slate-200 text-slate-600 rounded-lg font-medium text-sm hover:bg-slate-50 transition-colors"
+                  className="flex-grow flex items-center justify-center px-3 py-2 border border-slate-200 text-slate-600 rounded-lg font-medium text-xs hover:bg-slate-50 transition-colors"
                   title="Voir toutes les photos"
               >
-                  <ImageIcon size={18} />
+                  <ImageIcon size={14} className="mr-2" />
+                  Album Photo
               </a>
               )}
 
@@ -194,15 +209,25 @@ const PropertyCard: React.FC<PropertyCardProps> = ({ property }) => {
                   href={property.youtubeVideoUrl} 
                   target="_blank" 
                   rel="noopener noreferrer"
-                  className="flex items-center justify-center px-3 py-2.5 border border-red-200 text-red-600 bg-red-50 hover:bg-red-100 rounded-lg font-medium text-sm transition-colors"
+                  className="flex-grow flex items-center justify-center px-3 py-2 border border-red-200 text-red-600 bg-red-50 hover:bg-red-100 rounded-lg font-medium text-xs transition-colors"
                   title="Voir la vidéo"
               >
-                  <Youtube size={18} />
+                  <Youtube size={14} className="mr-2" />
+                  Vidéo
               </a>
               )}
+            </div>
           </div>
         </div>
       </div>
+
+      {/* Modale des Disponibilités */}
+      {showCalendarModal && (
+        <AvailabilityCalendar 
+          propertyId={property.id} 
+          onClose={() => setShowCalendarModal(false)} 
+        />
+      )}
 
       {/* Modale des Commodités */}
       {showAmenitiesModal && (
