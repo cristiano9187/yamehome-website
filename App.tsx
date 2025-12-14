@@ -4,12 +4,37 @@ import Hero from './components/Hero';
 import PropertyCard from './components/PropertyCard';
 import Footer from './components/Footer';
 import WhatsAppWidget from './components/WhatsAppWidget'; // Import du widget
+import LocationSection from './components/LocationSection'; // Import de la section localisation
 import { PROPERTIES } from './constants';
 import { Location } from './types';
 
 const App: React.FC = () => {
   const yaoundeProperties = PROPERTIES.filter(p => p.location === Location.YAOUNDE);
   const bangangteProperties = PROPERTIES.filter(p => p.location === Location.BANGANGTE);
+
+  // Données des cartes pour Yaoundé
+  const yaoundeLocations = [
+    {
+      name: "Matera YameHome",
+      iframeUrl: "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3981.114307983396!2d11.52413898459319!3d3.7852956391024923!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x108bdb0999c028d7%3A0xf33b3a427041f1a6!2sMatera%20YameHome!5e0!3m2!1sfr!2sit!4v1765704885808!5m2!1sfr!2sit"
+    },
+    {
+      name: "Rieti YameHome",
+      iframeUrl: "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3981.156766230886!2d11.531510275813009!3d3.7760486489775085!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x108bdb76b8d182a1%3A0xd8bf0a20af68e33f!2sRieti%20YameHome!5e0!3m2!1sfr!2sit!4v1765704784726!5m2!1sfr!2sit"
+    },
+    {
+      name: "Modena YameHome",
+      iframeUrl: "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3981.016803995023!2d11.529200375813076!3d3.8064461487589067!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x108bdb2ff2b64bfb%3A0x5671e3ebcdaa260c!2sModena%20YameHome!5e0!3m2!1sfr!2sit!4v1765704837918!5m2!1sfr!2sit"
+    }
+  ];
+
+  // Données des cartes pour Bangangté
+  const bangangteLocations = [
+    {
+      name: "Gallaghers City",
+      iframeUrl: "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3973.740246322862!2d10.536234575813813!3d5.145457937639765!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x105ff750e81095c5%3A0xde005adf34f3643a!2sGallaghers%20city%20(%20YameHome%20)!5e0!3m2!1sfr!2sit!4v1765704724447!5m2!1sfr!2sit"
+    }
+  ];
 
   return (
     <div className="min-h-screen bg-cream font-sans text-slate-800">
@@ -34,6 +59,12 @@ const App: React.FC = () => {
             <PropertyCard key={property.id} property={property} />
           ))}
         </div>
+
+        {/* Intégration de la carte Yaoundé */}
+        <LocationSection 
+          title="Localisation de nos sites à Yaoundé" 
+          locations={yaoundeLocations} 
+        />
       </section>
 
       {/* Divider / Feature Section */}
@@ -65,6 +96,12 @@ const App: React.FC = () => {
             <PropertyCard key={property.id} property={property} />
           ))}
         </div>
+
+        {/* Intégration de la carte Bangangté */}
+        <LocationSection 
+          title="Localisation à Bangangté" 
+          locations={bangangteLocations} 
+        />
       </section>
 
       <Footer />
