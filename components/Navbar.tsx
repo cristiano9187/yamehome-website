@@ -27,7 +27,7 @@ const Navbar: React.FC = () => {
           <div className="flex-shrink-0 flex items-center">
             <a href="#" className="flex items-center">
               <img 
-                src="/yamehome-website/images/logo.png" 
+                src="/images/logo.png" 
                 alt="YameHome" 
                 className="h-12 w-auto object-contain" 
               />
