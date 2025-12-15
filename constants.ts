@@ -31,9 +31,9 @@ export const PROPERTIES: Property[] = [
     pricePerNight: 32000,
     studioPrice: 25000,
     images: [
-      '/yamehome-website/images/terracotta/chambre_fenetre.jpg',
-      '/yamehome-website/images/terracotta/salle_a_manger.jpg', // Image supplémentaire pour le carrousel
-      '/yamehome-website/images/terracotta/salon_tv.jpg'
+      '/images/terracotta/chambre_fenetre.jpg',
+      '/images/terracotta/salle_a_manger.jpg', // Image supplémentaire pour le carrousel
+      '/images/terracotta/salon_tv.jpg'
     ],
     driveFolderUrl: 'https://drive.google.com/drive/folders/1fveCMq0ZaYiAC-JZh1BuuZ-YZFfBxU0T',
     amenities: ['Wifi Haut débit', 'Climatisation', 'Parking', 'Cuisine équipée'],
@@ -50,9 +50,9 @@ export const PROPERTIES: Property[] = [
     pricePerNight: 32000,
     studioPrice: 25000,
     images: [
-      '/yamehome-website/images/emeraude/aceuil.jpg',
-      '/yamehome-website/images/emeraude/d_cuisine.jpg',
-      '/yamehome-website/images/emeraude/f_chambre.jpg'
+      '/images/emeraude/aceuil.jpg',
+      '/images/emeraude/d_cuisine.jpg',
+      '/images/emeraude/f_chambre.jpg'
     ],
     driveFolderUrl: 'https://drive.google.com/drive/folders/1ryIRS2lqDQRulF9hLDFjV7WKgfma7kfc',
     amenities: ['Wifi Haut Débit', 'Climatisation', 'Eau Chaude', 'Smart TV', 'Sécurité 24/7'],
@@ -71,9 +71,9 @@ export const PROPERTIES: Property[] = [
     pricePerNight: 35000,
     studioPrice: 27000,
     images: [
-      '/yamehome-website/images/brigade/salon_brigade.jpg',
-      '/yamehome-website/images/brigade/cuisine_brigade.jpg',
-      '/yamehome-website/images/brigade/chrambre_p_brigade.jpg'
+      '/images/brigade/salon_brigade.jpg',
+      '/images/brigade/cuisine_brigade.jpg',
+      '/images/brigade/chrambre_p_brigade.jpg'
     ],
     driveFolderUrl: 'https://drive.google.com/drive/folders/1Uft3tiWSMkLHoky44mpws4Wc5PbJAIKH',
     youtubeVideoUrl: 'https://www.youtube.com/watch?v=J8irm0k3XEQ',
@@ -93,9 +93,9 @@ export const PROPERTIES: Property[] = [
     pricePerNight: 40000,
     studioPrice: 30000,
     images: [
-      '/yamehome-website/images/deluxe/salon_deluxe.jpg',
-      '/yamehome-website/images/deluxe/salle_manger.jpg',
-      '/yamehome-website/images/deluxe/chambre_p.jpg'
+      '/images/deluxe/salon_deluxe.jpg',
+      '/images/deluxe/salle_manger.jpg',
+      '/images/deluxe/chambre_p.jpg'
     ],
     driveFolderUrl: 'https://drive.google.com/drive/folders/1GNItWwoF5sOvZjnvlSZVeOIJ6OA2Ol3A',
     amenities: ['Wifi Haut Débit', 'Climatisation', 'Eau Chaude','TV Canal+', 'Cuisine Américaine', 'Parking privé','anti-delestage'],
@@ -112,9 +112,9 @@ export const PROPERTIES: Property[] = [
     pricePerNight: 25000,
     images: [
       // Ajout photo random en attendant les vraies photos
-      '/yamehome-website/images/americain/salon_studio.jpg',
-      '/yamehome-website/images/americain/cuisine_studio.jpg',
-      '/yamehome-website/images/americain/chambre_studio.jpg'
+      '/images/americain/salon_studio.jpg',
+      '/images/americain/cuisine_studio.jpg',
+      '/images/americain/chambre_studio.jpg'
     ], 
     driveFolderUrl: 'https://drive.google.com/drive/folders/1zAp1a4o7Ac2MNoZ6wzsDoBJ9ClzmkS93',
     amenities: ['Wifi Haut Débit', 'Climatisation', 'Eau Chaude', 'Kitchenette','anti-delestage'],
@@ -130,9 +130,9 @@ export const PROPERTIES: Property[] = [
     type: PropertyType.STUDIO,
     pricePerNight: 25000,
     images: [
-      '/yamehome-website/images/superior/sejour.jpg',
-      '/yamehome-website/images/superior/cuisine.jpg',
-      '/yamehome-website/images/superior/chambre_sup.jpg'
+      '/images/superior/sejour.jpg',
+      '/images/superior/cuisine.jpg',
+      '/images/superior/chambre_sup.jpg'
     ],
     driveFolderUrl: 'https://drive.google.com/drive/folders/1N3hgGTKvcn8xBOKpN6jTggZEY80Vse2f',
     amenities: ['Wifi Haut Débit', 'Climatisation', 'Eau Chaude', 'Kitchenette','anti-delestage'],
@@ -148,8 +148,8 @@ export const PROPERTIES: Property[] = [
     type: PropertyType.CHAMBRE,
     pricePerNight: 15000,
     images: [
-      '/yamehome-website/images/chambrea/vue_lit.jpg',
-      '/yamehome-website/images/chambrea/vue_tv.jpg'
+      '/images/chambrea/vue_lit.jpg',
+      '/images/chambrea/vue_tv.jpg'
     ],
     driveFolderUrl: 'https://drive.google.com/drive/folders/1d0lqRu4KYHj6KfyrLOGnsdy_cRaJQ3e_',
     amenities: ['Wifi','Lit double', 'climatisation', 'Douche privée','tv','micro-ondes'],
@@ -165,8 +165,8 @@ export const PROPERTIES: Property[] = [
     type: PropertyType.CHAMBRE,
     pricePerNight: 15000,
     images: [
-      '/yamehome-website/images/chambreb/lit_frigo.jpg',
-      '/yamehome-website/images/chambreb/placard.jpg'
+      '/images/chambreb/lit_frigo.jpg',
+      '/images/chambreb/placard.jpg'
     ],
     driveFolderUrl: 'https://drive.google.com/drive/folders/1Q4OzXAivA9vAd_3IX5AE_ue2tBS2ZIbS',
     amenities: ['Wifi','Lit double', 'climatisation', 'Douche privée','tv','micro-ondes'],
@@ -184,10 +184,10 @@ export const PROPERTIES: Property[] = [
     type: PropertyType.CHAMBRE,
     pricePerNight: 15000,
     images: [
-      '/yamehome-website/images/bgte/barriere.jpg',
-      '/yamehome-website/images/bgte/chambre_p_fenetre.jpg',
-      '/yamehome-website/images/bgte/chambre_p1.jpg',
-      '/yamehome-website/images/bgte/chambre_p2.jpg'
+      '/images/bgte/barriere.jpg',
+      '/images/bgte/chambre_p_fenetre.jpg',
+      '/images/bgte/chambre_p1.jpg',
+      '/images/bgte/chambre_p2.jpg'
     ],
     amenities: ['Cuisine interne', 'Eau chaude', 'TV','frigo','micro-ondes'],
     capacity: 2
@@ -202,7 +202,7 @@ export const PROPERTIES: Property[] = [
     type: PropertyType.CHAMBRE,
     pricePerNight: 12000,
     images: [
-      '/yamehome-website/images/bgte/chambre_b.jpg'
+      '/images/bgte/chambre_b.jpg'
     ],
     amenities: ['Douche privée', 'TV','eau chaude'],
     capacity: 2
@@ -217,7 +217,7 @@ export const PROPERTIES: Property[] = [
     type: PropertyType.CHAMBRE,
     pricePerNight: 12000,
     images: [
-      '/yamehome-website/images/bgte/chambre_c.jpg'
+      '/images/bgte/chambre_c.jpg'
     ],
     amenities: ['Douche privée', 'TV','eau chaude'],
     capacity: 2
@@ -232,7 +232,7 @@ export const PROPERTIES: Property[] = [
     type: PropertyType.CHAMBRE,
     pricePerNight: 12000,
     images: [
-      '/yamehome-website/images/bgte/chambre_d.jpg'
+      '/images/bgte/chambre_d.jpg'
     ],
     amenities: ['Douche privée', 'TV','eau chaude'],
     capacity: 2
