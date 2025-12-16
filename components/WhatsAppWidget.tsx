@@ -7,10 +7,10 @@ const WhatsAppWidget: React.FC = () => {
   // Numéros formatés pour l'affichage et pour le lien API
   const agents = [
     {
-      name: 'Paola',
+      name: 'Yamehome',
       role: 'Service Client',
-      numberDisplay: '+237 691 47 24 82',
-      numberLink: '237691472482'
+      numberDisplay: '+237 657 50 76 71',
+      numberLink: '237657507671'
     },
     {
       name: 'Edwige',
