@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 import { Property, Location } from '../types';
-import { Users, Wifi, MapPin, Check, Building, Image as ImageIcon, MessageCircle, ChevronLeft, ChevronRight, Youtube, X, Calendar } from 'lucide-react';
+import { Users, Wifi, MapPin, Check, Building, Image as ImageIcon, MessageCircle, ChevronLeft, ChevronRight, Youtube, X, Calendar, Calculator } from 'lucide-react';
 import { WHATSAPP_AGENT_YAOUNDE, WHATSAPP_AGENT_BANGANGTE } from '../constants';
 import AvailabilityCalendar from './AvailabilityCalendar';
+import PriceSimulator from './PriceSimulator';
 
 interface PropertyCardProps {
   property: Property;
@@ -12,6 +13,7 @@ const PropertyCard: React.FC<PropertyCardProps> = ({ property }) => {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [showAmenitiesModal, setShowAmenitiesModal] = useState(false);
   const [showCalendarModal, setShowCalendarModal] = useState(false);
+  const [showPriceModal, setShowPriceModal] = useState(false);
 
   // Définition du numéro WhatsApp selon la localisation du logement
   const getWhatsAppNumber = (location: Location) => {
@@ -178,6 +180,15 @@ const PropertyCard: React.FC<PropertyCardProps> = ({ property }) => {
                 Réserver
               </a>
 
+              {/* Bouton Estimer le prix - STYLE MIS À JOUR */}
+              <button 
+                onClick={() => setShowPriceModal(true)}
+                className="px-3 py-2.5 bg-amber-500 text-white border border-amber-500 rounded-lg font-medium text-sm hover:bg-amber-600 transition-colors shadow-sm flex items-center justify-center"
+                title="Estimer le prix"
+              >
+                <Calculator size={18} />
+              </button>
+
                {/* Bouton Calendrier */}
               <button 
                 onClick={() => setShowCalendarModal(true)}
@@ -226,6 +237,14 @@ const PropertyCard: React.FC<PropertyCardProps> = ({ property }) => {
         <AvailabilityCalendar 
           propertyId={property.id} 
           onClose={() => setShowCalendarModal(false)} 
+        />
+      )}
+
+      {/* Modale Simulateur de Prix */}
+      {showPriceModal && (
+        <PriceSimulator 
+          property={property} 
+          onClose={() => setShowPriceModal(false)} 
         />
       )}
 

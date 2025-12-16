@@ -9,6 +9,18 @@ export enum PropertyType {
   CHAMBRE = 'Chambre'
 }
 
+export interface PricingRule {
+  minNights: number;
+  maxNights?: number; // Si undefined, signifie "et plus" (infini)
+  pricePerNight: number;
+  caution: number;
+}
+
+export interface PropertyPricing {
+  standard: PricingRule[];
+  studioMode?: PricingRule[]; // Optionnel, seulement si l'appart est modulable
+}
+
 export interface Property {
   id: string;
   title: string;
@@ -17,8 +29,9 @@ export interface Property {
   description: string;
   location: Location;
   type: PropertyType;
-  pricePerNight: number; // Prix de base (1-6 jours) pour la configuration standard
-  studioPrice?: number; // Prix si loué en mode studio
+  pricePerNight: number; // Prix d'affichage (le plus bas ou standard)
+  studioPrice?: number; // Prix d'affichage option studio
+  pricing: PropertyPricing; // La nouvelle structure complète de prix
   images: string[]; // Tableau d'URLs d'images
   driveFolderUrl?: string; // Lien vers le dossier Google Drive (Album)
   youtubeVideoUrl?: string; // Lien vers la vidéo YouTube
