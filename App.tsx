@@ -1,14 +1,17 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Navbar from './components/Navbar';
 import Hero from './components/Hero';
 import PropertyCard from './components/PropertyCard';
 import Footer from './components/Footer';
-import WhatsAppWidget from './components/WhatsAppWidget'; // Import du widget
-import LocationSection from './components/LocationSection'; // Import de la section localisation
+import WhatsAppWidget from './components/WhatsAppWidget';
+import LocationSection from './components/LocationSection';
+import TermsModal from './components/TermsModal';
 import { PROPERTIES } from './constants';
 import { Location } from './types';
 
 const App: React.FC = () => {
+  const [showTermsModal, setShowTermsModal] = useState(false);
+  
   const yaoundeProperties = PROPERTIES.filter(p => p.location === Location.YAOUNDE);
   const bangangteProperties = PROPERTIES.filter(p => p.location === Location.BANGANGTE);
 
@@ -64,6 +67,23 @@ const App: React.FC = () => {
           ))}
         </div>
 
+        {/* --- NOUVEAU BANDEAU CTA PAIEMENTS --- */}
+        <div className="mt-16 mb-8 bg-white border border-slate-100 rounded-3xl p-6 md:p-10 flex flex-col md:flex-row items-center justify-between gap-8 shadow-xl shadow-slate-200/50">
+          <div className="text-center md:text-left">
+            <h3 className="text-xl md:text-2xl font-serif font-bold text-primary mb-2">Prêt à réserver votre séjour ?</h3>
+            <p className="text-slate-500 max-w-lg">
+              Consultez nos moyens de paiement sécurisés (OM/MTN, Virement, PayPal) et nos conditions de réservation.
+            </p>
+          </div>
+          <button
+            onClick={() => setShowTermsModal(true)}
+            className="flex items-center gap-3 px-8 py-4 bg-slate-800 text-white rounded-2xl font-bold hover:bg-slate-700 transition-all shadow-lg active:scale-95 whitespace-nowrap group"
+          >
+            <span className="bg-accent/20 p-1.5 rounded-lg group-hover:bg-accent/40 transition-colors">💳</span>
+            Voir les Moyens de Paiement & Conditions
+          </button>
+        </div>
+
         {/* Intégration de la carte Yaoundé */}
         <LocationSection 
           title="Localisation de nos sites à Yaoundé" 
@@ -110,7 +130,9 @@ const App: React.FC = () => {
 
       <Footer />
       
-      {/* Ajout du Widget ici pour qu'il soit par-dessus tout le reste */}
+      {/* Modale des conditions accessible au niveau global */}
+      {showTermsModal && <TermsModal onClose={() => setShowTermsModal(false)} />}
+      
       <WhatsAppWidget />
     </div>
   );
