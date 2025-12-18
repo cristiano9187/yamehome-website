@@ -3,9 +3,26 @@ import { X, CreditCard, Smartphone, Banknote, ShieldCheck, Clock, Info, CheckCir
 
 interface TermsModalProps {
   onClose: () => void;
+  city?: 'YAOUNDE' | 'BANGANGTE';
 }
 
-const TermsModal: React.FC<TermsModalProps> = ({ onClose }) => {
+const TermsModal: React.FC<TermsModalProps> = ({ onClose, city = 'YAOUNDE' }) => {
+  // Configuration dynamique des données Mobile Money selon la ville
+  const mobileMoneyData = {
+    YAOUNDE: {
+      orange: "656 75 13 10",
+      mtn: "677 59 84 32",
+      name: "Nkouayep cheuwa Edwige"
+    },
+    BANGANGTE: {
+      orange: "6 97 44 73 60",
+      mtn: "6 81 98 63 54",
+      name: "RÉGINE TCHADEU epse TONAG"
+    }
+  };
+
+  const currentMobile = mobileMoneyData[city];
+
   return (
     <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-slate-900/80 backdrop-blur-sm animate-in fade-in duration-300">
       {/* Overlay pour fermer au clic extérieur */}
@@ -19,7 +36,10 @@ const TermsModal: React.FC<TermsModalProps> = ({ onClose }) => {
             <div className="bg-accent/10 p-2 rounded-lg">
               <ShieldCheck className="text-accent" size={24} />
             </div>
-            <h3 className="font-serif font-bold text-slate-800 text-xl md:text-2xl">Conditions & Paiements</h3>
+            <div>
+              <h3 className="font-serif font-bold text-slate-800 text-xl md:text-2xl leading-none">Conditions & Paiements</h3>
+              <p className="text-xs text-slate-500 mt-1 uppercase tracking-widest font-bold">Secteur : {city}</p>
+            </div>
           </div>
           <button 
             onClick={onClose}
@@ -64,22 +84,22 @@ const TermsModal: React.FC<TermsModalProps> = ({ onClose }) => {
                 </div>
               </div>
 
-              {/* Mobile Money */}
+              {/* Mobile Money Dynamique */}
               <div className="bg-white p-4 rounded-xl border border-slate-200 shadow-sm">
                 <div className="flex items-center gap-2 mb-3 text-primary">
                   <Smartphone size={18} className="text-accent" />
-                  <span className="font-bold text-sm uppercase">Mobile Money (Cameroun)</span>
+                  <span className="font-bold text-sm uppercase">Mobile Money ({city === 'YAOUNDE' ? 'Yaoundé' : 'Bangangté'})</span>
                 </div>
                 <div className="space-y-3">
                   <div className="flex items-center justify-between p-2.5 rounded-lg bg-orange-50 border border-orange-100">
                     <span className="text-xs font-bold text-orange-700">Orange Money:</span>
-                    <span className="text-base font-mono font-bold text-slate-900">656 75 13 10</span>
+                    <span className="text-base font-mono font-bold text-slate-900">{currentMobile.orange}</span>
                   </div>
                   <div className="flex items-center justify-between p-2.5 rounded-lg bg-yellow-50 border border-yellow-100">
                     <span className="text-xs font-bold text-yellow-700">MTN Money:</span>
-                    <span className="text-base font-mono font-bold text-slate-900">677 59 84 32</span>
+                    <span className="text-base font-mono font-bold text-slate-900">{currentMobile.mtn}</span>
                   </div>
-                  <p className="text-[10px] text-slate-500 font-bold px-1 uppercase">Au nom de : Nkouayep cheuwa Edwige</p>
+                  <p className="text-[10px] text-slate-500 font-bold px-1 uppercase leading-tight">Au nom de : <span className="text-slate-900">{currentMobile.name}</span></p>
                 </div>
               </div>
 
