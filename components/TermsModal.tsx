@@ -34,7 +34,7 @@ const TermsModal: React.FC<TermsModalProps> = ({ onClose, city = 'YAOUNDE' }) =>
         <div className="p-5 md:p-6 border-b border-slate-100 flex justify-between items-center bg-white sticky top-0 z-20">
           <div className="flex items-center gap-3">
             <div className="bg-accent/10 p-2 rounded-lg">
-              <ShieldCheck className="text-accent" size={24} />
+              < ShieldCheck className="text-accent" size={24} />
             </div>
             <div>
               <h3 className="font-serif font-bold text-slate-800 text-xl md:text-2xl leading-none">Conditions & Paiements</h3>
@@ -143,17 +143,28 @@ const TermsModal: React.FC<TermsModalProps> = ({ onClose, city = 'YAOUNDE' }) =>
             
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div className="space-y-4">
-                <div className="flex gap-3">
-                  <div className="mt-1 bg-red-100 p-1 rounded text-red-600 flex-shrink-0">
-                    <Info size={14} />
-                  </div>
-                  <div>
-                    <h5 className="font-bold text-sm text-slate-800">Annulation</h5>
-                    <p className="text-sm text-slate-600 leading-relaxed">Toute annulation effectuée moins de 7 jours avant l'arrivée ne donne pas lieu au remboursement de l'acompte.</p>
-                  </div>
+                {/* Nouvelle Politique d'Annulation Intégrée */}
+                <div className="p-4 rounded-xl bg-white border border-slate-200 shadow-sm">
+                    <h4 className="font-bold text-slate-800 flex items-center gap-2 mb-2">
+                        <Clock className="w-5 h-5 text-accent" /> Politique d'Annulation
+                    </h4>
+                    <p className="text-sm text-slate-600 mb-2">
+                        L'acompte (1/3 du montant total hors caution) est soumis aux règles suivantes :
+                    </p>
+                    <ul className="list-disc list-inside text-sm text-slate-700 space-y-1 ml-1">
+                        <li>
+                            <span className="font-semibold text-slate-900">100% remboursé :</span> Si annulation sous 24h après réservation (et séjour dans +14j).
+                        </li>
+                        <li>
+                            <span className="font-semibold text-slate-900">50% remboursé :</span> Si annulation jusqu'à 7 jours avant l'arrivée.
+                        </li>
+                        <li>
+                            <span className="font-semibold text-slate-900">Non remboursable :</span> Si annulation moins de 7 jours avant l'arrivée.
+                        </li>
+                    </ul>
                 </div>
                 
-                <div className="flex gap-3">
+                <div className="flex gap-3 px-1">
                   <div className="mt-1 bg-blue-100 p-1 rounded text-blue-600 flex-shrink-0">
                     <Clock size={14} />
                   </div>
