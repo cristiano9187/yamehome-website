@@ -180,7 +180,7 @@ const PropertyCard: React.FC<PropertyCardProps> = ({ property }) => {
                 Réserver
               </a>
 
-              {/* Bouton Estimer le prix - STYLE MIS À JOUR */}
+              {/* Bouton Estimer le prix */}
               <button 
                 onClick={() => setShowPriceModal(true)}
                 className="px-3 py-2.5 bg-amber-500 text-white border border-amber-500 rounded-lg font-medium text-sm hover:bg-amber-600 transition-colors shadow-sm flex items-center justify-center"
@@ -200,14 +200,14 @@ const PropertyCard: React.FC<PropertyCardProps> = ({ property }) => {
             </div>
 
             <div className="flex gap-2">
-               {/* Bouton Photos Drive */}
+               {/* Bouton Photos Drive - STYLE MIS À JOUR EN TERRACOTTA (ACCENT) */}
               {property.driveFolderUrl && (
               <a 
                   href={property.driveFolderUrl} 
                   target="_blank" 
                   rel="noopener noreferrer"
-                  className="flex-grow flex items-center justify-center px-3 py-2 border border-slate-200 text-slate-600 rounded-lg font-medium text-xs hover:bg-slate-50 transition-colors"
-                  title="Voir toutes les photos"
+                  className="flex-grow flex items-center justify-center px-3 py-2 bg-accent text-white rounded-lg font-bold text-xs hover:bg-amber-700 transition-all shadow-sm hover:shadow-md"
+                  title="Voir toutes les photos supplémentaires"
               >
                   <ImageIcon size={14} className="mr-2" />
                   Album Photo
