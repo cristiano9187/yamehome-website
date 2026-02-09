@@ -141,7 +141,7 @@ const PropertyCard: React.FC<PropertyCardProps> = ({ property }) => {
                   href={property.driveFolderUrl} 
                   target="_blank" 
                   rel="noopener noreferrer"
-                  className="flex-grow flex items-center justify-center px-4 py-2.5 bg-accent text-white rounded-xl font-bold text-xs hover:bg-amber-700 transition-all shadow-sm"
+                  className="flex-grow flex items-center justify-center px-4 py-2.5 bg-[#CCAA6D] text-white rounded-xl font-bold text-xs hover:bg-amber-700 transition-all shadow-sm"
                 >
                   <ImageIcon size={14} className="mr-2" />
                   Album Photo
