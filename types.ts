@@ -9,19 +9,30 @@ export enum PropertyType {
   CHAMBRE = 'Chambre'
 }
 
+export interface PricingTier {
+  minNights: number;
+  maxNights?: number;
+  pricePerNight: number;
+  caution: number;
+}
+
 export interface Property {
   id: string;
   title: string;
-  siteName?: string; // Ex: RIETI YAMEHOME
-  fullAddress?: string; // Ex: Odza entrée Fécafoot
+  siteName?: string;
+  fullAddress?: string;
   description: string;
   location: Location;
   type: PropertyType;
-  pricePerNight: number; // Prix de base (1-6 jours) pour la configuration standard
-  studioPrice?: number; // Prix si loué en mode studio
-  images: string[]; // Tableau d'URLs d'images
-  driveFolderUrl?: string; // Lien vers le dossier Google Drive (Album)
-  youtubeVideoUrl?: string; // Lien vers la vidéo YouTube
+  pricePerNight: number;
+  studioPrice?: number;
+  pricing?: {
+    standard: PricingTier[];
+    studioMode?: PricingTier[];
+  };
+  images: string[];
+  driveFolderUrl?: string;
+  youtubeVideoUrl?: string;
   amenities: string[];
   capacity: number;
 }
