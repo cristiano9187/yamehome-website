@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { ArrowDown } from 'lucide-react';
 
 const Hero: React.FC = () => {
@@ -8,7 +8,8 @@ const Hero: React.FC = () => {
       <div 
         className="absolute inset-0 z-0 bg-cover bg-center bg-no-repeat"
         style={{ 
-          backgroundImage: 'url("https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?ixlib=rb-4.0.3&auto=format&fit=crop&w=2340&q=80")',
+          // On utilise l'image locale optimisée
+          backgroundImage: 'url("/images/hero-bg.avif")',
         }}
       >
         <div className="absolute inset-0 bg-black/40"></div>
@@ -30,7 +31,7 @@ const Hero: React.FC = () => {
         <div className="flex flex-col sm:flex-row gap-4 justify-center">
           <a 
             href="#yaounde" 
-            className="px-8 py-3 bg-accent text-white font-medium rounded hover:bg-[#b3955f] transition-colors shadow-lg"
+            className="px-8 py-3 bg-accent text-white font-medium rounded hover:bg-amber-700 transition-colors shadow-lg"
           >
             Découvrir Yaoundé
           </a>

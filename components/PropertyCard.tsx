@@ -64,7 +64,7 @@ const PropertyCard: React.FC<PropertyCardProps> = ({ property }) => {
             {property.type}
           </div>
           {property.siteName && (
-            <div className="absolute top-4 right-4 bg-accent/90 backdrop-blur text-white text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wide shadow-md">
+            <div className="absolute top-4 right-4 bg-accent/90 backdrop-blur text-white text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wide shadow-sm">
               {property.siteName}
             </div>
           )}
@@ -120,9 +120,9 @@ const PropertyCard: React.FC<PropertyCardProps> = ({ property }) => {
             </div>
           </div>
 
-          {/* ZONE D'ACTION */}
+          {/* ZONE D'ACTION REFAITE */}
           <div className="flex flex-col gap-3">
-            {/* Bouton Principal - Vert WhatsApp */}
+            {/* Bouton Principal - AJUSTÉ AVEC DEUX ICÔNES ET COULEUR VERTE */}
             <button 
               onClick={() => setShowBookingModal(true)}
               className="w-full flex items-center justify-center gap-3 py-4 bg-[#25D366] text-white rounded-xl font-bold text-sm hover:bg-[#20bd5a] transition-all shadow-lg active:scale-95 group"
@@ -135,13 +135,13 @@ const PropertyCard: React.FC<PropertyCardProps> = ({ property }) => {
             </button>
 
             <div className="flex gap-2">
-              {/* Bouton Album Photo - Couleur Accent (Bois) avec hover ajusté */}
+              {/* Bouton Album Photo Terracotta */}
               {property.driveFolderUrl && (
                 <a 
                   href={property.driveFolderUrl} 
                   target="_blank" 
                   rel="noopener noreferrer"
-                  className="flex-grow flex items-center justify-center px-4 py-2.5 bg-accent text-white rounded-xl font-bold text-xs hover:bg-[#b3955f] transition-all shadow-sm"
+                  className="flex-grow flex items-center justify-center px-4 py-2.5 bg-accent text-white rounded-xl font-bold text-xs hover:bg-amber-700 transition-all shadow-sm"
                 >
                   <ImageIcon size={14} className="mr-2" />
                   Album Photo
