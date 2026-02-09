@@ -9,7 +9,7 @@ const Hero: React.FC = () => {
         className="absolute inset-0 z-0 bg-cover bg-center bg-no-repeat"
         style={{ 
           // On utilise l'image locale optimisée
-          backgroundImage: 'url("/yamehome-website/images/hero-bg.avif")',
+          backgroundImage: 'url("/images/hero-bg.avif")',
         }}
       >
         <div className="absolute inset-0 bg-black/40"></div>
