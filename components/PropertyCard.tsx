@@ -88,7 +88,7 @@ const PropertyCard: React.FC<PropertyCardProps> = ({ property }) => {
             </h3>
           </div>
           
-          <p className="text-slate-600 text-sm mb-4 line-clamp-3">
+          <p className="text-slate-600 text-sm mb-4 line-clamp-5">
             {property.description}
           </p>
 
