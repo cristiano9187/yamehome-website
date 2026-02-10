@@ -23,6 +23,14 @@ const BookingModal: React.FC<BookingModalProps> = ({ property, onClose }) => {
 
   const CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSVRFWwbFIFj7aQGC2ysOUE1jfjz4aAyqwenQEenkm-WEEQ9H53VOM3IUlF3gKofw/pub?gid=594250808&single=true&output=csv";
 
+  // Utilitaire pour formater une date en YYYY-MM-DD local sans décalage UTC
+  const formatDateLocal = (date: Date): string => {
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const day = String(date.getDate()).padStart(2, '0');
+    return `${year}-${month}-${day}`;
+  };
+
   useEffect(() => {
     const fetchAvailability = async () => {
       try {
@@ -52,8 +60,12 @@ const BookingModal: React.FC<BookingModalProps> = ({ property, onClose }) => {
   }, [property.id]);
 
   const isBooked = (date: Date) => {
-    const d = new Date(date.setHours(0,0,0,0));
-    return reservations.some(res => d >= new Date(res.start.setHours(0,0,0,0)) && d < new Date(res.end.setHours(0,0,0,0)));
+    const d = new Date(date.getFullYear(), date.getMonth(), date.getDate());
+    return reservations.some(res => {
+      const resStart = new Date(res.start.getFullYear(), res.start.getMonth(), res.start.getDate());
+      const resEnd = new Date(res.end.getFullYear(), res.end.getMonth(), res.end.getDate());
+      return d >= resStart && d < resEnd;
+    });
   };
 
   const handleDateClick = (date: Date) => {
@@ -61,7 +73,9 @@ const BookingModal: React.FC<BookingModalProps> = ({ property, onClose }) => {
     today.setHours(0,0,0,0);
     if (date < today || isBooked(date)) return;
 
-    const dateStr = date.toISOString().split('T')[0];
+    // CORRECTION : Utilisation du formatage local au lieu de toISOString()
+    const dateStr = formatDateLocal(date);
+    
     if (!startDate || (startDate && endDate)) {
       setStartDate(dateStr);
       setEndDate('');
@@ -77,15 +91,11 @@ const BookingModal: React.FC<BookingModalProps> = ({ property, onClose }) => {
   // CALCULS DE PRIX DYNAMIQUES
   const nights = (startDate && endDate) ? Math.ceil((new Date(endDate).getTime() - new Date(startDate).getTime()) / (1000 * 60 * 60 * 24)) : 0;
   
-  // On appelle notre fonction de vérité UNE SEULE FOIS en utilisant l'ID de la propriété
   const rateInfo = getRateForApartment(property.id, nights > 0 ? nights : 1);
-
-  // On utilise les valeurs retournées par la fonction
   const unitPrice = isStudioMode ? (property.studioPrice || rateInfo.prix) : rateInfo.prix;
-  const caution = rateInfo.caution; // CORRECTION : Utilisation de la caution dynamique du tier
+  const caution = rateInfo.caution;
   const total = nights > 0 ? (nights * unitPrice) + caution : 0;
 
-  // WhatsApp
   const getWhatsAppNumber = () => {
     const num = property.location === Location.BANGANGTE ? WHATSAPP_AGENT_BANGANGTE : WHATSAPP_AGENT_YAOUNDE;
     return num.replace(/[^0-9]/g, '');
@@ -107,7 +117,6 @@ const BookingModal: React.FC<BookingModalProps> = ({ property, onClose }) => {
       <div className="absolute inset-0" onClick={onClose}></div>
       <div className="bg-white rounded-3xl shadow-2xl w-full max-w-4xl overflow-hidden relative animate-in zoom-in-95 duration-300 z-10 flex flex-col max-h-[95vh]">
         
-        {/* Header */}
         <div className="p-5 border-b border-slate-100 flex justify-between items-center bg-white sticky top-0 z-20">
           <div className="flex items-center gap-3">
             <div className="bg-accent/10 p-2 rounded-xl">
@@ -125,8 +134,6 @@ const BookingModal: React.FC<BookingModalProps> = ({ property, onClose }) => {
 
         <div className="flex-grow overflow-y-auto p-4 md:p-8 bg-slate-50">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-            
-            {/* Section 1: Calendrier Visuel */}
             <div className="bg-white p-6 rounded-2xl shadow-sm border border-slate-100">
               <h4 className="font-bold text-slate-800 flex items-center gap-2 mb-4">
                 <CalendarIcon size={18} className="text-accent" /> Disponibilités
@@ -144,10 +151,11 @@ const BookingModal: React.FC<BookingModalProps> = ({ property, onClose }) => {
                     startDate={startDate} 
                     endDate={endDate} 
                     onDateClick={handleDateClick}
+                    formatDateLocal={formatDateLocal}
                    />
                    <div className="flex justify-between mt-4">
-                      <button onClick={() => setCurrentMonth(new Date(currentMonth.setMonth(currentMonth.getMonth()-1)))} className="text-xs font-bold text-accent">Précédent</button>
-                      <button onClick={() => setCurrentMonth(new Date(currentMonth.setMonth(currentMonth.getMonth()+1)))} className="text-xs font-bold text-accent">Suivant</button>
+                      <button onClick={() => setCurrentMonth(new Date(currentMonth.getFullYear(), currentMonth.getMonth() - 1, 1))} className="text-xs font-bold text-accent">Précédent</button>
+                      <button onClick={() => setCurrentMonth(new Date(currentMonth.getFullYear(), currentMonth.getMonth() + 1, 1))} className="text-xs font-bold text-accent">Suivant</button>
                    </div>
                    <div className="flex gap-4 mt-4 text-[10px] uppercase font-bold text-slate-400 justify-center">
                       <div className="flex items-center gap-1"><div className="w-2 h-2 bg-red-500 rounded-full"></div> Occupé</div>
@@ -158,7 +166,6 @@ const BookingModal: React.FC<BookingModalProps> = ({ property, onClose }) => {
               )}
             </div>
 
-            {/* Section 2: Simulateur & Dates */}
             <div className="space-y-6">
               <div className="bg-white p-6 rounded-2xl shadow-sm border border-slate-100">
                 <h4 className="font-bold text-slate-800 flex items-center gap-2 mb-4">
@@ -228,7 +235,6 @@ const BookingModal: React.FC<BookingModalProps> = ({ property, onClose }) => {
           </div>
         </div>
 
-        {/* Footer: Action WhatsApp */}
         <div className="p-6 bg-white border-t border-slate-100">
           <button 
             disabled={!startDate || !endDate || nights <= 0}
@@ -247,7 +253,7 @@ const BookingModal: React.FC<BookingModalProps> = ({ property, onClose }) => {
   );
 };
 
-const MonthGrid = ({ date, isBooked, startDate, endDate, onDateClick }: any) => {
+const MonthGrid = ({ date, isBooked, startDate, endDate, onDateClick, formatDateLocal }: any) => {
   const year = date.getFullYear();
   const month = date.getMonth();
   const daysInMonth = new Date(year, month + 1, 0).getDate();
@@ -264,9 +270,12 @@ const MonthGrid = ({ date, isBooked, startDate, endDate, onDateClick }: any) => 
     const curr = new Date(year, month, d);
     const booked = isBooked(curr);
     const isPast = curr < today;
-    const isStart = startDate === curr.toISOString().split('T')[0];
-    const isEnd = endDate === curr.toISOString().split('T')[0];
-    const inRange = startDate && endDate && curr > new Date(startDate) && curr < new Date(endDate);
+    
+    // CORRECTION : Utilisation de formatDateLocal pour comparer
+    const currStr = formatDateLocal(curr);
+    const isStart = startDate === currStr;
+    const isEnd = endDate === currStr;
+    const inRange = startDate && endDate && currStr > startDate && currStr < endDate;
 
     let cls = "h-8 md:h-9 flex items-center justify-center text-xs rounded-lg cursor-pointer transition-all border ";
     
