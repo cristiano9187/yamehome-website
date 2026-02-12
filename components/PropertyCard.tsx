@@ -125,11 +125,13 @@ const PropertyCard: React.FC<PropertyCardProps> = ({ property }) => {
             {/* Bouton Principal - AJUSTÉ AVEC DEUX ICÔNES ET COULEUR VERTE */}
             <button 
               onClick={() => setShowBookingModal(true)}
-              className="w-full flex items-center justify-center gap-3 py-4 bg-[#25D366] text-white rounded-xl font-bold text-sm hover:bg-[#20bd5a] transition-all shadow-lg active:scale-95 group"
+              style={{ touchAction: 'manipulation' }} // Optimise le clic sur mobile
+              className="w-full flex items-center justify-center gap-3 py-4 bg-[#25D366] text-white rounded-xl font-bold text-sm shadow-lg active:scale-95 group md:hover:bg-[#20bd5a] transition-all"
             >
               <div className="flex items-center gap-1.5">
-                <Calendar size={18} className="group-hover:rotate-12 transition-transform" />
-                <MessageCircle size={18} fill="white" className="group-hover:scale-110 transition-transform" />
+                {/* On retire les hover sur les icônes pour le mobile, on les garde pour le desktop via md: */}
+                <Calendar size={18} className="md:group-hover:rotate-12 transition-transform" />
+                <MessageCircle size={18} fill="white" className="md:group-hover:scale-110 transition-transform" />
               </div>
               Réserver / Estimer le prix
             </button>
