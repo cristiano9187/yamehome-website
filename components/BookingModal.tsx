@@ -21,7 +21,7 @@ const BookingModal: React.FC<BookingModalProps> = ({ property, onClose }) => {
   const [isStudioMode, setIsStudioMode] = useState(false);
   const [currentMonth, setCurrentMonth] = useState(new Date());
 
-  const CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSVRFWwbFIFj7aQGC2ysOUE1jfjz4aAyqwenQEenkm-WEEQ9H53VOM3IUlF3gKofw/pub?gid=594250808&single=true&output=csv";
+const CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vR0FgqsoKCrcg2BYdPl4THeXfkGCBT5EuYiAOdeVtx7XtwKZC3lXZnIyFxBtDiJ1V3a0s_QJPE-4m23/pub?gid=594250808&single=true&output=csv";
 
   // Utilitaire pour formater une date en YYYY-MM-DD local sans décalage UTC
   const formatDateLocal = (date: Date): string => {
