@@ -315,11 +315,14 @@ export const PROPERTIES: Property[] = [
   },
 ];
 
-export const getRateForApartment = (apartmentId: string, nights: number): { prix: number; caution: number; address: string } => {
+export const getRateForApartment = (apartmentId: string, nights: number, isStudio: boolean = false): { prix: number; caution: number; address: string } => {
   const property = PROPERTIES.find(p => p.id === apartmentId);
   if (!property) return { prix: 0, caution: 0, address: "" };
 
-  const pricingTiers = property.pricing?.standard || [];
+  const pricingTiers = isStudio && property.pricing?.studioMode 
+    ? property.pricing.studioMode 
+    : (property.pricing?.standard || []);
+    
   const tier = pricingTiers.find(t => {
     if (t.maxNights) {
       return nights >= t.minNights && nights <= t.maxNights;
@@ -328,7 +331,7 @@ export const getRateForApartment = (apartmentId: string, nights: number): { prix
   }) || pricingTiers[0];
 
   return {
-    prix: tier?.pricePerNight || property.pricePerNight,
+    prix: tier?.pricePerNight || (isStudio ? property.studioPrice || property.pricePerNight : property.pricePerNight),
     caution: tier?.caution || 0,
     address: property.fullAddress || property.location
   };

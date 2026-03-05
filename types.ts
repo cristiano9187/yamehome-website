@@ -36,3 +36,12 @@ export interface Property {
   amenities: string[];
   capacity: number;
 }
+
+export interface Reservation {
+  id: string;
+  propertyId: string;
+  startDate: string;
+  endDate: string;
+  status: 'confirmed' | 'pending' | 'cancelled';
+  guestName?: string;
+}

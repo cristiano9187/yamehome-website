@@ -1,31 +1,40 @@
-// This service is prepared to handle the future Google Sheets API integration
-// for fetching calendar availability.
+// This service handles fetching calendar availability from Google Sheets CSV.
 
-import { Property } from '../types';
+import { Reservation } from '../types';
 
-interface Availability {
-  propertyId: string;
-  isAvailable: boolean;
-  nextAvailableDate?: string;
-}
+const CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vR0FgqsoKCrcg2BYdPl4THeXfkGCBT5EuYiAOdeVtx7XtwKZC3lXZnIyFxBtDiJ1V3a0s_QJPE-4m23/pub?gid=594250808&single=true&output=csv";
 
-// TODO: Replace this with actual Google API fetch logic later
-export const fetchAvailability = async (properties: Property[]): Promise<Availability[]> => {
-  // Simulating an API call delay
-  await new Promise(resolve => setTimeout(resolve, 500));
+export const fetchAllReservations = async (): Promise<Reservation[]> => {
+  try {
+    const response = await fetch(CSV_URL);
+    if (!response.ok) throw new Error('Failed to fetch reservations');
+    
+    const text = await response.text();
+    const rows = text.split('\n').slice(1); // Skip header row
+    
+    return rows
+      .map((row, index): Reservation | null => {
+        const cols = row.split(',');
+        if (cols.length < 3) return null;
+        
+        const propertyId = cols[0]?.trim();
+        const startDate = cols[1]?.trim();
+        const endDate = cols[2]?.trim();
+        
+        if (!propertyId || !startDate || !endDate) return null;
 
-  // Mock returning all available for now
-  return properties.map(p => ({
-    propertyId: p.id,
-    isAvailable: true,
-    nextAvailableDate: new Date().toISOString()
-  }));
+        return {
+          id: `res-${index}`,
+          propertyId,
+          startDate,
+          endDate,
+          status: 'confirmed',
+          guestName: 'Client'
+        };
+      })
+      .filter((r): r is Reservation => r !== null);
+  } catch (error) {
+    console.error("Erreur lors de la récupération des réservations:", error);
+    return [];
+  }
 };
-
-/**
- * Future Implementation Guide:
- * 1. Install @google/genai or standard Google Sheets API client.
- * 2. Use process.env.API_KEY for authentication (do not expose keys in client code if possible, use a proxy or restricted key).
- * 3. Fetch data from a public Sheet ID.
- * 4. Parse rows to determine dates booked per Property ID.
- */

@@ -1,8 +1,11 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { CONTACT_EMAIL, CONTACT_PHONE_YAOUNDE, CONTACT_PHONE_BANGANGTE, HEADQUARTERS_ADDRESS } from '../constants';
-import { Mail, Phone, Instagram, Facebook, MapPin, Building2 } from 'lucide-react';
+import { Mail, Phone, Instagram, Facebook, Building2 } from 'lucide-react';
+import TermsModal from './TermsModal';
 
 const Footer: React.FC = () => {
+  const [showTerms, setShowTerms] = useState(false);
+
   return (
     <footer id="contact" className="bg-primary text-white pt-16 pb-8">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -54,7 +57,7 @@ const Footer: React.FC = () => {
                 href="https://www.facebook.com/yamehomecameroon" 
                 target="_blank" 
                 rel="noopener noreferrer" 
-                className="bg-slate-700 p-3 rounded-full hover:bg-accent transition-colors"
+                className="bg-slate-700 p-3 rounded-full hover:bg-accent transition-all active:scale-95"
                 aria-label="Facebook"
               >
                 <Facebook size={20} />
@@ -63,7 +66,7 @@ const Footer: React.FC = () => {
                 href="https://www.instagram.com/yamehome/" 
                 target="_blank" 
                 rel="noopener noreferrer" 
-                className="bg-slate-700 p-3 rounded-full hover:bg-accent transition-colors"
+                className="bg-slate-700 p-3 rounded-full hover:bg-accent transition-all active:scale-95"
                 aria-label="Instagram"
               >
                 <Instagram size={20} />
@@ -78,11 +81,19 @@ const Footer: React.FC = () => {
         <div className="border-t border-slate-700 pt-8 flex flex-col md:flex-row justify-between items-center text-slate-500 text-sm">
           <p>&copy; {new Date().getFullYear()} YameHome. Tous droits réservés.</p>
           <div className="flex space-x-6 mt-4 md:mt-0">
+            <button 
+              onClick={() => setShowTerms(true)} 
+              className="hover:text-white transition-colors underline decoration-dotted"
+            >
+              Conditions & Paiements
+            </button>
             <a href="#" className="hover:text-white">Mentions Légales</a>
-            <a href="#" className="hover:text-white">Politique de Confidentialité</a>
           </div>
         </div>
       </div>
+
+      {/* Affichage de la modale des conditions */}
+      {showTerms && <TermsModal onClose={() => setShowTerms(false)} />}
     </footer>
   );
 };

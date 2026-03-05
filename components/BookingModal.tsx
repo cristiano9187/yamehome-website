@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { X, Calendar as CalendarIcon, MessageCircle, Info, Calculator, Check, Loader } from 'lucide-react';
 import { Property, Location } from '../types';
 import { WHATSAPP_AGENT_YAOUNDE, WHATSAPP_AGENT_BANGANGTE, getRateForApartment } from '../constants';
+import { fetchAllReservations } from '../services/calendarService';
 
 interface BookingModalProps {
   property: Property;
@@ -21,9 +22,7 @@ const BookingModal: React.FC<BookingModalProps> = ({ property, onClose }) => {
   const [isStudioMode, setIsStudioMode] = useState(false);
   const [currentMonth, setCurrentMonth] = useState(new Date());
 
-const CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vR0FgqsoKCrcg2BYdPl4THeXfkGCBT5EuYiAOdeVtx7XtwKZC3lXZnIyFxBtDiJ1V3a0s_QJPE-4m23/pub?gid=594250808&single=true&output=csv";
-
-  // Utilitaire pour formater une date en YYYY-MM-DD local sans décalage UTC
+  // Utilitaire pour formater une date en YYYY-MM-DD local (évite le décalage UTC)
   const formatDateLocal = (date: Date): string => {
     const year = date.getFullYear();
     const month = String(date.getMonth() + 1).padStart(2, '0');
@@ -34,22 +33,14 @@ const CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vR0FgqsoKCrcg2B
   useEffect(() => {
     const fetchAvailability = async () => {
       try {
-        const response = await fetch(CSV_URL);
-        const text = await response.text();
-        const rows = text.split('\n').slice(1);
-        const parsed = rows
-          .map(row => {
-            const cols = row.split(',');
-            if (cols[0]?.trim() === property.id) {
-              return {
-                start: new Date(cols[1]?.trim()),
-                end: new Date(cols[2]?.trim())
-              };
-            }
-            return null;
-          })
-          .filter((r): r is Reservation => r !== null);
-        setReservations(parsed);
+        const allRes = await fetchAllReservations();
+        const propertyRes = allRes
+          .filter(res => res.propertyId === property.id)
+          .map(res => ({
+            start: new Date(res.startDate),
+            end: new Date(res.endDate)
+          }));
+        setReservations(propertyRes);
       } catch (err) {
         console.error("Erreur calendrier:", err);
       } finally {
@@ -73,9 +64,7 @@ const CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vR0FgqsoKCrcg2B
     today.setHours(0,0,0,0);
     if (date < today || isBooked(date)) return;
 
-    // CORRECTION : Utilisation du formatage local au lieu de toISOString()
     const dateStr = formatDateLocal(date);
-    
     if (!startDate || (startDate && endDate)) {
       setStartDate(dateStr);
       setEndDate('');
@@ -88,11 +77,9 @@ const CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vR0FgqsoKCrcg2B
     }
   };
 
-  // CALCULS DE PRIX DYNAMIQUES
   const nights = (startDate && endDate) ? Math.ceil((new Date(endDate).getTime() - new Date(startDate).getTime()) / (1000 * 60 * 60 * 24)) : 0;
-  
-  const rateInfo = getRateForApartment(property.id, nights > 0 ? nights : 1);
-  const unitPrice = isStudioMode ? (property.studioPrice || rateInfo.prix) : rateInfo.prix;
+  const rateInfo = getRateForApartment(property.id, nights > 0 ? nights : 1, isStudioMode);
+  const unitPrice = rateInfo.prix;
   const caution = rateInfo.caution;
   const total = nights > 0 ? (nights * unitPrice) + caution : 0;
 
@@ -157,11 +144,6 @@ const CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vR0FgqsoKCrcg2B
                       <button onClick={() => setCurrentMonth(new Date(currentMonth.getFullYear(), currentMonth.getMonth() - 1, 1))} className="text-xs font-bold text-accent">Précédent</button>
                       <button onClick={() => setCurrentMonth(new Date(currentMonth.getFullYear(), currentMonth.getMonth() + 1, 1))} className="text-xs font-bold text-accent">Suivant</button>
                    </div>
-                   <div className="flex gap-4 mt-4 text-[10px] uppercase font-bold text-slate-400 justify-center">
-                      <div className="flex items-center gap-1"><div className="w-2 h-2 bg-red-500 rounded-full"></div> Occupé</div>
-                      <div className="flex items-center gap-1"><div className="w-2 h-2 bg-accent rounded-full"></div> Votre sélection</div>
-                      <div className="flex items-center gap-1"><div className="w-2 h-2 bg-slate-100 border border-slate-200 rounded-full"></div> Libre</div>
-                   </div>
                 </div>
               )}
             </div>
@@ -195,11 +177,8 @@ const CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vR0FgqsoKCrcg2B
 
                 {property.studioPrice && (
                   <div className="flex items-center justify-between p-3 bg-amber-50 rounded-xl border border-amber-100 mb-6">
-                    <div className="flex items-center gap-2">
-                      <div className="p-1.5 bg-accent/10 rounded-lg text-accent">
-                        <Info size={16} />
-                      </div>
-                      <span className="text-xs font-bold text-amber-900 uppercase">Mode Studio (Prix réduit)</span>
+                    <div className="flex items-center gap-2 text-xs font-bold text-amber-900 uppercase">
+                      <Info size={16} className="text-accent" /> Mode Studio
                     </div>
                     <button 
                       onClick={() => setIsStudioMode(!isStudioMode)}
@@ -216,17 +195,11 @@ const CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vR0FgqsoKCrcg2B
                     <span className="font-bold text-slate-800">{nights} nuits</span>
                   </div>
                   <div className="flex justify-between text-sm">
-                    <span className="text-slate-500">Prix par nuit :</span>
+                    <span className="text-slate-500">Prix/Nuit :</span>
                     <span className="font-bold text-slate-800">{unitPrice.toLocaleString('fr-FR')} FCFA</span>
                   </div>
-                  {caution > 0 && (
-                    <div className="flex justify-between text-sm">
-                      <span className="text-slate-500">Caution (remboursable) :</span>
-                      <span className="font-bold text-slate-800">{caution.toLocaleString('fr-FR')} FCFA</span>
-                    </div>
-                  )}
                   <div className="flex justify-between items-center pt-2 mt-2 border-t-2 border-dashed border-slate-100">
-                    <span className="font-serif font-bold text-slate-800 text-lg">TOTAL ESTIMÉ :</span>
+                    <span className="font-serif font-bold text-slate-800 text-lg">TOTAL :</span>
                     <span className="text-2xl font-bold text-accent">{total.toLocaleString('fr-FR')} FCFA</span>
                   </div>
                 </div>
@@ -239,14 +212,11 @@ const CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vR0FgqsoKCrcg2B
           <button 
             disabled={!startDate || !endDate || nights <= 0}
             onClick={sendWhatsApp}
-            className="w-full flex items-center justify-center gap-3 py-4 bg-[#25D366] text-white rounded-2xl font-bold hover:bg-[#20bd5a] transition-all shadow-xl shadow-green-200 disabled:opacity-50 disabled:grayscale disabled:cursor-not-allowed active:scale-95"
+            className="w-full flex items-center justify-center gap-3 py-4 bg-[#25D366] text-white rounded-2xl font-bold hover:bg-[#20bd5a] transition-all active:scale-95 disabled:opacity-50"
           >
             <MessageCircle size={24} fill="white" />
             RÉSERVER SUR WHATSAPP
           </button>
-          <p className="text-center text-[10px] text-slate-400 mt-3 uppercase font-bold tracking-widest">
-            Confirmation instantanée avec nos agents
-          </p>
         </div>
       </div>
     </div>
@@ -270,32 +240,20 @@ const MonthGrid = ({ date, isBooked, startDate, endDate, onDateClick, formatDate
     const curr = new Date(year, month, d);
     const booked = isBooked(curr);
     const isPast = curr < today;
-    
-    // CORRECTION : Utilisation de formatDateLocal pour comparer
     const currStr = formatDateLocal(curr);
+    
     const isStart = startDate === currStr;
     const isEnd = endDate === currStr;
     const inRange = startDate && endDate && currStr > startDate && currStr < endDate;
 
     let cls = "h-8 md:h-9 flex items-center justify-center text-xs rounded-lg cursor-pointer transition-all border ";
-    
-    if (isPast) {
-      cls += "bg-slate-50 text-slate-300 border-transparent cursor-not-allowed ";
-    } else if (booked) {
-      cls += "bg-red-500 text-white font-bold border-red-600 shadow-sm cursor-not-allowed ";
-    } else if (isStart || isEnd) {
-      cls += "bg-accent text-white font-bold border-accent ring-2 ring-accent/20 ";
-    } else if (inRange) {
-      cls += "bg-accent/10 text-accent font-bold border-accent/20 ";
-    } else {
-      cls += "bg-white text-slate-600 hover:bg-slate-100 border-slate-100 ";
-    }
+    if (isPast) cls += "bg-slate-50 text-slate-300 border-transparent cursor-not-allowed ";
+    else if (booked) cls += "bg-red-500 text-white font-bold border-red-600 ";
+    else if (isStart || isEnd) cls += "bg-accent text-white font-bold border-accent ";
+    else if (inRange) cls += "bg-accent/10 text-accent font-bold border-accent/20 ";
+    else cls += "bg-white text-slate-600 hover:bg-slate-100 border-slate-100 ";
 
-    days.push(
-      <div key={d} onClick={() => !booked && !isPast && onDateClick(curr)} className={cls}>
-        {d}
-      </div>
-    );
+    days.push(<div key={d} onClick={() => !booked && !isPast && onDateClick(curr)} className={cls}>{d}</div>);
   }
 
   return (
