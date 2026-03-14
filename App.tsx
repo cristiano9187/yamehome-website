@@ -1,4 +1,7 @@
 import React, { useState, useEffect } from 'react';
+import { X } from 'lucide-react';
+import { format } from 'date-fns';
+import { fr } from 'date-fns/locale';
 import Navbar from './components/Navbar';
 import Hero from './components/Hero';
 import SearchBar from './components/SearchBar';
@@ -10,7 +13,6 @@ import TermsModal from './components/TermsModal';
 import { PROPERTIES } from './constants';
 import { Location, Reservation } from './types';
 import { fetchAllReservations } from './services/calendarService';
-import { DateRange } from 'react-day-picker';
 
 const App: React.FC = () => {
   const [showTermsModal, setShowTermsModal] = useState(false);
@@ -20,6 +22,7 @@ const App: React.FC = () => {
   const [destination, setDestination] = useState('');
   const [startDate, setStartDate] = useState<Date | null>(null);
   const [endDate, setEndDate] = useState<Date | null>(null);
+  const [searchMessage, setSearchMessage] = useState<string | null>(null);
 
   // États pour les réservations et les appartements
   const [allReservations, setAllReservations] = useState<Reservation[]>([]);
@@ -105,6 +108,25 @@ const App: React.FC = () => {
     });
 
     setFilteredApartments([...filtered]);
+
+    // Construction du message de recherche
+    const dateInfo = (startDate && endDate) 
+      ? ` du ${format(startDate, 'dd MMM', { locale: fr })} au ${format(endDate, 'dd MMM', { locale: fr })}`
+      : '';
+    
+    const message = filtered.length > 0 
+      ? `${filtered.length} logement(s) trouvé(s) pour ${destination || 'toutes les destinations'}${dateInfo}.`
+      : `Désolé, aucun logement n'est disponible à ces dates. Essayez de nous contacter directement sur WhatsApp ou appelez-nous au +237 656 75 13 10`;
+    
+    setSearchMessage(message);
+  };
+
+  const handleClearSearch = () => {
+    setDestination('');
+    setStartDate(null);
+    setEndDate(null);
+    setFilteredApartments(PROPERTIES);
+    setSearchMessage(null);
   };
 
   // Dérivation des listes par ville à partir de l'état filtré
@@ -164,6 +186,27 @@ const App: React.FC = () => {
         setEndDate={setEndDate}
         onSearch={handleSearch}
       />
+
+      {/* Bandeau de résultats de recherche */}
+      {searchMessage && (
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-8">
+          <div className="bg-white border-l-4 border-accent text-primary p-4 rounded-xl shadow-lg flex justify-between items-center animate-in fade-in slide-in-from-top-4 duration-500">
+            <div className="flex items-center gap-3">
+              <div className="w-10 h-10 bg-accent/10 rounded-full flex items-center justify-center shrink-0">
+                {filteredApartments.length > 0 ? '✨' : '📍'}
+              </div>
+              <p className="font-medium text-slate-700">{searchMessage}</p>
+            </div>
+            <button 
+              onClick={handleClearSearch} 
+              className="p-2 hover:bg-slate-100 rounded-full transition-colors text-slate-400 hover:text-accent"
+              title="Effacer la recherche"
+            >
+              <X size={20} />
+            </button>
+          </div>
+        </div>
+      )}
 
       {filteredApartments.length === 0 ? (
         <div className="py-20 px-4 text-center max-w-3xl mx-auto animate-in fade-in slide-in-from-bottom-4 duration-700">
