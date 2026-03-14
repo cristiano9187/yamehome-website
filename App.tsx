@@ -83,13 +83,13 @@ const App: React.FC = () => {
           const resStartStr = resStart.toISOString().split('T')[0];
           const resEndStr = resEnd.toISOString().split('T')[0];
           
-          const cond1 = resStart <= searchEnd;
-          const cond2 = resEnd >= searchStart;
+          const cond1 = searchStart < resEnd;
+          const cond2 = searchEnd > resStart;
           const isOverlap = cond1 && cond2;
 
           console.log(`  > Réservation ${reservation.id} : ${resStartStr} au ${resEndStr}`);
-          console.log(`    - Début résa <= Fin recherche (${resStartStr} <= ${endStr}) : ${cond1}`);
-          console.log(`    - Fin résa >= Début recherche (${resEndStr} >= ${startStr}) : ${cond2}`);
+          console.log(`    - Début recherche < Fin résa (${startStr} < ${resEndStr}) : ${cond1}`);
+          console.log(`    - Fin recherche > Début résa (${endStr} > ${resStartStr}) : ${cond2}`);
           console.log(`    - Chevauchement détecté : ${isOverlap}`);
           
           return isOverlap;
