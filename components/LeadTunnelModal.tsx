@@ -74,7 +74,7 @@ ${campaignSource ? `📣 Source campagne : ${campaignSource}` : ''}`;
         <div className="p-5 border-b border-slate-100 flex justify-between items-center bg-white">
           <div>
             <h3 className="font-serif font-bold text-slate-800 text-xl leading-tight">
-              Trouver votre logement rapidement
+              Trouvez rapidement votre logement
             </h3>
             <p className="text-xs text-slate-500 uppercase tracking-widest font-bold mt-1">
               En 30 secondes
