@@ -9,6 +9,7 @@ interface BookingModalProps {
   onClose: () => void;
   initialStartDate?: Date | null;
   initialEndDate?: Date | null;
+  campaignSource?: string;
 }
 
 interface Reservation {
@@ -24,13 +25,18 @@ const formatDateLocal = (date: Date): string => {
   return `${year}-${month}-${day}`;
 };
 
-const BookingModal: React.FC<BookingModalProps> = ({ property, onClose, initialStartDate, initialEndDate }) => {
+const BookingModal: React.FC<BookingModalProps> = ({ property, onClose, initialStartDate, initialEndDate, campaignSource = '' }) => {
   const [loading, setLoading] = useState(true);
   const [reservations, setReservations] = useState<Reservation[]>([]);
   const [startDate, setStartDate] = useState<string>(initialStartDate ? formatDateLocal(initialStartDate) : '');
   const [endDate, setEndDate] = useState<string>(initialEndDate ? formatDateLocal(initialEndDate) : '');
   const [isStudioMode, setIsStudioMode] = useState(false);
   const [currentMonth, setCurrentMonth] = useState(initialStartDate || new Date());
+  const [guestCount, setGuestCount] = useState('');
+  const [originCity, setOriginCity] = useState('');
+  const [arrivalTime, setArrivalTime] = useState('');
+  const [tripPurpose, setTripPurpose] = useState('');
+  const [specialNeed, setSpecialNeed] = useState('');
 
   useEffect(() => {
     const fetchAvailability = async () => {
@@ -96,9 +102,15 @@ const BookingModal: React.FC<BookingModalProps> = ({ property, onClose, initialS
 📅 Arrivée : ${startDate}
 📅 Départ : ${endDate}
 🌙 Durée : ${nights} nuit(s)
+${guestCount ? `👥 Voyageurs : ${guestCount}` : ''}
+${originCity.trim() ? `🌍 Ville de provenance : ${originCity}` : ''}
 💰 Mode : ${isStudioMode ? 'Studio' : 'Appartement complet'}
 💵 Caution : ${caution.toLocaleString('fr-FR')} FCFA
-💵 Total estimé : ${total.toLocaleString('fr-FR')} FCFA (Caution incluse)`;
+💵 Total estimé : ${total.toLocaleString('fr-FR')} FCFA (Caution incluse)
+${arrivalTime ? `⏰ Heure d'arrivée estimée : ${arrivalTime}` : ''}
+${tripPurpose ? `🧭 Motif du séjour : ${tripPurpose}` : ''}
+${specialNeed ? `📝 Besoin particulier : ${specialNeed}` : ''}
+${campaignSource ? `📣 Source campagne : ${campaignSource}` : ''}`;
     window.open(`https://wa.me/${getWhatsAppNumber()}?text=${encodeURIComponent(msg)}`, '_blank');
   };
 
@@ -174,6 +186,65 @@ const BookingModal: React.FC<BookingModalProps> = ({ property, onClose, initialS
                       value={endDate} 
                       onChange={(e) => setEndDate(e.target.value)}
                       className="w-full p-2 bg-slate-50 border border-slate-200 rounded-lg text-sm focus:ring-2 focus:ring-accent outline-none font-medium" 
+                    />
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                  <div>
+                    <label className="block text-[10px] font-bold text-slate-400 uppercase mb-1">Voyageurs (optionnel)</label>
+                    <input
+                      type="number"
+                      min={1}
+                      max={12}
+                      value={guestCount}
+                      onChange={(e) => setGuestCount(e.target.value)}
+                      placeholder="Ex: 2"
+                      className="w-full p-2 bg-slate-50 border border-slate-200 rounded-lg text-sm focus:ring-2 focus:ring-accent outline-none font-medium"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-[10px] font-bold text-slate-400 uppercase mb-1">Ville de provenance (optionnel)</label>
+                    <input
+                      type="text"
+                      value={originCity}
+                      onChange={(e) => setOriginCity(e.target.value)}
+                      placeholder="Ex: Douala"
+                      className="w-full p-2 bg-slate-50 border border-slate-200 rounded-lg text-sm focus:ring-2 focus:ring-accent outline-none font-medium"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-[10px] font-bold text-slate-400 uppercase mb-1">Heure d'arrivée (optionnel)</label>
+                    <input
+                      type="time"
+                      value={arrivalTime}
+                      onChange={(e) => setArrivalTime(e.target.value)}
+                      className="w-full p-2 bg-slate-50 border border-slate-200 rounded-lg text-sm focus:ring-2 focus:ring-accent outline-none font-medium"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-[10px] font-bold text-slate-400 uppercase mb-1">Motif du séjour (optionnel)</label>
+                    <select
+                      value={tripPurpose}
+                      onChange={(e) => setTripPurpose(e.target.value)}
+                      className="w-full p-2 bg-slate-50 border border-slate-200 rounded-lg text-sm focus:ring-2 focus:ring-accent outline-none font-medium"
+                    >
+                      <option value="">Sélectionner</option>
+                      <option value="Affaires">Affaires</option>
+                      <option value="Famille">Famille</option>
+                      <option value="Tourisme">Tourisme</option>
+                      <option value="Études">Études</option>
+                      <option value="Autre">Autre</option>
+                    </select>
+                  </div>
+                  <div>
+                    <label className="block text-[10px] font-bold text-slate-400 uppercase mb-1">Besoin particulier (optionnel)</label>
+                    <input
+                      type="text"
+                      value={specialNeed}
+                      onChange={(e) => setSpecialNeed(e.target.value)}
+                      placeholder="Ex: lit bébé, facture"
+                      className="w-full p-2 bg-slate-50 border border-slate-200 rounded-lg text-sm focus:ring-2 focus:ring-accent outline-none font-medium"
                     />
                   </div>
                 </div>

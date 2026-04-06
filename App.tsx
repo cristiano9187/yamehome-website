@@ -10,9 +10,27 @@ import Footer from './components/Footer';
 import WhatsAppWidget from './components/WhatsAppWidget';
 import LocationSection from './components/LocationSection';
 import TermsModal from './components/TermsModal';
+import LeadTunnelModal from './components/LeadTunnelModal';
 import { PROPERTIES } from './constants';
 import { Location, Reservation } from './types';
 import { fetchAllReservations } from './services/calendarService';
+
+const parseUrlDate = (value: string | null): Date | null => {
+  if (!value) return null;
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(value)) return null;
+
+  const [year, month, day] = value.split('-').map(Number);
+  const date = new Date(year, month - 1, day);
+  if (
+    date.getFullYear() !== year ||
+    date.getMonth() !== month - 1 ||
+    date.getDate() !== day
+  ) {
+    return null;
+  }
+
+  return date;
+};
 
 const App: React.FC = () => {
   const [showTermsModal, setShowTermsModal] = useState(false);
@@ -27,6 +45,11 @@ const App: React.FC = () => {
   // États pour les réservations et les appartements
   const [allReservations, setAllReservations] = useState<Reservation[]>([]);
   const [filteredApartments, setFilteredApartments] = useState(PROPERTIES);
+  const [deepLinkPropertyId, setDeepLinkPropertyId] = useState<string | null>(null);
+  const [deepLinkStartDate, setDeepLinkStartDate] = useState<Date | null>(null);
+  const [deepLinkEndDate, setDeepLinkEndDate] = useState<Date | null>(null);
+  const [deepLinkSource, setDeepLinkSource] = useState('');
+  const [showLeadTunnelModal, setShowLeadTunnelModal] = useState(false);
 
   useEffect(() => {
     const loadReservations = async () => {
@@ -39,6 +62,41 @@ const App: React.FC = () => {
     };
     loadReservations();
   }, []);
+
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const propertyId = params.get('property');
+    const fromDate = parseUrlDate(params.get('from'));
+    const toDate = parseUrlDate(params.get('to'));
+    const source = params.get('src') || '';
+    const tunnel = params.get('tunnel');
+
+    if (tunnel === 'lead') {
+      setDeepLinkSource(source);
+      setShowLeadTunnelModal(true);
+      return;
+    }
+
+    if (!propertyId) return;
+
+    const targetProperty = PROPERTIES.find(p => p.id === propertyId);
+    if (!targetProperty) return;
+
+    setDeepLinkPropertyId(propertyId);
+    setDeepLinkStartDate(fromDate);
+    setDeepLinkEndDate(toDate);
+    setDeepLinkSource(source);
+
+    setDestination(targetProperty.location);
+    setFilteredApartments(PROPERTIES.filter(p => p.location === targetProperty.location));
+  }, []);
+
+  useEffect(() => {
+    if (!deepLinkPropertyId) return;
+    const targetElement = document.getElementById(`property-card-${deepLinkPropertyId}`);
+    if (!targetElement) return;
+    targetElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  }, [deepLinkPropertyId, filteredApartments]);
 
   const handleSearch = () => {
     console.log('--- DÉBUT RECHERCHE ---');
@@ -250,6 +308,11 @@ const App: React.FC = () => {
                     property={property} 
                     searchStartDate={startDate}
                     searchEndDate={endDate}
+                    autoOpenBooking={deepLinkPropertyId === property.id}
+                    onAutoOpenHandled={() => setDeepLinkPropertyId(null)}
+                    prefilledStartDate={deepLinkStartDate}
+                    prefilledEndDate={deepLinkEndDate}
+                    campaignSource={deepLinkSource}
                   />
                 ))}
               </div>
@@ -311,6 +374,11 @@ const App: React.FC = () => {
                     property={property} 
                     searchStartDate={startDate}
                     searchEndDate={endDate}
+                    autoOpenBooking={deepLinkPropertyId === property.id}
+                    onAutoOpenHandled={() => setDeepLinkPropertyId(null)}
+                    prefilledStartDate={deepLinkStartDate}
+                    prefilledEndDate={deepLinkEndDate}
+                    campaignSource={deepLinkSource}
                   />
                 ))}
               </div>
@@ -346,6 +414,13 @@ const App: React.FC = () => {
       
       {/* Modale des conditions accessible au niveau global avec prop city */}
       {showTermsModal && <TermsModal city={termsCity} onClose={() => setShowTermsModal(false)} />}
+
+      {showLeadTunnelModal && (
+        <LeadTunnelModal
+          campaignSource={deepLinkSource}
+          onClose={() => setShowLeadTunnelModal(false)}
+        />
+      )}
       
       <WhatsAppWidget />
     </div>

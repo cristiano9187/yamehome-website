@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Property, Location } from '../types';
 import { Users, Wifi, MapPin, Check, Image as ImageIcon, MessageCircle, ChevronLeft, ChevronRight, Youtube, X, Calendar } from 'lucide-react';
 import BookingModal from './BookingModal';
@@ -7,12 +7,32 @@ interface PropertyCardProps {
   property: Property;
   searchStartDate?: Date | null;
   searchEndDate?: Date | null;
+  autoOpenBooking?: boolean;
+  onAutoOpenHandled?: () => void;
+  prefilledStartDate?: Date | null;
+  prefilledEndDate?: Date | null;
+  campaignSource?: string;
 }
 
-const PropertyCard: React.FC<PropertyCardProps> = ({ property, searchStartDate, searchEndDate }) => {
+const PropertyCard: React.FC<PropertyCardProps> = ({
+  property,
+  searchStartDate,
+  searchEndDate,
+  autoOpenBooking = false,
+  onAutoOpenHandled,
+  prefilledStartDate,
+  prefilledEndDate,
+  campaignSource = '',
+}) => {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [showAmenitiesModal, setShowAmenitiesModal] = useState(false);
   const [showBookingModal, setShowBookingModal] = useState(false);
+
+  useEffect(() => {
+    if (!autoOpenBooking) return;
+    setShowBookingModal(true);
+    onAutoOpenHandled?.();
+  }, [autoOpenBooking, onAutoOpenHandled]);
 
   const nextImage = (e: React.MouseEvent) => {
     e.preventDefault(); e.stopPropagation();
@@ -26,7 +46,7 @@ const PropertyCard: React.FC<PropertyCardProps> = ({ property, searchStartDate, 
 
   return (
     <>
-      <div className="bg-white rounded-xl shadow-lg overflow-hidden group hover:shadow-2xl transition-all duration-300 flex flex-col h-full border border-slate-100 relative">
+      <div id={`property-card-${property.id}`} className="bg-white rounded-xl shadow-lg overflow-hidden group hover:shadow-2xl transition-all duration-300 flex flex-col h-full border border-slate-100 relative">
         <div className="relative h-64 overflow-hidden">
           <img src={property.images[currentImageIndex]} alt={property.title} className="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-500" />
           {property.images.length > 1 && (
@@ -82,8 +102,9 @@ const PropertyCard: React.FC<PropertyCardProps> = ({ property, searchStartDate, 
         <BookingModal 
           property={property} 
           onClose={() => setShowBookingModal(false)} 
-          initialStartDate={searchStartDate}
-          initialEndDate={searchEndDate}
+          initialStartDate={prefilledStartDate || searchStartDate}
+          initialEndDate={prefilledEndDate || searchEndDate}
+          campaignSource={campaignSource}
         />
       )}
     </>
