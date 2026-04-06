@@ -7,6 +7,8 @@ import { fetchAllReservations } from '../services/calendarService';
 interface BookingModalProps {
   property: Property;
   onClose: () => void;
+  initialStartDate?: Date | null;
+  initialEndDate?: Date | null;
 }
 
 interface Reservation {
@@ -14,21 +16,21 @@ interface Reservation {
   end: Date;
 }
 
-const BookingModal: React.FC<BookingModalProps> = ({ property, onClose }) => {
+// Utilitaire pour formater une date en YYYY-MM-DD local (évite le décalage UTC)
+const formatDateLocal = (date: Date): string => {
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, '0');
+  const day = String(date.getDate()).padStart(2, '0');
+  return `${year}-${month}-${day}`;
+};
+
+const BookingModal: React.FC<BookingModalProps> = ({ property, onClose, initialStartDate, initialEndDate }) => {
   const [loading, setLoading] = useState(true);
   const [reservations, setReservations] = useState<Reservation[]>([]);
-  const [startDate, setStartDate] = useState<string>('');
-  const [endDate, setEndDate] = useState<string>('');
+  const [startDate, setStartDate] = useState<string>(initialStartDate ? formatDateLocal(initialStartDate) : '');
+  const [endDate, setEndDate] = useState<string>(initialEndDate ? formatDateLocal(initialEndDate) : '');
   const [isStudioMode, setIsStudioMode] = useState(false);
-  const [currentMonth, setCurrentMonth] = useState(new Date());
-
-  // Utilitaire pour formater une date en YYYY-MM-DD local (évite le décalage UTC)
-  const formatDateLocal = (date: Date): string => {
-    const year = date.getFullYear();
-    const month = String(date.getMonth() + 1).padStart(2, '0');
-    const day = String(date.getDate()).padStart(2, '0');
-    return `${year}-${month}-${day}`;
-  };
+  const [currentMonth, setCurrentMonth] = useState(initialStartDate || new Date());
 
   useEffect(() => {
     const fetchAvailability = async () => {
