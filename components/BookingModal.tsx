@@ -97,6 +97,7 @@ const BookingModal: React.FC<BookingModalProps> = ({ property, onClose, initialS
 📅 Départ : ${endDate}
 🌙 Durée : ${nights} nuit(s)
 💰 Mode : ${isStudioMode ? 'Studio' : 'Appartement complet'}
+💵 Caution : ${caution.toLocaleString('fr-FR')} FCFA
 💵 Total estimé : ${total.toLocaleString('fr-FR')} FCFA (Caution incluse)`;
     window.open(`https://wa.me/${getWhatsAppNumber()}?text=${encodeURIComponent(msg)}`, '_blank');
   };
@@ -199,6 +200,10 @@ const BookingModal: React.FC<BookingModalProps> = ({ property, onClose, initialS
                   <div className="flex justify-between text-sm">
                     <span className="text-slate-500">Prix/Nuit :</span>
                     <span className="font-bold text-slate-800">{unitPrice.toLocaleString('fr-FR')} FCFA</span>
+                  </div>
+                  <div className="flex justify-between text-sm">
+                    <span className="text-slate-500">Caution :</span>
+                    <span className="font-bold text-slate-800">{caution.toLocaleString('fr-FR')} FCFA</span>
                   </div>
                   <div className="flex justify-between items-center pt-2 mt-2 border-t-2 border-dashed border-slate-100">
                     <span className="font-serif font-bold text-slate-800 text-lg">TOTAL :</span>
