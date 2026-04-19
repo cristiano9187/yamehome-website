@@ -129,7 +129,7 @@ export const PROPERTIES: Property[] = [
       '/images/deluxe/chambre_p.jpg'
     ],
     driveFolderUrl: 'https://drive.google.com/drive/folders/1GNItWwoF5sOvZjnvlSZVeOIJ6OA2Ol3A',
-    amenities: ['Anti-délestage (Backup)', 'Forage (Eau 24/7)', 'Wifi Haut Débit', 'Climatisation', 'Cuisine Américaine', 'Parking interne', 'Magasin de stockage'],
+    amenities: ['Anti-délestage (Backup)', 'Forage (Eau 24/7)', 'Wifi Haut Débit', 'Climatisation', 'Cuisine équipée', 'Parking interne', 'Magasin de stockage'],
     capacity: 5
   },
   {
