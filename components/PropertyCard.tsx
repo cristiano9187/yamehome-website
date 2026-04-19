@@ -70,7 +70,7 @@ const PropertyCard: React.FC<PropertyCardProps> = ({
             </div>
             <h3 className="text-xl font-serif font-bold text-slate-800">{property.title}</h3>
           </div>
-          <p className="text-slate-600 text-sm mb-4 line-clamp-3">{property.description}</p>
+          <p className="text-slate-600 text-sm mb-4 line-clamp-5">{property.description}</p>
           <div className="flex items-center gap-4 mb-6 text-slate-500 text-sm border-y border-slate-100 py-3">
             <div className="flex items-center"><Users size={18} className="mr-1.5 text-slate-400" />{property.capacity} pers.</div>
             <div className="flex items-center"><Wifi size={18} className="mr-1.5 text-slate-400" />Wifi inclus</div>
