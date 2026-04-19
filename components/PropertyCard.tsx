@@ -1,38 +1,59 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { Property, Location } from '../types';
-import { Users, Wifi, MapPin, Check, Image as ImageIcon, MessageCircle, ChevronLeft, ChevronRight, Youtube, X, Calendar } from 'lucide-react';
+import { 
+  Users, Wifi, MapPin, Check, Image as ImageIcon, MessageCircle, 
+  ChevronLeft, ChevronRight, Youtube, X, Calendar, 
+  Wind, ShieldCheck, Car, Utensils, Tv, WashingMachine, 
+  Droplets, Zap, Phone, BedDouble, Refrigerator, Microwave, ShowerHead, Sun
+} from 'lucide-react';
 import BookingModal from './BookingModal';
+
+const amenityIcons: { [key: string]: any } = {
+  'Energie solaire': Sun,
+  'Wifi': Wifi,
+  'Wifi Illimité': Wifi,
+  'Wifi Gratuit': Wifi,
+  'Wifi Haut Débit': Wifi,
+  'Climatisation': Wind,
+  'Climatisation intégrale': Wind,
+  'Eau Chaude': Droplets,
+  'Eau chaude': Droplets,
+  'Forage': Droplets,
+  'Forage (Eau 24/7)': Droplets,
+  'Sécurité': ShieldCheck,
+  'Sécurité H24': ShieldCheck,
+  'Parking sécurisé': Car,
+  'Parking interne': Car,
+  'Cuisine équipée': Utensils,
+  'Cuisine Américaine': Utensils,
+  'Cuisine interne': Utensils,
+  'Smart TV': Tv,
+  'TV': Tv,
+  'Smart TV (Canal+/Netflix)': Tv,
+  'Smart TV (Netflix/IPTV)': Tv,
+  'TV 43 pouces': Tv,
+  'Machine à laver': WashingMachine,
+  'Anti-délestage': Zap,
+  'Anti-délestage (Backup)': Zap,
+  'Interphone': Phone,
+  'Lit King Size': BedDouble,
+  'Réfrigérateur': Refrigerator,
+  'Frigo': Refrigerator,
+  'Micro-ondes': Microwave,
+  'Douche privative': ShowerHead,
+  'Douche privée': ShowerHead,
+};
 
 interface PropertyCardProps {
   property: Property;
   searchStartDate?: Date | null;
   searchEndDate?: Date | null;
-  autoOpenBooking?: boolean;
-  onAutoOpenHandled?: () => void;
-  prefilledStartDate?: Date | null;
-  prefilledEndDate?: Date | null;
-  campaignSource?: string;
 }
 
-const PropertyCard: React.FC<PropertyCardProps> = ({
-  property,
-  searchStartDate,
-  searchEndDate,
-  autoOpenBooking = false,
-  onAutoOpenHandled,
-  prefilledStartDate,
-  prefilledEndDate,
-  campaignSource = '',
-}) => {
+const PropertyCard: React.FC<PropertyCardProps> = ({ property, searchStartDate, searchEndDate }) => {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [showAmenitiesModal, setShowAmenitiesModal] = useState(false);
   const [showBookingModal, setShowBookingModal] = useState(false);
-
-  useEffect(() => {
-    if (!autoOpenBooking) return;
-    setShowBookingModal(true);
-    onAutoOpenHandled?.();
-  }, [autoOpenBooking, onAutoOpenHandled]);
 
   const nextImage = (e: React.MouseEvent) => {
     e.preventDefault(); e.stopPropagation();
@@ -46,7 +67,7 @@ const PropertyCard: React.FC<PropertyCardProps> = ({
 
   return (
     <>
-      <div id={`property-card-${property.id}`} className="bg-white rounded-xl shadow-lg overflow-hidden group hover:shadow-2xl transition-all duration-300 flex flex-col h-full border border-slate-100 relative">
+      <div className="bg-white rounded-xl shadow-lg overflow-hidden group hover:shadow-2xl transition-all duration-300 flex flex-col h-full border border-slate-100 relative">
         <div className="relative h-64 overflow-hidden">
           <img src={property.images[currentImageIndex]} alt={property.title} className="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-500" />
           {property.images.length > 1 && (
@@ -71,9 +92,25 @@ const PropertyCard: React.FC<PropertyCardProps> = ({
             <h3 className="text-xl font-serif font-bold text-slate-800">{property.title}</h3>
           </div>
           <p className="text-slate-600 text-sm mb-4 line-clamp-5">{property.description}</p>
-          <div className="flex items-center gap-4 mb-6 text-slate-500 text-sm border-y border-slate-100 py-3">
-            <div className="flex items-center"><Users size={18} className="mr-1.5 text-slate-400" />{property.capacity} pers.</div>
-            <div className="flex items-center"><Wifi size={18} className="mr-1.5 text-slate-400" />Wifi inclus</div>
+          <div className="grid grid-cols-4 gap-y-4 gap-x-2 mb-6 border-y border-slate-100 py-4">
+            <div className="flex flex-col items-center justify-center gap-1 text-center group/amenity cursor-help" title={`${property.capacity} Personnes`}>
+              <Users size={18} className="text-slate-400 group-hover/amenity:text-accent transition-colors" />
+              <span className="text-[10px] uppercase font-bold text-slate-400 truncate w-full px-1 group-hover/amenity:text-accent transition-colors">{property.capacity} pers.</span>
+            </div>
+            {property.amenities.slice(0, 7).map((amenity, idx) => {
+              const Icon = amenityIcons[amenity] || Check;
+              // On nettoie un peu le texte pour l'affichage court (ex: enlever les parenthèses)
+              const shortLabel = amenity.split(' (')[0].replace('Illimité', '').replace('équipée', '').trim();
+              
+              return (
+                <div key={idx} className="flex flex-col items-center justify-center gap-1 text-center group/amenity cursor-help" title={amenity}>
+                  <Icon size={18} className="text-slate-400 group-hover/amenity:text-accent transition-colors" />
+                  <span className="text-[10px] uppercase font-bold text-slate-400 truncate w-full px-1 group-hover/amenity:text-accent transition-colors">
+                    {shortLabel}
+                  </span>
+                </div>
+              );
+            })}
           </div>
 
           <div className="mt-auto flex flex-col gap-3">
@@ -102,9 +139,8 @@ const PropertyCard: React.FC<PropertyCardProps> = ({
         <BookingModal 
           property={property} 
           onClose={() => setShowBookingModal(false)} 
-          initialStartDate={prefilledStartDate || searchStartDate}
-          initialEndDate={prefilledEndDate || searchEndDate}
-          campaignSource={campaignSource}
+          initialStartDate={searchStartDate}
+          initialEndDate={searchEndDate}
         />
       )}
     </>

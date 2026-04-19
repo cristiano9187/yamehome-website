@@ -34,12 +34,12 @@ export const PROPERTIES: Property[] = [
       ]
     },
     images: [
-      '/images/terracotta/chambre_fenetre.jpg',
-      '/images/terracotta/salle_a_manger.jpg',
-      '/images/terracotta/salon_tv.jpg'
+      '/yamehome-website/images/terracotta/chambre_fenetre.jpg',
+      '/yamehome-website/images/terracotta/salle_a_manger.jpg',
+      '/yamehome-website/images/terracotta/salon_tv.jpg'
     ],
     driveFolderUrl: 'https://drive.google.com/drive/folders/1fveCMq0ZaYiAC-JZh1BuuZ-YZFfBxU0T',
-    amenities: ['Wifi Illimité', 'Climatisation', 'Eau Chaude', 'Sécurité H24', 'Parking sécurisé', 'Cuisine équipée', 'Smart TV (Canal+/Netflix)'],
+    amenities: ['Energie solaire', 'Wifi Illimité', 'Climatisation', 'Eau Chaude', 'Sécurité H24', 'Parking sécurisé', 'Cuisine équipée', 'Smart TV (Canal+/Netflix)'],
     capacity: 4
   },
   {
@@ -64,12 +64,12 @@ export const PROPERTIES: Property[] = [
       ]
     },
     images: [
-      '/images/emeraude/aceuil.jpg',
-      '/images/emeraude/d_cuisine.jpg',
-      '/images/emeraude/f_chambre.jpg'
+      '/yamehome-website/images/emeraude/aceuil.jpg',
+      '/yamehome-website/images/emeraude/d_cuisine.jpg',
+      '/yamehome-website/images/emeraude/f_chambre.jpg'
     ],
     driveFolderUrl: 'https://drive.google.com/drive/folders/1ryIRS2lqDQRulF9hLDFjV7WKgfma7kfc',
-    amenities: ['Wifi Illimité', 'Climatisation', 'Eau Chaude', 'Sécurité H24', 'Parking sécurisé', 'Cuisine équipée', 'Smart TV (Canal+/Netflix)'],
+    amenities: ['Energie solaire', 'Wifi Illimité', 'Climatisation', 'Eau Chaude', 'Sécurité H24', 'Parking sécurisé', 'Cuisine équipée', 'Smart TV (Canal+/Netflix)'],
     capacity: 4
   },
   {
@@ -77,7 +77,7 @@ export const PROPERTIES: Property[] = [
     title: 'Appartement Haut Standing',
     siteName: 'MODENA YAMEHOME',
     fullAddress: 'Odza Brigade, Yaoundé',
-    description: 'Le luxe à l\'état pur à 70m de l\'axe principal. Finitions haut de gamme, autonomie totale en eau (forage) et équipement complet incluant machine à laver. Idéal pour les longs séjours.',
+    description: 'Le luxe à l\'état pur à 70m de l\'axe principal. Finitions haut de gamme, autonomie totale en eau (forage), dispositif anti-délestage et équipement complet incluant machine à laver. Idéal pour les longs séjours.',
     location: Location.YAOUNDE,
     type: PropertyType.APPARTEMENT,
     pricePerNight: 35000,
@@ -94,12 +94,12 @@ export const PROPERTIES: Property[] = [
       ]
     },
     images: [
-      '/images/brigade/salon_brigade.jpg',
-      '/images/brigade/cuisine_brigade.jpg',
-      '/images/brigade/chrambre_p_brigade.jpg'
+      '/yamehome-website/images/brigade/salon_brigade.jpg',
+      '/yamehome-website/images/brigade/cuisine_brigade.jpg',
+      '/yamehome-website/images/brigade/chrambre_p_brigade.jpg'
     ],
     driveFolderUrl: 'https://drive.google.com/drive/folders/1Uft3tiWSMkLHoky44mpws4Wc5PbJAIKH',
-    amenities: ['Machine à laver', 'Forage (Eau 24/7)', 'Wifi Gratuit', 'Climatisation intégrale', 'Balcon', 'Sécurité', 'Smart TV (Netflix/IPTV)'],
+    amenities: ['Anti-délestage', 'Machine à laver', 'Forage (Eau 24/7)', 'Wifi Gratuit', 'Climatisation intégrale', 'Balcon', 'Sécurité', 'Smart TV (Netflix/IPTV)'],
     capacity: 4
   },
   {
@@ -124,9 +124,9 @@ export const PROPERTIES: Property[] = [
       ]
     },
     images: [
-      '/images/deluxe/salon_deluxe.jpg',
-      '/images/deluxe/salle_manger.jpg',
-      '/images/deluxe/chambre_p.jpg'
+      '/yamehome-website/images/deluxe/salon_deluxe.jpg',
+      '/yamehome-website/images/deluxe/salle_manger.jpg',
+      '/yamehome-website/images/deluxe/chambre_p.jpg'
     ],
     driveFolderUrl: 'https://drive.google.com/drive/folders/1GNItWwoF5sOvZjnvlSZVeOIJ6OA2Ol3A',
     amenities: ['Anti-délestage (Backup)', 'Forage (Eau 24/7)', 'Wifi Haut Débit', 'Climatisation', 'Cuisine Américaine', 'Parking interne', 'Magasin de stockage'],
@@ -149,9 +149,9 @@ export const PROPERTIES: Property[] = [
       ]
     },
     images: [
-      '/images/americain/salon_studio.jpg',
-      '/images/americain/cuisine_studio.jpg',
-      '/images/americain/chambre_studio.jpg'
+      '/yamehome-website/images/americain/salon_studio.jpg',
+      '/yamehome-website/images/americain/cuisine_studio.jpg',
+      '/yamehome-website/images/americain/chambre_studio.jpg'
     ], 
     driveFolderUrl: 'https://drive.google.com/drive/folders/1zAp1a4o7Ac2MNoZ6wzsDoBJ9ClzmkS93',
     amenities: ['Anti-délestage', 'Forage', 'Wifi Illimité', 'Climatisation', 'Cuisine Américaine', 'Smart TV', 'Interphone'],
@@ -174,9 +174,9 @@ export const PROPERTIES: Property[] = [
       ]
     },
     images: [
-      '/images/superior/sejour.jpg',
-      '/images/superior/cuisine.jpg',
-      '/images/superior/chambre_sup.jpg'
+      '/yamehome-website/images/superior/sejour.jpg',
+      '/yamehome-website/images/superior/cuisine.jpg',
+      '/yamehome-website/images/superior/chambre_sup.jpg'
     ],
     driveFolderUrl: 'https://drive.google.com/drive/folders/1N3hgGTKvcn8xBOKpN6jTggZEY80Vse2f',
     amenities: ['Anti-délestage', 'Forage', 'Wifi Illimité', 'Climatisation', 'Cuisine Américaine', 'Smart TV', 'Interphone'],
@@ -198,8 +198,8 @@ export const PROPERTIES: Property[] = [
       ]
     },
     images: [
-      '/images/chambrea/vue_lit.jpg',
-      '/images/chambrea/vue_tv.jpg'
+      '/yamehome-website/images/chambrea/vue_lit.jpg',
+      '/yamehome-website/images/chambrea/vue_tv.jpg'
     ],
     driveFolderUrl: 'https://drive.google.com/drive/folders/1d0lqRu4KYHj6KfyrLOGnsdy_cRaJQ3e_',
     amenities: ['Lit King Size', 'Climatisation', 'Réfrigérateur', 'Micro-ondes', 'Wifi', 'TV 43 pouces', 'Douche privative'],
@@ -221,8 +221,8 @@ export const PROPERTIES: Property[] = [
       ]
     },
     images: [
-      '/images/chambreb/lit_frigo.jpg',
-      '/images/chambreb/placard.jpg'
+      '/yamehome-website/images/chambreb/lit_frigo.jpg',
+      '/yamehome-website/images/chambreb/placard.jpg'
     ],
     driveFolderUrl: 'https://drive.google.com/drive/folders/1Q4OzXAivA9vAd_3IX5AE_ue2tBS2ZIbS',
     amenities: ['Lit King Size', 'Climatisation', 'Réfrigérateur', 'Micro-ondes', 'Wifi', 'TV 43 pouces', 'Douche privative'],
@@ -245,12 +245,12 @@ export const PROPERTIES: Property[] = [
       ]
     },
     images: [
-      '/images/bgte/barriere.jpg',
-      '/images/bgte/chambre_p_fenetre.jpg',
-      '/images/bgte/chambre_p1.jpg',
-      '/images/bgte/chambre_p2.jpg'
+      '/yamehome-website/images/bgte/barriere.jpg',
+      '/yamehome-website/images/bgte/chambre_p_fenetre.jpg',
+      '/yamehome-website/images/bgte/chambre_p1.jpg',
+      '/yamehome-website/images/bgte/chambre_p2.jpg'
     ],
-    amenities: ['Cuisine interne', 'Eau chaude', 'TV', 'Frigo', 'Micro-ondes'],
+    amenities: ['Cuisine interne', 'Eau chaude', 'TV', 'Frigo'],
     capacity: 2
   },
   {
@@ -268,7 +268,7 @@ export const PROPERTIES: Property[] = [
       ]
     },
     images: [
-      '/images/bgte/chambre_b.jpg'
+      '/yamehome-website/images/bgte/chambre_b.jpg'
     ],
     amenities: ['Douche privée', 'TV', 'Eau chaude'],
     capacity: 2
@@ -288,7 +288,7 @@ export const PROPERTIES: Property[] = [
       ]
     },
     images: [
-      '/images/bgte/chambre_c.jpg'
+      '/yamehome-website/images/bgte/chambre_c.jpg'
     ],
     amenities: ['Douche privée', 'TV', 'Eau chaude'],
     capacity: 2
@@ -308,7 +308,7 @@ export const PROPERTIES: Property[] = [
       ]
     },
     images: [
-      '/images/bgte/chambre_d.jpg'
+      '/yamehome-website/images/bgte/chambre_d.jpg'
     ],
     amenities: ['Douche privée', 'TV', 'Eau chaude'],
     capacity: 2
