@@ -268,7 +268,7 @@ export const PROPERTIES: Property[] = [
       ]
     },
     images: [
-      '/yamehome-website/images/bgte/chambre_b.jpg'
+      '/images/bgte/chambre_b.jpg'
     ],
     amenities: ['Douche privée', 'TV', 'Eau chaude'],
     capacity: 2
