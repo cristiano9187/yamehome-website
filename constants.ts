@@ -34,9 +34,9 @@ export const PROPERTIES: Property[] = [
       ]
     },
     images: [
-      '/yamehome-website/images/terracotta/chambre_fenetre.jpg',
-      '/yamehome-website/images/terracotta/salle_a_manger.jpg',
-      '/yamehome-website/images/terracotta/salon_tv.jpg'
+      'images/terracotta/chambre_fenetre.jpg',
+      '/images/terracotta/salle_a_manger.jpg',
+      '/images/terracotta/salon_tv.jpg'
     ],
     driveFolderUrl: 'https://drive.google.com/drive/folders/1fveCMq0ZaYiAC-JZh1BuuZ-YZFfBxU0T',
     amenities: ['Energie solaire', 'Wifi Illimité', 'Climatisation', 'Eau Chaude', 'Sécurité H24', 'Parking sécurisé', 'Cuisine équipée', 'Smart TV (Canal+/Netflix)'],
