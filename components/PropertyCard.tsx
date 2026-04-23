@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
-import { Property, Location } from '../types';
+import React, { useEffect, useState } from 'react';
+import { Property } from '../types';
 import { 
   Users, Wifi, MapPin, Check, Image as ImageIcon, MessageCircle, 
-  ChevronLeft, ChevronRight, Youtube, X, Calendar, 
+  ChevronLeft, ChevronRight, Youtube, Calendar, 
   Wind, ShieldCheck, Car, Utensils, Tv, WashingMachine, 
   Droplets, Zap, Phone, BedDouble, Refrigerator, Microwave, ShowerHead, Sun
 } from 'lucide-react';
@@ -48,12 +48,38 @@ interface PropertyCardProps {
   property: Property;
   searchStartDate?: Date | null;
   searchEndDate?: Date | null;
+  autoOpenBooking?: boolean;
+  onAutoOpenHandled?: () => void;
+  prefilledStartDate?: Date | null;
+  prefilledEndDate?: Date | null;
+  campaignSource?: string;
 }
 
-const PropertyCard: React.FC<PropertyCardProps> = ({ property, searchStartDate, searchEndDate }) => {
+const PropertyCard: React.FC<PropertyCardProps> = ({
+  property,
+  searchStartDate,
+  searchEndDate,
+  autoOpenBooking = false,
+  onAutoOpenHandled,
+  prefilledStartDate,
+  prefilledEndDate,
+  campaignSource = '',
+}) => {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
-  const [showAmenitiesModal, setShowAmenitiesModal] = useState(false);
   const [showBookingModal, setShowBookingModal] = useState(false);
+  const [activeAmenityTooltip, setActiveAmenityTooltip] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (!autoOpenBooking) return;
+    setShowBookingModal(true);
+    onAutoOpenHandled?.();
+  }, [autoOpenBooking, onAutoOpenHandled]);
+
+  const openBookingModal = (e?: React.SyntheticEvent) => {
+    e?.preventDefault();
+    e?.stopPropagation();
+    setShowBookingModal(true);
+  };
 
   const nextImage = (e: React.MouseEvent) => {
     e.preventDefault(); e.stopPropagation();
@@ -67,7 +93,10 @@ const PropertyCard: React.FC<PropertyCardProps> = ({ property, searchStartDate, 
 
   return (
     <>
-      <div className="bg-white rounded-xl shadow-lg overflow-hidden group hover:shadow-2xl transition-all duration-300 flex flex-col h-full border border-slate-100 relative">
+      <div
+        id={`property-card-${property.id}`}
+        className="bg-white rounded-xl shadow-lg overflow-hidden group hover:shadow-2xl transition-all duration-300 flex flex-col h-full border border-slate-100 relative"
+      >
         <div className="relative h-64 overflow-hidden">
           <img src={property.images[currentImageIndex]} alt={property.title} className="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-500" />
           {property.images.length > 1 && (
@@ -91,8 +120,9 @@ const PropertyCard: React.FC<PropertyCardProps> = ({ property, searchStartDate, 
             </div>
             <h3 className="text-xl font-serif font-bold text-slate-800">{property.title}</h3>
           </div>
-          <p className="text-slate-600 text-sm mb-4 line-clamp-5">{property.description}</p>
-          <div className="grid grid-cols-4 gap-y-4 gap-x-2 mb-6 border-y border-slate-100 py-4">
+          <p className="text-slate-600 text-sm mb-4 line-clamp-5 min-h-[6.25rem]">{property.description}</p>
+          <div className="relative">
+            <div className="grid grid-cols-4 gap-y-4 gap-x-2 mb-6 border-y border-slate-100 py-4">
             <div className="flex flex-col items-center justify-center gap-1 text-center group/amenity cursor-help" title={`${property.capacity} Personnes`}>
               <Users size={18} className="text-slate-400 group-hover/amenity:text-accent transition-colors" />
               <span className="text-[10px] uppercase font-bold text-slate-400 truncate w-full px-1 group-hover/amenity:text-accent transition-colors">{property.capacity} pers.</span>
@@ -103,7 +133,14 @@ const PropertyCard: React.FC<PropertyCardProps> = ({ property, searchStartDate, 
               const shortLabel = amenity.split(' (')[0].replace('Illimité', '').replace('équipée', '').trim();
               
               return (
-                <div key={idx} className="flex flex-col items-center justify-center gap-1 text-center group/amenity cursor-help" title={amenity}>
+                <div
+                  key={idx}
+                  className="flex flex-col items-center justify-center gap-1 text-center group/amenity cursor-help"
+                  title={amenity}
+                  onMouseEnter={() => setActiveAmenityTooltip(amenity)}
+                  onMouseLeave={() => setActiveAmenityTooltip(null)}
+                  onClick={() => setActiveAmenityTooltip(prev => (prev === amenity ? null : amenity))}
+                >
                   <Icon size={18} className="text-slate-400 group-hover/amenity:text-accent transition-colors" />
                   <span className="text-[10px] uppercase font-bold text-slate-400 truncate w-full px-1 group-hover/amenity:text-accent transition-colors">
                     {shortLabel}
@@ -111,11 +148,19 @@ const PropertyCard: React.FC<PropertyCardProps> = ({ property, searchStartDate, 
                 </div>
               );
             })}
+            </div>
+            {activeAmenityTooltip && (
+              <div className="absolute left-1/2 -translate-x-1/2 bottom-2 bg-slate-900 text-white text-xs px-3 py-1.5 rounded-lg shadow-lg pointer-events-none z-20 max-w-[90%] text-center">
+                {activeAmenityTooltip}
+              </div>
+            )}
           </div>
 
           <div className="mt-auto flex flex-col gap-3">
             <button 
-              onClick={() => setShowBookingModal(true)}
+              type="button"
+              onClick={openBookingModal}
+              onTouchStart={openBookingModal}
               className="w-full flex items-center justify-center gap-3 py-4 bg-[#25D366] text-white rounded-xl font-bold text-sm hover:bg-[#20bd5a] transition-all shadow-lg active:scale-95 group"
             >
               <Calendar size={18} className="group-hover:rotate-12 transition-transform" />
@@ -139,8 +184,9 @@ const PropertyCard: React.FC<PropertyCardProps> = ({ property, searchStartDate, 
         <BookingModal 
           property={property} 
           onClose={() => setShowBookingModal(false)} 
-          initialStartDate={searchStartDate}
-          initialEndDate={searchEndDate}
+          initialStartDate={prefilledStartDate ?? searchStartDate}
+          initialEndDate={prefilledEndDate ?? searchEndDate}
+          campaignSource={campaignSource}
         />
       )}
     </>
