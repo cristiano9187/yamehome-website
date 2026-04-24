@@ -13,7 +13,7 @@ import TermsModal from './components/TermsModal';
 import LeadTunnelModal from './components/LeadTunnelModal';
 import { PROPERTIES } from './constants';
 import { Location, Reservation } from './types';
-import { fetchAllReservations } from './services/calendarService';
+import { subscribeToReservations } from './services/firestoreCalendarService';
 
 const parseUrlDate = (value: string | null): Date | null => {
   if (!value) return null;
@@ -52,15 +52,11 @@ const App: React.FC = () => {
   const [showLeadTunnelModal, setShowLeadTunnelModal] = useState(false);
 
   useEffect(() => {
-    const loadReservations = async () => {
-      try {
-        const reservations = await fetchAllReservations();
-        setAllReservations(reservations);
-      } catch (error) {
-        console.error("Erreur lors de la récupération des réservations:", error);
-      }
-    };
-    loadReservations();
+    const unsubscribe = subscribeToReservations(
+      (reservations) => setAllReservations(reservations),
+      (error) => console.error("Erreur lors de la récupération des réservations:", error)
+    );
+    return unsubscribe;
   }, []);
 
   useEffect(() => {
@@ -313,6 +309,7 @@ const App: React.FC = () => {
                     prefilledStartDate={deepLinkStartDate}
                     prefilledEndDate={deepLinkEndDate}
                     campaignSource={deepLinkSource}
+                    allReservations={allReservations}
                   />
                 ))}
               </div>
@@ -379,6 +376,7 @@ const App: React.FC = () => {
                     prefilledStartDate={deepLinkStartDate}
                     prefilledEndDate={deepLinkEndDate}
                     campaignSource={deepLinkSource}
+                    allReservations={allReservations}
                   />
                 ))}
               </div>

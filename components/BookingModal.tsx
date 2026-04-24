@@ -1,8 +1,7 @@
-import React, { useState, useEffect } from 'react';
-import { X, Calendar as CalendarIcon, MessageCircle, Info, Calculator, Check, Loader } from 'lucide-react';
-import { Property, Location } from '../types';
+import React, { useState, useMemo } from 'react';
+import { X, Calendar as CalendarIcon, MessageCircle, Info, Calculator } from 'lucide-react';
+import { Property, Location, Reservation as GlobalReservation } from '../types';
 import { WHATSAPP_AGENT_YAOUNDE, WHATSAPP_AGENT_BANGANGTE, getRateForApartment } from '../constants';
-import { fetchAllReservations } from '../services/calendarService';
 
 interface BookingModalProps {
   property: Property;
@@ -10,9 +9,10 @@ interface BookingModalProps {
   initialStartDate?: Date | null;
   initialEndDate?: Date | null;
   campaignSource?: string;
+  allReservations?: GlobalReservation[];
 }
 
-interface Reservation {
+interface LocalReservation {
   start: Date;
   end: Date;
 }
@@ -25,9 +25,7 @@ const formatDateLocal = (date: Date): string => {
   return `${year}-${month}-${day}`;
 };
 
-const BookingModal: React.FC<BookingModalProps> = ({ property, onClose, initialStartDate, initialEndDate, campaignSource = '' }) => {
-  const [loading, setLoading] = useState(true);
-  const [reservations, setReservations] = useState<Reservation[]>([]);
+const BookingModal: React.FC<BookingModalProps> = ({ property, onClose, initialStartDate, initialEndDate, campaignSource = '', allReservations = [] }) => {
   const [startDate, setStartDate] = useState<string>(initialStartDate ? formatDateLocal(initialStartDate) : '');
   const [endDate, setEndDate] = useState<string>(initialEndDate ? formatDateLocal(initialEndDate) : '');
   const [isStudioMode, setIsStudioMode] = useState(false);
@@ -38,25 +36,16 @@ const BookingModal: React.FC<BookingModalProps> = ({ property, onClose, initialS
   const [tripPurpose, setTripPurpose] = useState('');
   const [specialNeed, setSpecialNeed] = useState('');
 
-  useEffect(() => {
-    const fetchAvailability = async () => {
-      try {
-        const allRes = await fetchAllReservations();
-        const propertyRes = allRes
-          .filter(res => res.propertyId === property.id)
-          .map(res => ({
-            start: new Date(res.startDate),
-            end: new Date(res.endDate)
-          }));
-        setReservations(propertyRes);
-      } catch (err) {
-        console.error("Erreur calendrier:", err);
-      } finally {
-        setLoading(false);
-      }
-    };
-    fetchAvailability();
-  }, [property.id]);
+  // Filtrage et conversion des réservations pour cet appartement (depuis les données temps réel de App)
+  const reservations = useMemo<LocalReservation[]>(() =>
+    allReservations
+      .filter(res => res.propertyId === property.id && res.status !== 'cancelled')
+      .map(res => ({
+        start: new Date(res.startDate),
+        end: new Date(res.endDate),
+      })),
+    [allReservations, property.id]
+  );
 
   const isBooked = (date: Date) => {
     const d = new Date(date.getFullYear(), date.getMonth(), date.getDate());
@@ -140,27 +129,20 @@ ${campaignSource ? `📣 Source campagne : ${campaignSource}` : ''}`;
               <h4 className="font-bold text-slate-800 flex items-center gap-2 mb-4">
                 <CalendarIcon size={18} className="text-accent" /> Disponibilités
               </h4>
-              {loading ? (
-                <div className="h-64 flex flex-col items-center justify-center text-slate-400">
-                  <Loader className="animate-spin mb-2" />
-                  <p className="text-xs">Chargement du planning...</p>
+              <div className="space-y-4">
+                <MonthGrid 
+                  date={currentMonth} 
+                  isBooked={isBooked} 
+                  startDate={startDate} 
+                  endDate={endDate} 
+                  onDateClick={handleDateClick}
+                  formatDateLocal={formatDateLocal}
+                />
+                <div className="flex justify-between mt-4">
+                  <button onClick={() => setCurrentMonth(new Date(currentMonth.getFullYear(), currentMonth.getMonth() - 1, 1))} className="text-xs font-bold text-accent">Précédent</button>
+                  <button onClick={() => setCurrentMonth(new Date(currentMonth.getFullYear(), currentMonth.getMonth() + 1, 1))} className="text-xs font-bold text-accent">Suivant</button>
                 </div>
-              ) : (
-                <div className="space-y-4">
-                   <MonthGrid 
-                    date={currentMonth} 
-                    isBooked={isBooked} 
-                    startDate={startDate} 
-                    endDate={endDate} 
-                    onDateClick={handleDateClick}
-                    formatDateLocal={formatDateLocal}
-                   />
-                   <div className="flex justify-between mt-4">
-                      <button onClick={() => setCurrentMonth(new Date(currentMonth.getFullYear(), currentMonth.getMonth() - 1, 1))} className="text-xs font-bold text-accent">Précédent</button>
-                      <button onClick={() => setCurrentMonth(new Date(currentMonth.getFullYear(), currentMonth.getMonth() + 1, 1))} className="text-xs font-bold text-accent">Suivant</button>
-                   </div>
-                </div>
-              )}
+              </div>
             </div>
 
             <div className="space-y-6">

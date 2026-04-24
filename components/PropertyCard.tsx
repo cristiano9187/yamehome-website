@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Property } from '../types';
+import { Property, Reservation } from '../types';
 import { 
   Users, Wifi, MapPin, Check, Image as ImageIcon, MessageCircle, 
   ChevronLeft, ChevronRight, Youtube, Calendar, 
@@ -53,6 +53,7 @@ interface PropertyCardProps {
   prefilledStartDate?: Date | null;
   prefilledEndDate?: Date | null;
   campaignSource?: string;
+  allReservations?: Reservation[];
 }
 
 const PropertyCard: React.FC<PropertyCardProps> = ({
@@ -64,6 +65,7 @@ const PropertyCard: React.FC<PropertyCardProps> = ({
   prefilledStartDate,
   prefilledEndDate,
   campaignSource = '',
+  allReservations = [],
 }) => {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [showBookingModal, setShowBookingModal] = useState(false);
@@ -187,6 +189,7 @@ const PropertyCard: React.FC<PropertyCardProps> = ({
           initialStartDate={prefilledStartDate ?? searchStartDate}
           initialEndDate={prefilledEndDate ?? searchEndDate}
           campaignSource={campaignSource}
+          allReservations={allReservations}
         />
       )}
     </>
