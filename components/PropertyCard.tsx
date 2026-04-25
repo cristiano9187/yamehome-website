@@ -1,5 +1,6 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { Property, Reservation } from '../types';
+import { getISOWeek, getISOWeekYear } from 'date-fns';
 import { 
   Users, Wifi, MapPin, Check, Image as ImageIcon, MessageCircle, 
   ChevronLeft, ChevronRight, Youtube, Calendar, 
@@ -7,6 +8,34 @@ import {
   Droplets, Zap, Phone, BedDouble, Refrigerator, Microwave, ShowerHead, Sun
 } from 'lucide-react';
 import BookingModal from './BookingModal';
+
+const hashString = (value: string): number => {
+  // Simple stable hash (0..2^32-1)
+  let h = 0;
+  for (let i = 0; i < value.length; i++) {
+    h = (Math.imul(31, h) + value.charCodeAt(i)) | 0;
+  }
+  return h >>> 0;
+};
+
+// ISO week key (reliable at year boundaries). Changes weekly, stable for the same ISO week.
+const getIsoWeekKey = (date: Date) => {
+  const year = getISOWeekYear(date);
+  const week = getISOWeek(date);
+  return `${year}-W${String(week).padStart(2, '0')}`;
+};
+
+const rotateImagesWeekly = (images: string[], propertyId: string, now: Date = new Date()) => {
+  if (!images.length) return images;
+  if (images.length === 1) return images;
+
+  const weekKey = getIsoWeekKey(now);
+  const salt = hashString(`${propertyId}|${weekKey}`);
+  const start = images.length > 0 ? (salt % images.length) : 0;
+  if (start === 0) return images;
+
+  return [...images.slice(start), ...images.slice(0, start)];
+};
 
 const amenityIcons: { [key: string]: any } = {
   'Energie solaire': Sun,
@@ -72,12 +101,20 @@ const PropertyCard: React.FC<PropertyCardProps> = ({
   const [activeAmenityTooltip, setActiveAmenityTooltip] = useState<string | null>(null);
   const isModulableStudio = property.type === 'Appartement' && !!property.pricing?.studioMode?.length;
   const propertyTypeLabel = property.type === 'Appartement' ? 'Appartement 2 chambres' : property.type;
+  const displayImages = useMemo(
+    () => rotateImagesWeekly(property.images, property.id),
+    [property.id, property.images]
+  );
 
   useEffect(() => {
     if (!autoOpenBooking) return;
     setShowBookingModal(true);
     onAutoOpenHandled?.();
   }, [autoOpenBooking, onAutoOpenHandled]);
+
+  useEffect(() => {
+    setCurrentImageIndex(0);
+  }, [property.id, displayImages]);
 
   const openBookingModal = (e?: React.SyntheticEvent) => {
     e?.preventDefault();
@@ -87,12 +124,14 @@ const PropertyCard: React.FC<PropertyCardProps> = ({
 
   const nextImage = (e: React.MouseEvent) => {
     e.preventDefault(); e.stopPropagation();
-    setCurrentImageIndex((prev) => (prev + 1) % property.images.length);
+    if (!displayImages.length) return;
+    setCurrentImageIndex((prev) => (prev + 1) % displayImages.length);
   };
 
   const prevImage = (e: React.MouseEvent) => {
     e.preventDefault(); e.stopPropagation();
-    setCurrentImageIndex((prev) => (prev - 1 + property.images.length) % property.images.length);
+    if (!displayImages.length) return;
+    setCurrentImageIndex((prev) => (prev - 1 + displayImages.length) % displayImages.length);
   };
 
   return (
@@ -102,8 +141,8 @@ const PropertyCard: React.FC<PropertyCardProps> = ({
         className="bg-white rounded-xl shadow-lg overflow-hidden group hover:shadow-2xl transition-all duration-300 flex flex-col h-full border border-slate-100 relative"
       >
         <div className="relative h-64 overflow-hidden">
-          <img src={property.images[currentImageIndex]} alt={property.title} className="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-500" />
-          {property.images.length > 1 && (
+          <img src={displayImages[currentImageIndex]} alt={property.title} className="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-500" />
+          {displayImages.length > 1 && (
             <>
               <button onClick={prevImage} className="absolute left-2 top-1/2 -translate-y-1/2 bg-black/30 hover:bg-black/50 text-white p-1 rounded-full opacity-0 group-hover:opacity-100 transition-opacity z-10"><ChevronLeft size={24} /></button>
               <button onClick={nextImage} className="absolute right-2 top-1/2 -translate-y-1/2 bg-black/30 hover:bg-black/50 text-white p-1 rounded-full opacity-0 group-hover:opacity-100 transition-opacity z-10"><ChevronRight size={24} /></button>

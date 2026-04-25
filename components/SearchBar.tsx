@@ -55,11 +55,11 @@ const SearchBar: React.FC<SearchBarProps> = ({
   };
 
   return (
-    <div className="w-full max-w-5xl mx-auto -mt-12 relative z-40 px-4">
-      <div className="bg-white rounded-2xl shadow-2xl border border-slate-100 p-2 md:p-3 flex flex-col md:flex-row items-stretch gap-2 md:gap-0">
+    <div className="w-full max-w-5xl mx-auto -mt-[11.5rem] sm:-mt-40 md:-mt-40 lg:-mt-44 relative z-40 px-4">
+      <div className="bg-white rounded-2xl shadow-2xl border border-slate-100 p-1.5 md:p-3 flex flex-col md:flex-row items-stretch gap-1 md:gap-0">
         
         {/* Destination */}
-        <div className="flex-1 flex items-center gap-3 px-4 py-3 md:border-r border-slate-100">
+        <div className="flex-1 flex items-center gap-3 px-4 py-2 md:py-3 md:border-r border-slate-100">
           <MapPin className="text-accent shrink-0" size={20} />
           <div className="flex-1">
             <label className="block text-[10px] uppercase tracking-wider font-bold text-slate-400 mb-0.5">Destination</label>
@@ -79,7 +79,7 @@ const SearchBar: React.FC<SearchBarProps> = ({
         <div className="flex-1 relative">
           <div 
             onClick={() => setShowCalendar(!showCalendar)}
-            className="flex items-center gap-3 px-4 py-3 md:border-r border-slate-100 cursor-pointer hover:bg-slate-50 transition-colors h-full"
+            className="flex items-center gap-3 px-4 py-2 md:py-3 md:border-r border-slate-100 cursor-pointer hover:bg-slate-50 transition-colors h-full"
           >
             <CalendarIcon className="text-accent shrink-0" size={20} />
             <div className="flex-1">
@@ -132,7 +132,7 @@ const SearchBar: React.FC<SearchBarProps> = ({
         <div className="md:pl-3 flex items-center">
           <button 
             onClick={onSearch}
-            className="w-full md:w-auto bg-accent hover:bg-[#b3955f] text-white px-8 py-4 rounded-xl font-bold flex items-center justify-center gap-2 transition-all shadow-lg shadow-accent/20 active:scale-95"
+            className="w-full md:w-auto bg-accent hover:bg-[#b3955f] text-white px-8 py-3 md:py-4 rounded-xl font-bold flex items-center justify-center gap-2 transition-all shadow-lg shadow-accent/20 active:scale-95"
           >
             <Search size={20} />
             <span>Rechercher</span>

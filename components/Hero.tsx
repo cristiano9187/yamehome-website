@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { ArrowDown } from 'lucide-react';
 
 const Hero: React.FC = () => {
@@ -14,36 +14,22 @@ const Hero: React.FC = () => {
         <div className="absolute inset-0 bg-black/40"></div>
       </div>
 
-      <div className="relative z-10 text-center px-4 max-w-4xl mx-auto">
-        <h2 className="text-white text-lg md:text-xl font-light tracking-[0.2em] mb-4 uppercase">
+      <div className="relative z-10 text-center px-4 max-w-4xl mx-auto pt-12 sm:pt-16 md:pt-0 pb-44 md:pb-0">
+        <h2 className="text-white text-sm sm:text-base md:text-xl font-light tracking-[0.16em] md:tracking-[0.2em] mb-4 uppercase">
           Bienvenue au Cameroun
         </h2>
-        <h1 className="text-4xl md:text-6xl lg:text-7xl font-serif text-white font-bold mb-6 leading-tight">
+        <h1 className="text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-serif text-white font-bold mb-4 md:mb-6 leading-tight">
           Votre confort, <br/>
           <span className="text-accent italic">notre priorité.</span>
         </h1>
-        <p className="text-white/90 text-lg md:text-xl font-light mb-10 max-w-2xl mx-auto">
+        <p className="text-white/90 text-base sm:text-lg md:text-xl font-light mb-6 md:mb-10 max-w-2xl mx-auto">
           Découvrez nos appartements meublés, studios et chambres d'hôtes à Yaoundé et Bangangté.
           L'alliance parfaite entre élégance et commodité.
         </p>
         
-        <div className="flex flex-col sm:flex-row gap-4 justify-center">
-          <a 
-            href="#yaounde" 
-            className="px-8 py-3 bg-accent text-white font-medium rounded hover:bg-[#b3955f] transition-all shadow-lg active:scale-95"
-          >
-            Découvrir Yaoundé
-          </a>
-          <a 
-            href="#bangangte" 
-            className="px-8 py-3 bg-white/10 backdrop-blur-sm border border-white text-white font-medium rounded hover:bg-white hover:text-primary transition-all active:scale-95"
-          >
-            Voir Bangangté
-          </a>
-        </div>
       </div>
 
-      <div className="absolute bottom-10 left-1/2 transform -translate-x-1/2 animate-bounce text-white/70">
+      <div className="hidden md:block absolute bottom-10 left-1/2 transform -translate-x-1/2 animate-bounce text-white/70">
         <ArrowDown size={32} />
       </div>
     </section>
