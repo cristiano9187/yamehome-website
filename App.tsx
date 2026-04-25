@@ -230,32 +230,35 @@ const App: React.FC = () => {
   return (
     <div className="min-h-screen bg-cream font-sans text-slate-800">
       <Navbar />
-      <Hero />
-      <SearchBar 
-        destination={destination}
-        setDestination={setDestination}
-        startDate={startDate}
-        setStartDate={setStartDate}
-        endDate={endDate}
-        setEndDate={setEndDate}
-        onSearch={handleSearch}
-      />
-      <div className="max-w-5xl mx-auto px-4 mt-3 sm:mt-4 mb-8 sm:mb-10 relative z-30">
-        <div className="flex flex-col sm:flex-row gap-2 sm:gap-3 justify-center">
-          <a
-            href="#yaounde"
-            className="px-6 sm:px-8 py-2.5 sm:py-3 bg-accent text-white text-sm sm:text-base font-medium rounded-xl hover:bg-[#b3955f] transition-all shadow-lg active:scale-95 text-center"
-          >
-            Découvrir Yaoundé
-          </a>
-          <a
-            href="#bangangte"
-            className="px-6 sm:px-8 py-2.5 sm:py-3 bg-white/80 backdrop-blur-sm border border-slate-200 text-slate-700 text-sm sm:text-base font-medium rounded-xl hover:bg-white transition-all shadow-lg active:scale-95 text-center"
-          >
-            Voir Bangangté
-          </a>
+      <Hero>
+        <SearchBar 
+          destination={destination}
+          setDestination={setDestination}
+          startDate={startDate}
+          setStartDate={setStartDate}
+          endDate={endDate}
+          setEndDate={setEndDate}
+          onSearch={handleSearch}
+        />
+        <div className="max-w-5xl mx-auto px-4 relative z-30
+          max-md:mt-2 max-md:mb-6
+          md:mt-2 md:mb-8 lg:mb-10">
+          <div className="flex flex-col sm:flex-row gap-2 sm:gap-3 justify-center">
+            <a
+              href="#yaounde"
+              className="px-6 sm:px-8 py-2.5 sm:py-3 bg-accent text-white text-sm sm:text-base font-medium rounded-xl hover:bg-[#b3955f] transition-all shadow-lg active:scale-95 text-center"
+            >
+              Découvrir Yaoundé
+            </a>
+            <a
+              href="#bangangte"
+              className="px-6 sm:px-8 py-2.5 sm:py-3 bg-white/80 backdrop-blur-sm border border-slate-200 text-slate-700 text-sm sm:text-base font-medium rounded-xl hover:bg-white transition-all shadow-lg active:scale-95 text-center"
+            >
+              Voir Bangangté
+            </a>
+          </div>
         </div>
-      </div>
+      </Hero>
 
       {/* Bandeau de résultats de recherche */}
       {searchMessage && (

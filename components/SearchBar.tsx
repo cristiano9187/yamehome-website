@@ -55,7 +55,7 @@ const SearchBar: React.FC<SearchBarProps> = ({
   };
 
   return (
-    <div className="w-full max-w-5xl mx-auto -mt-[11.5rem] sm:-mt-40 md:-mt-40 lg:-mt-44 relative z-40 px-4">
+    <div className="w-full max-w-5xl mx-auto px-4 relative z-40 md:-mt-40 lg:-mt-44">
       <div className="bg-white rounded-2xl shadow-2xl border border-slate-100 p-1.5 md:p-3 flex flex-col md:flex-row items-stretch gap-1 md:gap-0">
         
         {/* Destination */}
