@@ -70,6 +70,8 @@ const PropertyCard: React.FC<PropertyCardProps> = ({
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [showBookingModal, setShowBookingModal] = useState(false);
   const [activeAmenityTooltip, setActiveAmenityTooltip] = useState<string | null>(null);
+  const isModulableStudio = property.type === 'Appartement' && !!property.pricing?.studioMode?.length;
+  const propertyTypeLabel = property.type === 'Appartement' ? 'Appartement 2 chambres' : property.type;
 
   useEffect(() => {
     if (!autoOpenBooking) return;
@@ -107,8 +109,16 @@ const PropertyCard: React.FC<PropertyCardProps> = ({
               <button onClick={nextImage} className="absolute right-2 top-1/2 -translate-y-1/2 bg-black/30 hover:bg-black/50 text-white p-1 rounded-full opacity-0 group-hover:opacity-100 transition-opacity z-10"><ChevronRight size={24} /></button>
             </>
           )}
-          <div className="absolute top-4 left-4 bg-white/90 backdrop-blur text-primary text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wide shadow-sm">{property.type}</div>
-          {property.siteName && <div className="absolute top-4 right-4 bg-accent/90 backdrop-blur text-white text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wide shadow-sm">{property.siteName}</div>}
+          <div className="absolute top-4 left-4 right-4 flex items-start justify-between gap-2">
+            <div className="bg-white/90 backdrop-blur text-primary text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wide shadow-sm max-w-[62%] leading-tight">
+              {propertyTypeLabel}
+            </div>
+            {property.siteName && (
+              <div className="bg-accent/90 backdrop-blur text-white text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wide shadow-sm max-w-[45%] text-right leading-tight">
+                {property.siteName}
+              </div>
+            )}
+          </div>
           <div className="absolute bottom-4 right-4 text-right">
             <div className="text-white font-bold text-xl drop-shadow-md">{property.pricePerNight.toLocaleString('fr-FR')} FCFA</div>
             <div className="text-white/80 text-[10px] uppercase font-bold">/ nuit</div>
@@ -121,6 +131,11 @@ const PropertyCard: React.FC<PropertyCardProps> = ({
                <MapPin size={14} className="mr-1 mt-0.5 text-accent" /> {property.fullAddress || property.location}
             </div>
             <h3 className="text-xl font-serif font-bold text-slate-800">{property.title}</h3>
+            {isModulableStudio && (
+              <span className="inline-flex items-center mt-1 px-2 py-0.5 rounded-full bg-slate-100 text-slate-500 text-[10px] font-semibold uppercase tracking-wide">
+                Modulable en studio
+              </span>
+            )}
           </div>
           <p className="text-slate-600 text-sm mb-4 line-clamp-5 min-h-[6.25rem]">{property.description}</p>
           <div className="relative">
