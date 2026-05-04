@@ -1,7 +1,9 @@
 import React, { useState, useMemo } from 'react';
-import { X, Calendar as CalendarIcon, MessageCircle, Info, Calculator } from 'lucide-react';
+import { X, Calendar as CalendarIcon, MessageCircle, Info, Calculator, Loader2, Send } from 'lucide-react';
+import { httpsCallable } from 'firebase/functions';
 import { Property, Location, Reservation as GlobalReservation } from '../types';
 import { WHATSAPP_AGENT_YAOUNDE, WHATSAPP_AGENT_BANGANGTE, getRateForApartment } from '../constants';
+import { functions } from '../firebase';
 
 interface BookingModalProps {
   property: Property;
@@ -35,6 +37,13 @@ const BookingModal: React.FC<BookingModalProps> = ({ property, onClose, initialS
   const [arrivalTime, setArrivalTime] = useState('');
   const [tripPurpose, setTripPurpose] = useState('');
   const [specialNeed, setSpecialNeed] = useState('');
+  const [firstName, setFirstName] = useState('');
+  const [lastName, setLastName] = useState('');
+  const [phone, setPhone] = useState('');
+  const [email, setEmail] = useState('');
+  const [submitting, setSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState<string | null>(null);
+  const [submitSuccess, setSubmitSuccess] = useState(false);
 
   // Filtrage et conversion des réservations pour cet appartement (depuis les données temps réel de App)
   const reservations = useMemo<LocalReservation[]>(() =>
@@ -101,6 +110,58 @@ ${tripPurpose ? `🧭 Motif du séjour : ${tripPurpose}` : ''}
 ${specialNeed ? `📝 Besoin particulier : ${specialNeed}` : ''}
 ${campaignSource ? `📣 Source campagne : ${campaignSource}` : ''}`;
     window.open(`https://wa.me/${getWhatsAppNumber()}?text=${encodeURIComponent(msg)}`, '_blank');
+  };
+
+  const buildProspectNotes = () => {
+    const lines: string[] = [];
+    if (guestCount.trim()) lines.push(`Voyageurs : ${guestCount}`);
+    if (originCity.trim()) lines.push(`Ville de provenance : ${originCity}`);
+    if (arrivalTime.trim()) lines.push(`Heure d'arrivée estimée : ${arrivalTime}`);
+    if (tripPurpose.trim()) lines.push(`Motif du séjour : ${tripPurpose}`);
+    if (specialNeed.trim()) lines.push(`Besoin particulier : ${specialNeed}`);
+    lines.push(`Logement : ${property.title} (${property.siteName || property.location})`);
+    lines.push(`Total affiché (nuits × tarif + caution) : ${total.toLocaleString('fr-FR')} FCFA`);
+    return lines.join('\n');
+  };
+
+  const handleSubmitProspect = async () => {
+    setSubmitError(null);
+    if (!startDate || !endDate || nights <= 0) {
+      setSubmitError('Choisissez les dates de séjour.');
+      return;
+    }
+    if (!lastName.trim()) {
+      setSubmitError('Le nom est obligatoire.');
+      return;
+    }
+    if (!phone.trim() || phone.replace(/\s/g, '').length < 8) {
+      setSubmitError('Indiquez un numéro de téléphone valide.');
+      return;
+    }
+
+    setSubmitting(true);
+    try {
+      const submit = httpsCallable(functions, 'submitWebsiteProspect');
+      await submit({
+        firstName: firstName.trim(),
+        lastName: lastName.trim(),
+        phone: phone.trim(),
+        email: email.trim(),
+        calendarSlug: property.id,
+        isStudioMode,
+        startDate,
+        endDate,
+        guestCount: guestCount.trim() ? Number(guestCount) : 1,
+        notes: buildProspectNotes(),
+        campaignSource: campaignSource || '',
+      });
+      setSubmitSuccess(true);
+    } catch (e: unknown) {
+      const err = e as { message?: string; code?: string };
+      setSubmitError(err.message || 'Impossible d’envoyer la demande. Réessayez ou contactez-nous sur WhatsApp.');
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   return (
@@ -237,6 +298,7 @@ ${campaignSource ? `📣 Source campagne : ${campaignSource}` : ''}`;
                       <Info size={16} className="text-accent" /> Mode Studio
                     </div>
                     <button 
+                      type="button"
                       onClick={() => setIsStudioMode(!isStudioMode)}
                       className={`w-10 h-5 rounded-full relative transition-colors ${isStudioMode ? 'bg-accent' : 'bg-slate-300'}`}
                     >
@@ -244,6 +306,55 @@ ${campaignSource ? `📣 Source campagne : ${campaignSource}` : ''}`;
                     </button>
                   </div>
                 )}
+
+                <div className="border-t border-slate-100 pt-4 mb-4 space-y-3">
+                  <p className="text-xs font-bold text-slate-500 uppercase tracking-wide">Pré-réservation (sans compte)</p>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                    <div>
+                      <label className="block text-[10px] font-bold text-slate-400 uppercase mb-1">Prénom</label>
+                      <input
+                        type="text"
+                        value={firstName}
+                        onChange={(e) => setFirstName(e.target.value)}
+                        className="w-full p-2 bg-slate-50 border border-slate-200 rounded-lg text-sm focus:ring-2 focus:ring-accent outline-none"
+                        autoComplete="given-name"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-[10px] font-bold text-slate-400 uppercase mb-1">Nom *</label>
+                      <input
+                        type="text"
+                        value={lastName}
+                        onChange={(e) => setLastName(e.target.value)}
+                        className="w-full p-2 bg-slate-50 border border-slate-200 rounded-lg text-sm focus:ring-2 focus:ring-accent outline-none"
+                        autoComplete="family-name"
+                        required
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-[10px] font-bold text-slate-400 uppercase mb-1">Téléphone *</label>
+                      <input
+                        type="tel"
+                        value={phone}
+                        onChange={(e) => setPhone(e.target.value)}
+                        placeholder="+237 …"
+                        className="w-full p-2 bg-slate-50 border border-slate-200 rounded-lg text-sm focus:ring-2 focus:ring-accent outline-none"
+                        autoComplete="tel"
+                        required
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-[10px] font-bold text-slate-400 uppercase mb-1">Email (optionnel)</label>
+                      <input
+                        type="email"
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
+                        className="w-full p-2 bg-slate-50 border border-slate-200 rounded-lg text-sm focus:ring-2 focus:ring-accent outline-none"
+                        autoComplete="email"
+                      />
+                    </div>
+                  </div>
+                </div>
 
                 <div className="space-y-2 border-t border-slate-100 pt-4">
                   <div className="flex justify-between text-sm">
@@ -268,15 +379,41 @@ ${campaignSource ? `📣 Source campagne : ${campaignSource}` : ''}`;
           </div>
         </div>
 
-        <div className="p-6 bg-white border-t border-slate-100">
-          <button 
-            disabled={!startDate || !endDate || nights <= 0}
-            onClick={sendWhatsApp}
-            className="w-full flex items-center justify-center gap-3 py-4 bg-[#25D366] text-white rounded-2xl font-bold hover:bg-[#20bd5a] transition-all active:scale-95 disabled:opacity-50"
-          >
-            <MessageCircle size={24} fill="white" />
-            RÉSERVER SUR WHATSAPP
-          </button>
+        <div className="p-6 bg-white border-t border-slate-100 space-y-3">
+          {submitSuccess ? (
+            <div className="text-center py-4 space-y-2">
+              <p className="text-slate-800 font-serif font-bold text-lg">Demande bien reçue</p>
+              <p className="text-slate-600 text-sm">Nous revenons vers vous rapidement pour confirmer votre pré-réservation et les modalités de paiement.</p>
+              <button type="button" onClick={onClose} className="mt-2 px-6 py-2 bg-primary text-white rounded-xl font-bold text-sm">Fermer</button>
+            </div>
+          ) : (
+            <>
+              {submitError && (
+                <div className="text-sm text-red-700 bg-red-50 border border-red-100 rounded-xl px-3 py-2">{submitError}</div>
+              )}
+              <button 
+                type="button"
+                disabled={!startDate || !endDate || nights <= 0 || submitting}
+                onClick={handleSubmitProspect}
+                className="w-full flex items-center justify-center gap-3 py-4 bg-accent text-white rounded-2xl font-bold hover:bg-[#b3955f] transition-all active:scale-95 disabled:opacity-50"
+              >
+                {submitting ? <Loader2 size={22} className="animate-spin" /> : <Send size={22} />}
+                ENVOYER MA PRÉ-RÉSERVATION
+              </button>
+              <button 
+                type="button"
+                disabled={!startDate || !endDate || nights <= 0}
+                onClick={sendWhatsApp}
+                className="w-full flex items-center justify-center gap-3 py-4 bg-[#25D366] text-white rounded-2xl font-bold hover:bg-[#20bd5a] transition-all active:scale-95 disabled:opacity-50"
+              >
+                <MessageCircle size={24} fill="white" />
+                RÉSERVER SUR WHATSAPP
+              </button>
+              <p className="text-[11px] text-slate-500 text-center leading-snug">
+                La pré-réservation n’est définitive qu’après confirmation YameHome et paiement selon les conditions communiquées.
+              </p>
+            </>
+          )}
         </div>
       </div>
     </div>

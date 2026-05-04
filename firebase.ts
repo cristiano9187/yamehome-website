@@ -1,5 +1,6 @@
 import { initializeApp } from "firebase/app";
 import { getFirestore } from "firebase/firestore";
+import { getFunctions } from "firebase/functions";
 
 const firebaseConfig = {
   apiKey: "AIzaSyCKb2qL49MnFkSakZiidO3g7GhIFxv3MKU",
@@ -14,3 +15,8 @@ const app = initializeApp(firebaseConfig);
 
 // Base de données nommée (non-default)
 export const db = getFirestore(app, "ai-studio-469b45b3-ddc0-4c8a-9d44-563700ba9c68");
+
+/** Région des Cloud Functions (callable pré-réservation site → Firestore `prospects`) */
+export const FUNCTIONS_REGION = "europe-west1";
+
+export const functions = getFunctions(app, FUNCTIONS_REGION);
