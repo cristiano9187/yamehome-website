@@ -129,7 +129,7 @@ export const PROPERTIES: Property[] = [
       '/images/deluxe/chambre_p.jpg'
     ],
     driveFolderUrl: 'https://drive.google.com/drive/folders/1GNItWwoF5sOvZjnvlSZVeOIJ6OA2Ol3A',
-    amenities: ['Anti-délestage (Backup)', 'Forage (Eau 24/7)', 'Wifi Haut Débit', 'Climatisation', 'Cuisine équipée', 'Parking interne', 'Magasin de stockage'],
+    amenities: ['Anti-délestage (Backup)', 'Forage (Eau 24/7)', 'Wifi Haut Débit', 'Climatisation', 'Cuisine équipée', 'Parking interne', 'Magasin de stockage', 'Réception — boissons'],
     capacity: 5
   },
   {
@@ -154,7 +154,7 @@ export const PROPERTIES: Property[] = [
       '/images/americain/chambre_studio.jpg'
     ], 
     driveFolderUrl: 'https://drive.google.com/drive/folders/1zAp1a4o7Ac2MNoZ6wzsDoBJ9ClzmkS93',
-    amenities: ['Anti-délestage', 'Forage', 'Wifi Illimité', 'Climatisation', 'Cuisine Américaine', 'Smart TV', 'Interphone'],
+    amenities: ['Anti-délestage', 'Forage', 'Wifi Illimité', 'Climatisation', 'Cuisine Américaine', 'Smart TV', 'Interphone', 'Réception — boissons'],
     capacity: 2
   },
   {
@@ -179,7 +179,7 @@ export const PROPERTIES: Property[] = [
       '/images/superior/chambre_sup.jpg'
     ],
     driveFolderUrl: 'https://drive.google.com/drive/folders/1N3hgGTKvcn8xBOKpN6jTggZEY80Vse2f',
-    amenities: ['Anti-délestage', 'Forage', 'Wifi Illimité', 'Climatisation', 'Cuisine Américaine', 'Smart TV', 'Interphone'],
+    amenities: ['Anti-délestage', 'Forage', 'Wifi Illimité', 'Climatisation', 'Cuisine Américaine', 'Smart TV', 'Interphone', 'Réception — boissons'],
     capacity: 2
   },
   {
@@ -187,7 +187,7 @@ export const PROPERTIES: Property[] = [
     title: 'Chambre Standard A',
     siteName: 'MATERA YAMEHOME',
     fullAddress: 'Odza borne 10, entrée Ministre',
-    description: 'Une suite hôtelière de 22m² pensée pour votre bien-être. Lit King Size, coin détente et mini-équipements (frigo, micro-ondes) pour une totale indépendance.',
+    description: 'Une suite hôtelière de 22m² pensée pour votre bien-être. Lit King Size, coin détente et mini-équipements (frigo, micro-ondes) pour une totale indépendance. Système anti-délestage pour un confort maximal ; réception sur place avec vente de boissons fraîches, jus et bières.',
     location: Location.YAOUNDE,
     type: PropertyType.CHAMBRE,
     pricePerNight: 15000,
@@ -202,7 +202,7 @@ export const PROPERTIES: Property[] = [
       '/images/chambrea/vue_tv.jpg'
     ],
     driveFolderUrl: 'https://drive.google.com/drive/folders/1d0lqRu4KYHj6KfyrLOGnsdy_cRaJQ3e_',
-    amenities: ['Lit King Size', 'Climatisation', 'Réfrigérateur', 'Micro-ondes', 'Wifi', 'TV 43 pouces', 'Douche privative'],
+    amenities: ['Anti-délestage', 'Réception — boissons', 'Lit King Size', 'Climatisation', 'Réfrigérateur', 'Micro-ondes', 'Wifi', 'TV 43 pouces', 'Douche privative'],
     capacity: 2
   },
   {
@@ -210,7 +210,7 @@ export const PROPERTIES: Property[] = [
     title: 'Chambre Standard B',
     siteName: 'MATERA YAMEHOME',
     fullAddress: 'Odza borne 10, entrée Ministre',
-    description: 'Confort optimal pour cette chambre de 22m² avec lit King Size et douche privative. Idéale pour les courts séjours ou les voyages solo.',
+    description: 'Confort optimal pour cette chambre de 22m² avec lit King Size et douche privative. Idéale pour les courts séjours ou les voyages solo. Désormais équipée du système anti-délestage ; réception sur place avec vente de boissons fraîches, jus et bières.',
     location: Location.YAOUNDE,
     type: PropertyType.CHAMBRE,
     pricePerNight: 15000,
@@ -225,7 +225,7 @@ export const PROPERTIES: Property[] = [
       '/images/chambreb/placard.jpg'
     ],
     driveFolderUrl: 'https://drive.google.com/drive/folders/1Q4OzXAivA9vAd_3IX5AE_ue2tBS2ZIbS',
-    amenities: ['Lit King Size', 'Climatisation', 'Réfrigérateur', 'Micro-ondes', 'Wifi', 'TV 43 pouces', 'Douche privative'],
+    amenities: ['Anti-délestage', 'Réception — boissons', 'Lit King Size', 'Climatisation', 'Réfrigérateur', 'Micro-ondes', 'Wifi', 'TV 43 pouces', 'Douche privative'],
     capacity: 2
   },
 
