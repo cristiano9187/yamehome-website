@@ -9,6 +9,7 @@ import PropertyCard from './components/PropertyCard';
 import Footer from './components/Footer';
 import WhatsAppWidget from './components/WhatsAppWidget';
 import LocationSection from './components/LocationSection';
+import YaoundeValueProps from './components/YaoundeValueProps';
 import TermsModal from './components/TermsModal';
 import LeadTunnelModal from './components/LeadTunnelModal';
 import { PROPERTIES } from './constants';
@@ -304,6 +305,8 @@ const App: React.FC = () => {
         <>
           {/* Yaoundé Section */}
           {yaoundeProperties.length > 0 && (
+            <>
+            <YaoundeValueProps onOpenPaymentInfo={() => handleOpenTerms('YAOUNDE')} />
             <section id="yaounde" className="py-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
               <div className="text-center mb-16">
                 <span className="text-accent uppercase tracking-widest font-bold text-sm">Capitale Politique</span>
@@ -356,6 +359,7 @@ const App: React.FC = () => {
                 locations={yaoundeLocations} 
               />
             </section>
+            </>
           )}
 
           {/* Divider / Feature Section */}
