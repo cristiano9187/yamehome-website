@@ -341,7 +341,7 @@ const App: React.FC = () => {
                 <div className="text-center md:text-left">
                   <h3 className="text-xl md:text-2xl font-serif font-bold text-primary mb-2">Prêt à réserver votre séjour ?</h3>
                   <p className="text-slate-500 max-w-lg">
-                    Consultez nos moyens de paiement sécurisés (OM/MTN, Virement, PayPal) et nos conditions pour <strong>Yaoundé</strong>.
+                    Consultez nos moyens de paiement sécurisés (OM/MTN, RIB ou PayPal sur demande) et nos conditions pour <strong>Yaoundé</strong>.
                   </p>
                 </div>
                 <button
