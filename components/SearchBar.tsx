@@ -1,7 +1,8 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect, useLayoutEffect } from 'react';
+import { createPortal } from 'react-dom';
 import { Search, Calendar as CalendarIcon, MapPin, X } from 'lucide-react';
 import { DayPicker, DateRange } from 'react-day-picker';
-import { format, addMonths } from 'date-fns';
+import { format } from 'date-fns';
 import { fr } from 'date-fns/locale';
 import 'react-day-picker/dist/style.css';
 
@@ -26,6 +27,8 @@ const SearchBar: React.FC<SearchBarProps> = ({
 }) => {
   const [showCalendar, setShowCalendar] = useState(false);
   const calendarRef = useRef<HTMLDivElement>(null);
+  const dateTriggerRef = useRef<HTMLDivElement>(null);
+  const [calendarPosition, setCalendarPosition] = useState<React.CSSProperties | null>(null);
 
   const range: DateRange | undefined = {
     from: startDate || undefined,
@@ -37,16 +40,60 @@ const SearchBar: React.FC<SearchBarProps> = ({
     setEndDate(newRange?.to || null);
   };
 
-  // Close calendar when clicking outside
-  useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      if (calendarRef.current && !calendarRef.current.contains(event.target as Node)) {
-        setShowCalendar(false);
+  useLayoutEffect(() => {
+    if (!showCalendar) {
+      setCalendarPosition(null);
+      return;
+    }
+    const update = () => {
+      const el = dateTriggerRef.current;
+      if (!el) return;
+      const r = el.getBoundingClientRect();
+      const pad = 8;
+      const minW = Math.min(360, Math.max(280, window.innerWidth - pad * 2));
+      const left = Math.max(pad, Math.min(r.left, window.innerWidth - minW - pad));
+      let top = r.bottom + pad;
+      const approximateHeight = 380;
+      if (top + approximateHeight > window.innerHeight - pad) {
+        top = Math.max(pad, r.top - approximateHeight - pad);
       }
+      setCalendarPosition({
+        position: 'fixed',
+        top,
+        left,
+        width: minW,
+        zIndex: 150,
+        maxHeight: `min(420px, calc(100vh - ${top}px - ${pad}px))`,
+        overflowY: 'auto',
+      });
     };
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => document.removeEventListener('mousedown', handleClickOutside);
-  }, []);
+    update();
+    window.addEventListener('scroll', update, true);
+    window.addEventListener('resize', update);
+    return () => {
+      window.removeEventListener('scroll', update, true);
+      window.removeEventListener('resize', update);
+    };
+  }, [showCalendar]);
+
+  // Close calendar when clicking outside (trigger + portal)
+  useEffect(() => {
+    if (!showCalendar) return;
+
+    const handlePointerDown = (event: MouseEvent | TouchEvent) => {
+      const t = event.target as Node;
+      if (dateTriggerRef.current?.contains(t)) return;
+      if (calendarRef.current?.contains(t)) return;
+      setShowCalendar(false);
+    };
+
+    document.addEventListener('mousedown', handlePointerDown);
+    document.addEventListener('touchstart', handlePointerDown, { passive: true });
+    return () => {
+      document.removeEventListener('mousedown', handlePointerDown);
+      document.removeEventListener('touchstart', handlePointerDown);
+    };
+  }, [showCalendar]);
 
   const formatDateRange = () => {
     if (!startDate) return 'Sélectionnez vos dates';
@@ -77,7 +124,8 @@ const SearchBar: React.FC<SearchBarProps> = ({
 
         {/* Dates */}
         <div className="flex-1 relative">
-          <div 
+          <div
+            ref={dateTriggerRef}
             onClick={() => setShowCalendar(!showCalendar)}
             className="flex items-center gap-3 px-4 py-2 md:py-3 md:border-r border-slate-100 cursor-pointer hover:bg-slate-50 transition-colors h-full"
           >
@@ -101,31 +149,36 @@ const SearchBar: React.FC<SearchBarProps> = ({
             )}
           </div>
 
-          {/* Calendar Popover */}
-          {showCalendar && (
-            <div 
-              ref={calendarRef}
-              className="absolute top-full left-0 mt-2 bg-white rounded-2xl shadow-2xl border border-slate-100 p-4 z-50 animate-in fade-in zoom-in-95 duration-200"
-            >
-              <DayPicker
-                mode="range"
-                selected={range}
-                onSelect={setRange}
-                numberOfMonths={1}
-                locale={fr}
-                disabled={{ before: new Date() }}
-                className="rdp-custom"
-              />
-              <div className="mt-4 flex justify-end">
-                <button 
-                  onClick={() => setShowCalendar(false)}
-                  className="px-4 py-2 bg-primary text-white rounded-lg text-sm font-medium hover:bg-slate-800 transition-colors"
-                >
-                  Appliquer
-                </button>
-              </div>
-            </div>
-          )}
+          {typeof document !== 'undefined' &&
+            showCalendar &&
+            calendarPosition &&
+            createPortal(
+              <div
+                ref={calendarRef}
+                style={calendarPosition}
+                className="bg-white rounded-2xl shadow-2xl border border-slate-100 p-4 animate-in fade-in zoom-in-95 duration-200"
+              >
+                <DayPicker
+                  mode="range"
+                  selected={range}
+                  onSelect={setRange}
+                  numberOfMonths={1}
+                  locale={fr}
+                  disabled={{ before: new Date() }}
+                  className="rdp-custom"
+                />
+                <div className="mt-4 flex justify-end">
+                  <button
+                    type="button"
+                    onClick={() => setShowCalendar(false)}
+                    className="px-4 py-2 bg-primary text-white rounded-lg text-sm font-medium hover:bg-slate-800 transition-colors"
+                  >
+                    Appliquer
+                  </button>
+                </div>
+              </div>,
+              document.body
+            )}
         </div>
 
         {/* Search Button */}

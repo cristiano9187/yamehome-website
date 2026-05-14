@@ -89,6 +89,15 @@ const App: React.FC = () => {
   }, []);
 
   useEffect(() => {
+    if (!searchMessage) return;
+    window.requestAnimationFrame(() => {
+      document
+        .getElementById('search-results-banner')
+        ?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+  }, [searchMessage]);
+
+  useEffect(() => {
     if (!deepLinkPropertyId) return;
     const targetElement = document.getElementById(`property-card-${deepLinkPropertyId}`);
     if (!targetElement) return;
@@ -263,7 +272,10 @@ const App: React.FC = () => {
 
       {/* Bandeau de résultats de recherche */}
       {searchMessage && (
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-8">
+        <div
+          id="search-results-banner"
+          className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-8 scroll-mt-[5.5rem] md:scroll-mt-24"
+        >
           <div className="bg-white border-l-4 border-accent text-primary p-4 rounded-xl shadow-lg flex justify-between items-center animate-in fade-in slide-in-from-top-4 duration-500">
             <div className="flex items-center gap-3">
               <div className="w-10 h-10 bg-accent/10 rounded-full flex items-center justify-center shrink-0">
@@ -306,8 +318,10 @@ const App: React.FC = () => {
           {/* Yaoundé Section */}
           {yaoundeProperties.length > 0 && (
             <>
-            <YaoundeValueProps onOpenPaymentInfo={() => handleOpenTerms('YAOUNDE')} />
-            <section id="yaounde" className="py-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
+            {!searchMessage && (
+              <YaoundeValueProps onOpenPaymentInfo={() => handleOpenTerms('YAOUNDE')} />
+            )}
+            <section id="yaounde" className={`px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto ${searchMessage ? 'pt-12 pb-20' : 'py-20'}`}>
               <div className="text-center mb-16">
                 <span className="text-accent uppercase tracking-widest font-bold text-sm">Capitale Politique</span>
                 <h2 className="text-4xl font-serif font-bold text-primary mt-2">Nos Logements à Yaoundé</h2>
@@ -362,21 +376,23 @@ const App: React.FC = () => {
             </>
           )}
 
-          {/* Divider / Feature Section */}
-          <section className="bg-primary py-20 text-white relative overflow-hidden">
-            <div className="absolute inset-0 opacity-10 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')]"></div>
-            <div className="max-w-4xl mx-auto px-4 text-center relative z-10">
-              <h2 className="text-3xl md:text-4xl font-serif mb-6">Un séjour authentique</h2>
-              <p className="text-lg md:text-xl font-light text-slate-300 mb-8">
-                "Que vous soyez en voyage d'affaires à Odza ou en visite à l'Ouest, 
-                YameHome vous garantit un standing international avec la chaleur de l'accueil camerounais."
-              </p>
-            </div>
-          </section>
+          {/* Bandeau intermédiaire : masqué après une recherche pour coller aux résultats */}
+          {!searchMessage && (
+            <section className="bg-primary py-20 text-white relative overflow-hidden">
+              <div className="absolute inset-0 opacity-10 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')]"></div>
+              <div className="max-w-4xl mx-auto px-4 text-center relative z-10">
+                <h2 className="text-3xl md:text-4xl font-serif mb-6">Un séjour authentique</h2>
+                <p className="text-lg md:text-xl font-light text-slate-300 mb-8">
+                  "Que vous soyez en voyage d'affaires à Odza ou en visite à l'Ouest, 
+                  YameHome vous garantit un standing international avec la chaleur de l'accueil camerounais."
+                </p>
+              </div>
+            </section>
+          )}
 
           {/* Bangangté Section */}
           {bangangteProperties.length > 0 && (
-            <section id="bangangte" className="py-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto bg-white">
+            <section id="bangangte" className={`px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto bg-white ${searchMessage ? 'pt-14 pb-20' : 'py-20'}`}>
               <div className="text-center mb-16">
                 <span className="text-accent uppercase tracking-widest font-bold text-sm">Ouest Cameroun</span>
                 <h2 className="text-4xl font-serif font-bold text-primary mt-2">Nos Chambres à Bangangté</h2>

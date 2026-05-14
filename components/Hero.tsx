@@ -7,7 +7,7 @@ type HeroProps = {
 
 const Hero: React.FC<HeroProps> = ({ children }) => {
   return (
-    <section id="home" className="relative min-h-[100dvh] w-full overflow-x-hidden flex flex-col">
+    <section id="home" className="relative min-h-[100dvh] w-full flex flex-col">
       {/* Background Image with Overlay */}
       <div 
         className="absolute inset-0 z-0 bg-cover bg-center bg-no-repeat"
