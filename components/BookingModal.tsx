@@ -138,6 +138,10 @@ ${campaignSource ? `📣 Source campagne : ${campaignSource}` : ''}`;
       setSubmitError('Indiquez un numéro de téléphone valide.');
       return;
     }
+    if (!email.trim() || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim())) {
+      setSubmitError('Indiquez une adresse email valide pour recevoir votre confirmation de réservation. / Please enter a valid email to receive your booking confirmation.');
+      return;
+    }
 
     setSubmitting(true);
     try {
@@ -344,13 +348,15 @@ ${campaignSource ? `📣 Source campagne : ${campaignSource}` : ''}`;
                       />
                     </div>
                     <div>
-                      <label className="block text-[10px] font-bold text-slate-400 uppercase mb-1">Email (optionnel)</label>
+                      <label className="block text-[10px] font-bold text-slate-400 uppercase mb-1">Email * <span className="normal-case font-normal text-slate-400">(confirmation envoyée)</span></label>
                       <input
                         type="email"
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
                         className="w-full p-2 bg-slate-50 border border-slate-200 rounded-lg text-sm focus:ring-2 focus:ring-accent outline-none"
                         autoComplete="email"
+                        required
+                        placeholder="votre@email.com"
                       />
                     </div>
                   </div>
@@ -382,8 +388,12 @@ ${campaignSource ? `📣 Source campagne : ${campaignSource}` : ''}`;
         <div className="p-6 bg-white border-t border-slate-100 space-y-3">
           {submitSuccess ? (
             <div className="text-center py-4 space-y-2">
-              <p className="text-slate-800 font-serif font-bold text-lg">Demande bien reçue</p>
-              <p className="text-slate-600 text-sm">Nous revenons vers vous rapidement pour confirmer votre pré-réservation et les modalités de paiement.</p>
+              <div className="w-12 h-12 bg-green-50 rounded-full flex items-center justify-center mx-auto mb-2">
+                <svg width="28" height="28" fill="none" viewBox="0 0 24 24"><circle cx="12" cy="12" r="12" fill="#dcfce7"/><path d="M7 12.5l3.5 3.5 6-7" stroke="#16a34a" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"/></svg>
+              </div>
+              <p className="text-slate-800 font-serif font-bold text-lg">Demande bien reçue !</p>
+              <p className="text-slate-600 text-sm leading-relaxed">Un email de confirmation vous a été envoyé. Nous revenons vers vous rapidement pour confirmer votre pré-réservation et les modalités de paiement.</p>
+              <p className="text-slate-400 text-xs italic">A confirmation email has been sent to you.</p>
               <button type="button" onClick={onClose} className="mt-2 px-6 py-2 bg-primary text-white rounded-xl font-bold text-sm">Fermer</button>
             </div>
           ) : (
