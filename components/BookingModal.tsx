@@ -419,9 +419,16 @@ ${campaignSource ? `📣 Source campagne : ${campaignSource}` : ''}`;
           {/* ═══ ÉTAPE 4 — RÉCAPITULATIF ═══ */}
           {step === 4 && !submitSuccess && (
             <div className="space-y-3">
+              <button type="button" onClick={() => setStep(3)}
+                className="flex items-center gap-1 text-xs font-bold text-slate-500 hover:text-accent transition-colors mb-1">
+                <ChevronLeft size={14} /> Retour
+              </button>
               {/* Récap séjour */}
               <div className="bg-white rounded-2xl shadow-sm border border-slate-100 p-4">
-                <p className="text-xs text-slate-400 font-bold uppercase tracking-wide mb-3">Récapitulatif</p>
+                <div className="flex justify-between items-center mb-3">
+                  <p className="text-xs text-slate-400 font-bold uppercase tracking-wide">Récapitulatif</p>
+                  <button type="button" onClick={() => setStep(1)} className="text-xs text-accent font-bold hover:underline">Modifier les dates</button>
+                </div>
                 <div className="space-y-2 text-sm">
                   <div className="flex justify-between">
                     <span className="text-slate-500">Logement</span>
