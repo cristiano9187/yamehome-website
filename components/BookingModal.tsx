@@ -241,6 +241,32 @@ ${campaignSource ? `📣 Source campagne : ${campaignSource}` : ''}`;
           {/* ═══ ÉTAPE 1 — DATES ═══ */}
           {step === 1 && (
             <div className="bg-white rounded-2xl shadow-sm border border-slate-100 p-4">
+              {/* Sélecteur mode studio — affiché en priorité si disponible */}
+              {property.studioPrice && (
+                <div className="mb-5">
+                  <p className="text-[10px] font-bold text-slate-400 uppercase tracking-wide mb-2 flex items-center gap-1">
+                    <Info size={11} className="text-accent" /> Type de logement
+                  </p>
+                  <div className="grid grid-cols-2 gap-2">
+                    <button
+                      type="button"
+                      onClick={() => setIsStudioMode(false)}
+                      className={`flex flex-col items-center gap-1 p-3 rounded-2xl border-2 transition-all text-sm font-bold
+                        ${!isStudioMode ? 'border-accent bg-accent/5 text-accent' : 'border-slate-200 bg-white text-slate-500 hover:border-slate-300'}`}>
+                      <span className="text-xl">🏠</span>
+                      <span>Appartement complet</span>
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => setIsStudioMode(true)}
+                      className={`flex flex-col items-center gap-1 p-3 rounded-2xl border-2 transition-all text-sm font-bold
+                        ${isStudioMode ? 'border-accent bg-accent/5 text-accent' : 'border-slate-200 bg-white text-slate-500 hover:border-slate-300'}`}>
+                      <span className="text-xl">🛋️</span>
+                      <span>Studio</span>
+                    </button>
+                  </div>
+                </div>
+              )}
               <div className="mb-4 text-center">
                 {!startDate && (
                   <p className="text-sm font-semibold text-slate-700">Choisissez votre <span className="text-accent">date d'arrivée</span></p>
@@ -285,18 +311,6 @@ ${campaignSource ? `📣 Source campagne : ${campaignSource}` : ''}`;
                 </div>
               </div>
 
-              {/* Studio toggle */}
-              {property.studioPrice && (
-                <div className="flex items-center justify-between p-3 bg-amber-50 rounded-xl border border-amber-100 mt-4">
-                  <div className="flex items-center gap-2 text-xs font-bold text-amber-900 uppercase">
-                    <Info size={14} className="text-accent" /> Mode Studio
-                  </div>
-                  <button type="button" onClick={() => setIsStudioMode(!isStudioMode)}
-                    className={`w-10 h-5 rounded-full relative transition-colors ${isStudioMode ? 'bg-accent' : 'bg-slate-300'}`}>
-                    <div className={`absolute top-1 w-3 h-3 bg-white rounded-full transition-all ${isStudioMode ? 'left-6' : 'left-1'}`} />
-                  </button>
-                </div>
-              )}
 
               {/* Prix preview */}
               {nights > 0 && (
