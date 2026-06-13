@@ -1,5 +1,12 @@
 import { Property, Location, PropertyType } from './types';
 
+/**
+ * Photos logements — règles perf mobile (3G) :
+ * - Format .jpg uniquement, redimensionner à 1600px puis qualité ~80 (cible 200–350 Ko).
+ * - Appartements : viser 6–8 photos (salon, cuisine, chambres, SDB, entrée…).
+ * - La carte n’affiche que les 3 premières ; la galerie charge le reste à la demande.
+ */
+
 // --- UTILITAIRE GOOGLE DRIVE ---
 const getDriveImage = (urlOrId: string): string => {
   if (!urlOrId.includes('drive.google.com') && urlOrId.startsWith('http')) {
@@ -34,9 +41,16 @@ export const PROPERTIES: Property[] = [
       ]
     },
     images: [
-      '/images/terracotta/chambre_fenetre.jpg',
-      '/images/terracotta/salle_a_manger.jpg',
-      '/images/terracotta/salon_tv.jpg'
+      '/images/terracotta/salon.jpg',
+      '/images/terracotta/chambre_principale.jpg',
+      '/images/terracotta/cuisine.jpg',
+      '/images/terracotta/entree.jpg',
+      '/images/terracotta/salon_tv.jpg',
+      '/images/terracotta/cuisine_fenetre.jpg',
+      '/images/terracotta/chambre_2.jpg',
+      '/images/terracotta/chambre_detail.jpg',
+      '/images/terracotta/sdb.jpg',
+      '/images/terracotta/balcon.jpg',
     ],
     driveFolderUrl: 'https://drive.google.com/drive/folders/1fveCMq0ZaYiAC-JZh1BuuZ-YZFfBxU0T',
     amenities: ['Energie solaire', 'Wifi Illimité', 'Climatisation', 'Eau Chaude', 'Sécurité H24', 'Parking sécurisé', 'Cuisine équipée', 'Smart TV (Canal+/Netflix)'],
@@ -64,9 +78,16 @@ export const PROPERTIES: Property[] = [
       ]
     },
     images: [
+      '/images/emeraude/salon.jpg',
+      '/images/emeraude/chambre_principale.jpg',
+      '/images/emeraude/cuisine.jpg',
       '/images/emeraude/aceuil.jpg',
-      '/images/emeraude/d_cuisine.jpg',
-      '/images/emeraude/f_chambre.jpg'
+      '/images/emeraude/salle_manger.jpg',
+      '/images/emeraude/chambre_2.jpg',
+      '/images/emeraude/sdb.jpg',
+      '/images/emeraude/entree.jpg',
+      '/images/emeraude/salon_detail.jpg',
+      '/images/emeraude/exterieur.jpg',
     ],
     driveFolderUrl: 'https://drive.google.com/drive/folders/1ryIRS2lqDQRulF9hLDFjV7WKgfma7kfc',
     amenities: ['Energie solaire', 'Wifi Illimité', 'Climatisation', 'Eau Chaude', 'Sécurité H24', 'Parking sécurisé', 'Cuisine équipée', 'Smart TV (Canal+/Netflix)'],
@@ -94,9 +115,15 @@ export const PROPERTIES: Property[] = [
       ]
     },
     images: [
-      '/images/brigade/salon_brigade.jpg',
-      '/images/brigade/cuisine_brigade.jpg',
-      '/images/brigade/chrambre_p_brigade.jpg'
+      '/images/brigade/salon.jpg',
+      '/images/brigade/chambre_principale.jpg',
+      '/images/brigade/cuisine.jpg',
+      '/images/brigade/chambre_2.jpg',
+      '/images/brigade/balcon.jpg',
+      '/images/brigade/salon_tv.jpg',
+      '/images/brigade/sdb.jpg',
+      '/images/brigade/entree.jpg',
+      '/images/brigade/cuisine_detail.jpg',
     ],
     driveFolderUrl: 'https://drive.google.com/drive/folders/1Uft3tiWSMkLHoky44mpws4Wc5PbJAIKH',
     amenities: ['Anti-délestage', 'Machine à laver', 'Forage (Eau 24/7)', 'Wifi Gratuit', 'Climatisation intégrale', 'Balcon', 'Sécurité', 'Smart TV (Netflix/IPTV)'],
@@ -124,9 +151,15 @@ export const PROPERTIES: Property[] = [
       ]
     },
     images: [
-      '/images/deluxe/salon_deluxe.jpg',
+      '/images/deluxe/salon.jpg',
+      '/images/deluxe/chambre_principale.jpg',
       '/images/deluxe/salle_manger.jpg',
-      '/images/deluxe/chambre_p.jpg'
+      '/images/deluxe/cuisine.jpg',
+      '/images/deluxe/chambre_2.jpg',
+      '/images/deluxe/sdb.jpg',
+      '/images/deluxe/entree.jpg',
+      '/images/deluxe/detail.jpg',
+      '/images/deluxe/exterieur.jpg',
     ],
     driveFolderUrl: 'https://drive.google.com/drive/folders/1GNItWwoF5sOvZjnvlSZVeOIJ6OA2Ol3A',
     amenities: ['Anti-délestage (Backup)', 'Forage (Eau 24/7)', 'Wifi Haut Débit', 'Climatisation', 'Cuisine équipée', 'Parking interne', 'Magasin de stockage', 'Réception — boissons'],
@@ -149,9 +182,13 @@ export const PROPERTIES: Property[] = [
       ]
     },
     images: [
-      '/images/americain/salon_studio.jpg',
-      '/images/americain/cuisine_studio.jpg',
-      '/images/americain/chambre_studio.jpg'
+      '/images/americain/salon.jpg',
+      '/images/americain/cuisine.jpg',
+      '/images/americain/chambre.jpg',
+      '/images/americain/sejour_wide.jpg',
+      '/images/americain/cuisine_detail.jpg',
+      '/images/americain/entree.jpg',
+      '/images/americain/sdb.jpg',
     ], 
     driveFolderUrl: 'https://drive.google.com/drive/folders/1zAp1a4o7Ac2MNoZ6wzsDoBJ9ClzmkS93',
     amenities: ['Anti-délestage', 'Forage', 'Wifi Illimité', 'Climatisation', 'Cuisine Américaine', 'Smart TV', 'Interphone', 'Réception — boissons'],
@@ -175,8 +212,13 @@ export const PROPERTIES: Property[] = [
     },
     images: [
       '/images/superior/sejour.jpg',
+      '/images/superior/chambre.jpg',
       '/images/superior/cuisine.jpg',
-      '/images/superior/chambre_sup.jpg'
+      '/images/superior/salon.jpg',
+      '/images/superior/chambre_detail.jpg',
+      '/images/superior/cuisine_detail.jpg',
+      '/images/superior/entree.jpg',
+      '/images/superior/sejour_2.jpg',
     ],
     driveFolderUrl: 'https://drive.google.com/drive/folders/1N3hgGTKvcn8xBOKpN6jTggZEY80Vse2f',
     amenities: ['Anti-délestage', 'Forage', 'Wifi Illimité', 'Climatisation', 'Cuisine Américaine', 'Smart TV', 'Interphone', 'Réception — boissons'],
@@ -199,7 +241,10 @@ export const PROPERTIES: Property[] = [
     },
     images: [
       '/images/chambrea/vue_lit.jpg',
-      '/images/chambrea/vue_tv.jpg'
+      '/images/chambrea/vue_tv.jpg',
+      '/images/chambrea/vue_fenetre.jpg',
+      '/images/chambrea/lit_detail.jpg',
+      '/images/chambrea/douche.jpg',
     ],
     driveFolderUrl: 'https://drive.google.com/drive/folders/1d0lqRu4KYHj6KfyrLOGnsdy_cRaJQ3e_',
     amenities: ['Anti-délestage', 'Réception — boissons', 'Lit King Size', 'Climatisation', 'Réfrigérateur', 'Micro-ondes', 'Wifi', 'TV 43 pouces', 'Douche privative'],
@@ -222,7 +267,11 @@ export const PROPERTIES: Property[] = [
     },
     images: [
       '/images/chambreb/lit_frigo.jpg',
-      '/images/chambreb/placard.jpg'
+      '/images/chambreb/tv_frigo.jpg',
+      '/images/chambreb/placard.jpg',
+      '/images/chambreb/fenetre.jpg',
+      '/images/chambreb/lit_detail.jpg',
+      '/images/chambreb/douche.jpg',
     ],
     driveFolderUrl: 'https://drive.google.com/drive/folders/1Q4OzXAivA9vAd_3IX5AE_ue2tBS2ZIbS',
     amenities: ['Anti-délestage', 'Réception — boissons', 'Lit King Size', 'Climatisation', 'Réfrigérateur', 'Micro-ondes', 'Wifi', 'TV 43 pouces', 'Douche privative'],

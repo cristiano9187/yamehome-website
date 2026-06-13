@@ -1,6 +1,5 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { Property, Reservation } from '../types';
-import { getISOWeek, getISOWeekYear } from 'date-fns';
 import { 
   Users, Wifi, MapPin, Check, Image as ImageIcon, MessageCircle, 
   ChevronLeft, ChevronRight, Youtube, Calendar, 
@@ -8,34 +7,8 @@ import {
   Droplets, Zap, Phone, BedDouble, Refrigerator, Microwave, ShowerHead, Sun, Coffee
 } from 'lucide-react';
 import BookingModal from './BookingModal';
-
-const hashString = (value: string): number => {
-  // Simple stable hash (0..2^32-1)
-  let h = 0;
-  for (let i = 0; i < value.length; i++) {
-    h = (Math.imul(31, h) + value.charCodeAt(i)) | 0;
-  }
-  return h >>> 0;
-};
-
-// ISO week key (reliable at year boundaries). Changes weekly, stable for the same ISO week.
-const getIsoWeekKey = (date: Date) => {
-  const year = getISOWeekYear(date);
-  const week = getISOWeek(date);
-  return `${year}-W${String(week).padStart(2, '0')}`;
-};
-
-const rotateImagesWeekly = (images: string[], propertyId: string, now: Date = new Date()) => {
-  if (!images.length) return images;
-  if (images.length === 1) return images;
-
-  const weekKey = getIsoWeekKey(now);
-  const salt = hashString(`${propertyId}|${weekKey}`);
-  const start = images.length > 0 ? (salt % images.length) : 0;
-  if (start === 0) return images;
-
-  return [...images.slice(start), ...images.slice(0, start)];
-};
+import PropertyPhotoGallery from './PropertyPhotoGallery';
+import { getCardPreviewImages } from '../utils/propertyImages';
 
 const amenityIcons: { [key: string]: any } = {
   'Energie solaire': Sun,
@@ -99,12 +72,15 @@ const PropertyCard: React.FC<PropertyCardProps> = ({
 }) => {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [showBookingModal, setShowBookingModal] = useState(false);
+  const [showPhotoGallery, setShowPhotoGallery] = useState(false);
+  const [galleryStartIndex, setGalleryStartIndex] = useState(0);
   const [activeAmenityTooltip, setActiveAmenityTooltip] = useState<string | null>(null);
   const isModulableStudio = property.type === 'Appartement' && !!property.pricing?.studioMode?.length;
   const propertyTypeLabel = property.type === 'Appartement' ? 'Appartement 2 chambres' : property.type;
-  const displayImages = useMemo(
-    () => rotateImagesWeekly(property.images, property.id),
-    [property.id, property.images]
+  const galleryImages = property.images;
+  const cardImages = useMemo(
+    () => getCardPreviewImages(galleryImages, property.id),
+    [galleryImages, property.id]
   );
 
   useEffect(() => {
@@ -115,7 +91,7 @@ const PropertyCard: React.FC<PropertyCardProps> = ({
 
   useEffect(() => {
     setCurrentImageIndex(0);
-  }, [property.id, displayImages]);
+  }, [property.id, cardImages]);
 
   const openBookingModal = (e?: React.SyntheticEvent) => {
     e?.preventDefault();
@@ -125,14 +101,24 @@ const PropertyCard: React.FC<PropertyCardProps> = ({
 
   const nextImage = (e: React.MouseEvent) => {
     e.preventDefault(); e.stopPropagation();
-    if (!displayImages.length) return;
-    setCurrentImageIndex((prev) => (prev + 1) % displayImages.length);
+    if (!cardImages.length) return;
+    setCurrentImageIndex((prev) => (prev + 1) % cardImages.length);
   };
 
   const prevImage = (e: React.MouseEvent) => {
     e.preventDefault(); e.stopPropagation();
-    if (!displayImages.length) return;
-    setCurrentImageIndex((prev) => (prev - 1 + displayImages.length) % displayImages.length);
+    if (!cardImages.length) return;
+    setCurrentImageIndex((prev) => (prev - 1 + cardImages.length) % cardImages.length);
+  };
+
+  const openPhotoGallery = (e: React.SyntheticEvent, startIndex = currentImageIndex) => {
+    e.preventDefault();
+    e.stopPropagation();
+    if (!galleryImages.length) return;
+    const cardSrc = cardImages[startIndex];
+    const fullIndex = cardSrc ? galleryImages.indexOf(cardSrc) : startIndex;
+    setGalleryStartIndex(fullIndex >= 0 ? fullIndex : 0);
+    setShowPhotoGallery(true);
   };
 
   return (
@@ -142,12 +128,41 @@ const PropertyCard: React.FC<PropertyCardProps> = ({
         className="bg-white rounded-xl shadow-lg overflow-hidden group hover:shadow-2xl transition-all duration-300 flex flex-col h-full border border-slate-100 relative"
       >
         <div className="relative h-64 overflow-hidden">
-          <img src={displayImages[currentImageIndex]} alt={property.title} className="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-500" />
-          {displayImages.length > 1 && (
+          <button
+            type="button"
+            onClick={(e) => openPhotoGallery(e, currentImageIndex)}
+            className="block w-full h-full text-left"
+            aria-label={`Voir les photos de ${property.title}`}
+          >
+            <img
+              src={cardImages[currentImageIndex]}
+              alt={property.title}
+              loading="lazy"
+              decoding="async"
+              className="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-500"
+            />
+          </button>
+          {cardImages.length > 1 && (
             <>
-              <button onClick={prevImage} className="absolute left-2 top-1/2 -translate-y-1/2 bg-black/30 hover:bg-black/50 text-white p-1 rounded-full opacity-0 group-hover:opacity-100 transition-opacity z-10"><ChevronLeft size={24} /></button>
-              <button onClick={nextImage} className="absolute right-2 top-1/2 -translate-y-1/2 bg-black/30 hover:bg-black/50 text-white p-1 rounded-full opacity-0 group-hover:opacity-100 transition-opacity z-10"><ChevronRight size={24} /></button>
+              <button onClick={prevImage} className="absolute left-2 top-1/2 -translate-y-1/2 bg-black/40 hover:bg-black/60 text-white p-1.5 rounded-full sm:opacity-0 sm:group-hover:opacity-100 transition-opacity z-10"><ChevronLeft size={22} /></button>
+              <button onClick={nextImage} className="absolute right-2 top-1/2 -translate-y-1/2 bg-black/40 hover:bg-black/60 text-white p-1.5 rounded-full sm:opacity-0 sm:group-hover:opacity-100 transition-opacity z-10"><ChevronRight size={22} /></button>
+              <div className="absolute bottom-3 left-1/2 -translate-x-1/2 flex gap-1.5 z-10 pointer-events-none">
+                {cardImages.map((_, i) => (
+                  <span
+                    key={i}
+                    className={`h-1.5 rounded-full transition-all ${i === currentImageIndex ? 'w-4 bg-white' : 'w-1.5 bg-white/50'}`}
+                  />
+                ))}
+              </div>
+              <div className="absolute bottom-3 left-3 z-10 pointer-events-none bg-black/45 text-white text-[10px] font-bold px-2 py-1 rounded-full">
+                {currentImageIndex + 1}/{galleryImages.length}
+              </div>
             </>
+          )}
+          {cardImages.length === 1 && galleryImages.length > 1 && (
+            <div className="absolute bottom-3 left-3 z-10 pointer-events-none bg-black/45 text-white text-[10px] font-bold px-2 py-1 rounded-full">
+              {galleryImages.length} photos
+            </div>
           )}
           <div className="absolute top-4 left-4 right-4 flex items-start justify-between gap-2">
             <div className="bg-white/90 backdrop-blur text-primary text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wide shadow-sm max-w-[62%] leading-tight">
@@ -225,10 +240,14 @@ const PropertyCard: React.FC<PropertyCardProps> = ({
               Réserver / Estimer
             </button>
             <div className="flex gap-2">
-              {property.driveFolderUrl && (
-                <a href={property.driveFolderUrl} target="_blank" rel="noopener noreferrer" className="flex-grow flex items-center justify-center px-4 py-2.5 bg-accent text-white rounded-xl font-bold text-xs hover:bg-[#b3955f] transition-all active:scale-95">
+              {galleryImages.length > 0 && (
+                <button
+                  type="button"
+                  onClick={(e) => openPhotoGallery(e, 0)}
+                  className="flex-grow flex items-center justify-center px-4 py-2.5 bg-accent text-white rounded-xl font-bold text-xs hover:bg-[#b3955f] transition-all active:scale-95"
+                >
                   <ImageIcon size={14} className="mr-2" /> Album Photo
-                </a>
+                </button>
               )}
               {property.youtubeVideoUrl && (
                 <a href={property.youtubeVideoUrl} target="_blank" rel="noopener noreferrer" className="px-4 py-2.5 border border-red-200 text-red-600 rounded-xl font-bold text-xs hover:bg-red-50 transition-all active:scale-95"><Youtube size={16} /></a>
@@ -245,6 +264,15 @@ const PropertyCard: React.FC<PropertyCardProps> = ({
           initialEndDate={prefilledEndDate ?? searchEndDate}
           campaignSource={campaignSource}
           allReservations={allReservations}
+        />
+      )}
+      {showPhotoGallery && (
+        <PropertyPhotoGallery
+          images={galleryImages}
+          title={property.title}
+          initialIndex={galleryStartIndex}
+          driveFolderUrl={property.driveFolderUrl}
+          onClose={() => setShowPhotoGallery(false)}
         />
       )}
     </>
