@@ -74,6 +74,7 @@ const PropertyCard: React.FC<PropertyCardProps> = ({
   const [showBookingModal, setShowBookingModal] = useState(false);
   const [showPhotoGallery, setShowPhotoGallery] = useState(false);
   const [galleryStartIndex, setGalleryStartIndex] = useState(0);
+  const [galleryInitialView, setGalleryInitialView] = useState<'photos' | 'video'>('photos');
   const [activeAmenityTooltip, setActiveAmenityTooltip] = useState<string | null>(null);
   const isModulableStudio = property.type === 'Appartement' && !!property.pricing?.studioMode?.length;
   const propertyTypeLabel = property.type === 'Appartement' ? 'Appartement 2 chambres' : property.type;
@@ -111,13 +112,14 @@ const PropertyCard: React.FC<PropertyCardProps> = ({
     setCurrentImageIndex((prev) => (prev - 1 + cardImages.length) % cardImages.length);
   };
 
-  const openPhotoGallery = (e: React.SyntheticEvent, startIndex = currentImageIndex) => {
+  const openPhotoGallery = (e: React.SyntheticEvent, startIndex = currentImageIndex, view: 'photos' | 'video' = 'photos') => {
     e.preventDefault();
     e.stopPropagation();
-    if (!galleryImages.length) return;
+    if (!galleryImages.length && !property.youtubeVideoUrl) return;
     const cardSrc = cardImages[startIndex];
     const fullIndex = cardSrc ? galleryImages.indexOf(cardSrc) : startIndex;
     setGalleryStartIndex(fullIndex >= 0 ? fullIndex : 0);
+    setGalleryInitialView(view);
     setShowPhotoGallery(true);
   };
 
@@ -243,14 +245,21 @@ const PropertyCard: React.FC<PropertyCardProps> = ({
               {galleryImages.length > 0 && (
                 <button
                   type="button"
-                  onClick={(e) => openPhotoGallery(e, 0)}
+                  onClick={(e) => openPhotoGallery(e, 0, 'photos')}
                   className="flex-grow flex items-center justify-center px-4 py-2.5 bg-accent text-white rounded-xl font-bold text-xs hover:bg-[#b3955f] transition-all active:scale-95"
                 >
                   <ImageIcon size={14} className="mr-2" /> Album Photo
                 </button>
               )}
               {property.youtubeVideoUrl && (
-                <a href={property.youtubeVideoUrl} target="_blank" rel="noopener noreferrer" className="px-4 py-2.5 border border-red-200 text-red-600 rounded-xl font-bold text-xs hover:bg-red-50 transition-all active:scale-95"><Youtube size={16} /></a>
+                <button
+                  type="button"
+                  onClick={(e) => openPhotoGallery(e, 0, 'video')}
+                  className={`flex items-center justify-center gap-2 px-4 py-2.5 border border-red-200 text-red-600 rounded-xl font-bold text-xs hover:bg-red-50 transition-all active:scale-95 ${galleryImages.length === 0 ? 'flex-grow' : ''}`}
+                >
+                  <Youtube size={16} />
+                  Visite vidéo
+                </button>
               )}
             </div>
           </div>
@@ -271,7 +280,9 @@ const PropertyCard: React.FC<PropertyCardProps> = ({
           images={galleryImages}
           title={property.title}
           initialIndex={galleryStartIndex}
+          initialView={galleryInitialView}
           driveFolderUrl={property.driveFolderUrl}
+          youtubeVideoUrl={property.youtubeVideoUrl}
           onClose={() => setShowPhotoGallery(false)}
         />
       )}

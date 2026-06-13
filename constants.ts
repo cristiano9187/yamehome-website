@@ -126,6 +126,7 @@ export const PROPERTIES: Property[] = [
       '/images/brigade/cuisine_detail.jpg',
     ],
     driveFolderUrl: 'https://drive.google.com/drive/folders/1Uft3tiWSMkLHoky44mpws4Wc5PbJAIKH',
+    youtubeVideoUrl: 'https://www.youtube.com/watch?v=J8irm0k3XEQ',
     amenities: ['Anti-délestage', 'Machine à laver', 'Forage (Eau 24/7)', 'Wifi Gratuit', 'Climatisation intégrale', 'Balcon', 'Sécurité', 'Smart TV (Netflix/IPTV)'],
     capacity: 4
   },
