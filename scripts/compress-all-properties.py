@@ -1,6 +1,6 @@
 """Compresse les photos de tous les logements Yaoundé pour le site web."""
 from pathlib import Path
-from PIL import Image
+from PIL import Image, ImageOps
 
 MAX_WIDTH = 1600
 QUALITY = 82
@@ -17,6 +17,7 @@ def add(src_dir: str, items: list[tuple[str, str, str]]):
 def compress(src: Path, dst: Path) -> float:
     dst.parent.mkdir(parents=True, exist_ok=True)
     with Image.open(src) as img:
+        img = ImageOps.exif_transpose(img)
         img = img.convert("RGB")
         w, h = img.size
         if w > MAX_WIDTH:
@@ -112,6 +113,36 @@ add(CHB, [
     ("a_vue_fenetre.jpeg", "chambreb", "fenetre.jpg"),
     ("image00004.jpeg", "chambreb", "lit_detail.jpg"),
     ("a_vvDouche.jpeg", "chambreb", "douche.jpg"),
+])
+
+# --- Bangangté (Gallaghers City) ---
+BGT = r"C:\Users\chris\OneDrive\Pictures\bangangte_Yamehome"
+add(BGT, [
+    # Chambre avec cuisine — armoire/boiserie au-dessus du lit + coin cuisine
+    ("image00043.jpeg", "bgte", "cuisine_chambre.jpg"),
+    ("image00034.jpeg", "bgte", "cuisine_sejour.jpg"),
+    ("image00038.jpeg", "bgte", "cuisine_coin.jpg"),
+    ("image00044.jpeg", "bgte", "cuisine_detail.jpg"),
+    ("image00042.jpeg", "bgte", "cuisine_tv.jpg"),
+    ("image00040.jpeg", "bgte", "cuisine_lit.jpg"),
+    ("image00046.jpeg", "bgte", "cuisine_sdb.jpg"),
+    # Standard A — vert/cercles, plafond chevron, sans armoire au-dessus du lit
+    ("image00033.jpeg", "bgte", "chambre_a_chambre.jpg"),
+    ("image00025.jpeg", "bgte", "chambre_a_fenetre.jpg"),
+    ("image00006.jpeg", "bgte", "chambre_a_tv.jpg"),
+    ("image00021.jpeg", "bgte", "chambre_a_sdb.jpg"),
+    # Standard B — tête de lit bois intégrée
+    ("image00019.jpeg", "bgte", "chambre_b_chambre.jpg"),
+    ("image00018.jpeg", "bgte", "chambre_b_lit.jpg"),
+    ("image00017.jpeg", "bgte", "chambre_b_detail.jpg"),
+    ("image00022.jpeg", "bgte", "chambre_b_sdb.jpg"),
+    # Standard C — autre chambre sans cuisine (même style vert/cercles, angles différents)
+    ("image00031.jpeg", "bgte", "chambre_c_chambre.jpg"),
+    ("image00032.jpeg", "bgte", "chambre_c_tv.jpg"),
+    ("image00015.jpeg", "bgte", "chambre_c_lit.jpg"),
+    ("image00023.jpeg", "bgte", "chambre_c_dressing.jpg"),
+    # Extérieur Gallagher's City (partagé)
+    ("image00011.jpeg", "bgte", "exterieur.jpg"),
 ])
 
 if __name__ == "__main__":

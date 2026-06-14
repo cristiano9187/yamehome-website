@@ -295,10 +295,14 @@ export const PROPERTIES: Property[] = [
       ]
     },
     images: [
-      '/images/bgte/barriere.jpg',
-      '/images/bgte/chambre_p_fenetre.jpg',
-      '/images/bgte/chambre_p1.jpg',
-      '/images/bgte/chambre_p2.jpg'
+      '/images/bgte/cuisine_chambre.jpg',
+      '/images/bgte/cuisine_sejour.jpg',
+      '/images/bgte/cuisine_coin.jpg',
+      '/images/bgte/cuisine_tv.jpg',
+      '/images/bgte/cuisine_detail.jpg',
+      '/images/bgte/cuisine_lit.jpg',
+      '/images/bgte/cuisine_sdb.jpg',
+      '/images/bgte/exterieur.jpg',
     ],
     amenities: ['Cuisine interne', 'Eau chaude', 'TV', 'Frigo'],
     capacity: 2
@@ -318,7 +322,11 @@ export const PROPERTIES: Property[] = [
       ]
     },
     images: [
-      '/images/bgte/chambre_b.jpg'
+      '/images/bgte/chambre_a_chambre.jpg',
+      '/images/bgte/chambre_a_fenetre.jpg',
+      '/images/bgte/chambre_a_tv.jpg',
+      '/images/bgte/chambre_a_sdb.jpg',
+      '/images/bgte/exterieur.jpg',
     ],
     amenities: ['Douche privée', 'TV', 'Eau chaude'],
     capacity: 2
@@ -338,7 +346,11 @@ export const PROPERTIES: Property[] = [
       ]
     },
     images: [
-      '/images/bgte/chambre_c.jpg'
+      '/images/bgte/chambre_b_chambre.jpg',
+      '/images/bgte/chambre_b_lit.jpg',
+      '/images/bgte/chambre_b_detail.jpg',
+      '/images/bgte/chambre_b_sdb.jpg',
+      '/images/bgte/exterieur.jpg',
     ],
     amenities: ['Douche privée', 'TV', 'Eau chaude'],
     capacity: 2
@@ -358,7 +370,12 @@ export const PROPERTIES: Property[] = [
       ]
     },
     images: [
-      '/images/bgte/chambre_d.jpg'
+      '/images/bgte/chambre_c_chambre.jpg',
+      '/images/bgte/chambre_c_lit.jpg',
+      '/images/bgte/chambre_c_tv.jpg',
+      '/images/bgte/chambre_c_dressing.jpg',
+      '/images/bgte/chambre_a_sdb.jpg',
+      '/images/bgte/exterieur.jpg',
     ],
     amenities: ['Douche privée', 'TV', 'Eau chaude'],
     capacity: 2
