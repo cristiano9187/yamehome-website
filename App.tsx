@@ -47,6 +47,7 @@ const App: React.FC = () => {
   const [allReservations, setAllReservations] = useState<Reservation[]>([]);
   const [filteredApartments, setFilteredApartments] = useState(PROPERTIES);
   const [deepLinkPropertyId, setDeepLinkPropertyId] = useState<string | null>(null);
+  const [deepLinkGalleryPropertyId, setDeepLinkGalleryPropertyId] = useState<string | null>(null);
   const [deepLinkStartDate, setDeepLinkStartDate] = useState<Date | null>(null);
   const [deepLinkEndDate, setDeepLinkEndDate] = useState<Date | null>(null);
   const [deepLinkSource, setDeepLinkSource] = useState('');
@@ -67,6 +68,7 @@ const App: React.FC = () => {
     const toDate = parseUrlDate(params.get('to'));
     const source = params.get('src') || '';
     const tunnel = params.get('tunnel');
+    const view = params.get('view');
 
     if (tunnel === 'lead') {
       setDeepLinkSource(source);
@@ -79,7 +81,11 @@ const App: React.FC = () => {
     const targetProperty = PROPERTIES.find(p => p.id === propertyId);
     if (!targetProperty) return;
 
-    setDeepLinkPropertyId(propertyId);
+    if (view === 'photos') {
+      setDeepLinkGalleryPropertyId(propertyId);
+    } else {
+      setDeepLinkPropertyId(propertyId);
+    }
     setDeepLinkStartDate(fromDate);
     setDeepLinkEndDate(toDate);
     setDeepLinkSource(source);
@@ -342,6 +348,8 @@ const App: React.FC = () => {
                     searchEndDate={endDate}
                     autoOpenBooking={deepLinkPropertyId === property.id}
                     onAutoOpenHandled={() => setDeepLinkPropertyId(null)}
+                    autoOpenGallery={deepLinkGalleryPropertyId === property.id}
+                    onAutoOpenGalleryHandled={() => setDeepLinkGalleryPropertyId(null)}
                     prefilledStartDate={deepLinkStartDate}
                     prefilledEndDate={deepLinkEndDate}
                     campaignSource={deepLinkSource}
@@ -412,6 +420,8 @@ const App: React.FC = () => {
                     searchEndDate={endDate}
                     autoOpenBooking={deepLinkPropertyId === property.id}
                     onAutoOpenHandled={() => setDeepLinkPropertyId(null)}
+                    autoOpenGallery={deepLinkGalleryPropertyId === property.id}
+                    onAutoOpenGalleryHandled={() => setDeepLinkGalleryPropertyId(null)}
                     prefilledStartDate={deepLinkStartDate}
                     prefilledEndDate={deepLinkEndDate}
                     campaignSource={deepLinkSource}

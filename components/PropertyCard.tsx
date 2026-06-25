@@ -53,6 +53,8 @@ interface PropertyCardProps {
   searchEndDate?: Date | null;
   autoOpenBooking?: boolean;
   onAutoOpenHandled?: () => void;
+  autoOpenGallery?: boolean;
+  onAutoOpenGalleryHandled?: () => void;
   prefilledStartDate?: Date | null;
   prefilledEndDate?: Date | null;
   campaignSource?: string;
@@ -65,6 +67,8 @@ const PropertyCard: React.FC<PropertyCardProps> = ({
   searchEndDate,
   autoOpenBooking = false,
   onAutoOpenHandled,
+  autoOpenGallery = false,
+  onAutoOpenGalleryHandled,
   prefilledStartDate,
   prefilledEndDate,
   campaignSource = '',
@@ -89,6 +93,15 @@ const PropertyCard: React.FC<PropertyCardProps> = ({
     setShowBookingModal(true);
     onAutoOpenHandled?.();
   }, [autoOpenBooking, onAutoOpenHandled]);
+
+  useEffect(() => {
+    if (!autoOpenGallery) return;
+    if (!galleryImages.length) return;
+    setGalleryStartIndex(0);
+    setGalleryInitialView('photos');
+    setShowPhotoGallery(true);
+    onAutoOpenGalleryHandled?.();
+  }, [autoOpenGallery, onAutoOpenGalleryHandled, galleryImages.length]);
 
   useEffect(() => {
     setCurrentImageIndex(0);
